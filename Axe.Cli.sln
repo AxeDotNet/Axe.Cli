@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axe.Cli.Parser", "src\Axe.Cli.Parser\Axe.Cli.Parser.csproj", "{AADB4E8E-6466-4443-9509-D4927FB24C94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axe.Cli.Parser.Test", "test\Axe.Cli.Parser.Test\Axe.Cli.Parser.Test.csproj", "{6CBD9A9E-46AB-48B2-ACA3-D99434C46B3A}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AADB4E8E-6466-4443-9509-D4927FB24C94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AADB4E8E-6466-4443-9509-D4927FB24C94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AADB4E8E-6466-4443-9509-D4927FB24C94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AADB4E8E-6466-4443-9509-D4927FB24C94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CBD9A9E-46AB-48B2-ACA3-D99434C46B3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CBD9A9E-46AB-48B2-ACA3-D99434C46B3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CBD9A9E-46AB-48B2-ACA3-D99434C46B3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CBD9A9E-46AB-48B2-ACA3-D99434C46B3A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
