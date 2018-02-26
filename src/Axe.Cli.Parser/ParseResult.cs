@@ -6,9 +6,9 @@ namespace Axe.Cli.Parser
 {
     class ParseResult : IParseResult
     {
-        public ParseResult(string errorMessage)
+        public ParseResult(IList<ParsingError> errors)
         {
-            InitializeEmpty(false, errorMessage);
+            InitializeEmpty(false, errors);
         }
 
         public ParseResult(IList<IntemediateResult> results)
@@ -27,10 +27,10 @@ namespace Axe.Cli.Parser
             Pairs = GetPairs(results);
             Flags = GetFlags(results);
             FreeValues = GetFreeValues(results);
-            ErrorMessage = string.Empty;
+            Errors = Array.Empty<ParsingError>();
         }
 
-        void InitializeEmpty(bool isSuccess, string errorMessage = null)
+        void InitializeEmpty(bool isSuccess, IList<ParsingError> errors = null)
         {
             IsSuccess = isSuccess;
             HasPossibleArea = false;
@@ -38,7 +38,7 @@ namespace Axe.Cli.Parser
             Pairs = Array.Empty<KeyValuePair<string, string>>();
             FreeValues = Array.Empty<string>();
             Flags = Array.Empty<string>();
-            ErrorMessage = isSuccess ? string.Empty : (errorMessage ?? "Unknown error. ");
+            Errors = isSuccess ? Array.Empty<ParsingError>() : errors;
         }
 
         static IList<string> GetFreeValues(IList<IntemediateResult> results)
@@ -77,6 +77,6 @@ namespace Axe.Cli.Parser
         public IList<KeyValuePair<string, string>> Pairs { get; private set; }
         public IList<string> Flags { get; private set; }
         public IList<string> FreeValues { get; private set; }
-        public string ErrorMessage { get; private set; }
+        public IList<ParsingError> Errors { get; private set; }
     }
 }

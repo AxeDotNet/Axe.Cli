@@ -9,7 +9,7 @@ namespace Axe.Cli.Parser
         IList<KeyValuePair<string, string>> Pairs { get; }
         IList<string> Flags { get; }
         IList<string> FreeValues { get; }
-        string ErrorMessage { get; }
+        IList<ParsingError> Errors { get; }
         bool HasPossibleArea { get; }
     }
 }
