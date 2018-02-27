@@ -1,0 +1,62 @@
+﻿using System;
+using System.Text.RegularExpressions;
+
+namespace Axe.Cli.Parser
+{
+    class OptionSymbol
+    {
+        static readonly Regex Pattern = new Regex(
+            "^[A-Z0-9_][A-Z0-9_\\-]{0,}$",
+            RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+
+        public string Symbol { get; }
+
+        public char? Abbreviation { get; }
+
+        public OptionSymbol(string symbol, char? abbreviation)
+        {
+            if (symbol == null && abbreviation == null)
+            {
+                throw new ArgumentException("The symbol and abbreviation cannot be null at the same time."); 
+            }
+
+            if (symbol != null && !Pattern.IsMatch(symbol))
+            {
+                throw new ArgumentException($"The symbol '{symbol}' is not in a valid format."); 
+            }
+
+            if (abbreviation != null && abbreviation == '-')
+            {
+                throw new ArgumentException("The abbreviation cannot be a dash sign.");
+            }
+
+            Symbol = symbol;
+            Abbreviation = abbreviation;
+        }
+
+        public override string ToString()
+        {
+            string symbolOutput = Symbol == null ? "(null)" : $"--{Symbol}";
+            string abbrOutput = Abbreviation == null ? "(null)" : $"-{Abbreviation}";
+            return $"full form: {symbolOutput}; abbr. form: {abbrOutput}";
+        }
+
+        public bool IsConflict(OptionSymbol other)
+        {
+            if (other == null) {throw new ArgumentNullException(nameof(other));}
+            return SymbolEqual(other.Symbol) || AbbreviationEqual(other.Abbreviation);
+        }
+
+        bool AbbreviationEqual(char? otherAbbreviation)
+        {
+            return Abbreviation != null && otherAbbreviation != null &&
+                char.ToUpperInvariant(Abbreviation.Value) == char.ToUpperInvariant(otherAbbreviation.Value);
+        }
+
+        bool SymbolEqual(string otherSymbol)
+        {
+            return Symbol != null && otherSymbol != null &&
+                Symbol.Equals(otherSymbol, StringComparison.OrdinalIgnoreCase);
+        }
+    }
+}
