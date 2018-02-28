@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using Axe.Cli.Parser.Text;
+using Axe.Cli.Parser.Extensions;
 
 namespace Axe.Cli.Parser
 {

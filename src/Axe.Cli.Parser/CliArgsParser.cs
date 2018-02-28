@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Axe.Cli.Parser.Extensions;
 using Axe.Cli.Parser.Tokenizer;
 
 namespace Axe.Cli.Parser
@@ -43,21 +44,10 @@ namespace Axe.Cli.Parser
 
         static IList<KeyValuePair<ICliOptionDefinition, bool>> MergeFlags(TokenizedResult tokenResult, ICliCommandDefinition command)
         {
-            ICliOptionToken[] flagTokensInResult = tokenResult
+            Dictionary<ICliOptionDefinition, bool> flags = tokenResult
                 .Tokens
                 .Where(t => t.Definition.Type == OptionType.Flag)
-                .ToArray();
-            if (HasDuplicateDefinitions(
-                flagTokensInResult,
-                out ICliOptionToken duplicatedToken))
-            {
-                throw new CliArgParsingException(
-                    CliArgsParsingErrorCode.DuplicateFlagsInArgs,
-                    duplicatedToken.Definition.Symbol.ToString());
-            }
-
-            Dictionary<ICliOptionDefinition, bool> flags = flagTokensInResult
-                .ToDictionary(t => t.Definition, t => true);
+                .MergeToDictionary(t => t.Definition, t => true);
             foreach (var flag in command.GetRegisteredOptions()
                 .Where(o => o.Type == OptionType.Flag))
             {

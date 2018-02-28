@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace Axe.Cli.Parser.Text
+namespace Axe.Cli.Parser.Extensions
 {
     static class StringExtensions
     {

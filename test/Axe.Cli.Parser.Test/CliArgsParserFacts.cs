@@ -80,6 +80,40 @@ namespace Axe.Cli.Parser.Test
             Assert.True(result.IsSuccess);
             Assert.True(result.GetFlagValue(argumentExpression));
         }
+        
+        [Fact]
+        public void should_be_ok_for_duplicated_flags_with_default_command()
+        {
+            CliArgsParser parser = new CliArgsParserBuilder()
+                .BeginDefaultCommand()
+                .AddFlagOption("flag", 'f', string.Empty)
+                .EndCommand()
+                .Build();
+             
+            string[] args = { "-ff" };
+            CliArgsParsingResult result = parser.Parse(args);
+
+            Assert.True(result.IsSuccess);
+            Assert.True(result.GetFlagValue("-f"));
+        }
+        
+        [Fact]
+        public void should_be_ok_for_non_specified_flags_with_default_command()
+        {
+            CliArgsParser parser = new CliArgsParserBuilder()
+                .BeginDefaultCommand()
+                .AddFlagOption("flag", 'f', string.Empty)
+                .AddFlagOption("other-flag", 'o', string.Empty)
+                .EndCommand()
+                .Build();
+             
+            string[] args = { "-f" };
+            CliArgsParsingResult result = parser.Parse(args);
+
+            Assert.True(result.IsSuccess);
+            Assert.True(result.GetFlagValue("-f"));
+            Assert.False(result.GetFlagValue("-o"));
+        }
 
         [Fact]
         public void should_be_ok_for_non_argument_if_default_command_is_set()

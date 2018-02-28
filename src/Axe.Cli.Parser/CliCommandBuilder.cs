@@ -29,11 +29,10 @@
         public CliCommandBuilder AddFlagOption(
             string fullForm,
             char? abbreviation,
-            string description,
-            bool isRequired = false)
+            string description)
         {
             commandDefinition.RegisterOption(
-                new CliOptionDefinition(fullForm, abbreviation, description, isRequired, OptionType.Flag));
+                new CliOptionDefinition(fullForm, abbreviation, description, false, OptionType.Flag));
             return this;
         }
 
