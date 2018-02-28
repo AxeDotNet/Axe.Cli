@@ -18,9 +18,9 @@ namespace Axe.Cli.Parser
             Description = description.MakeSingleLine();
         }
 
-        public string Symbol { get; }
+        public override string Symbol { get; }
 
-        public string Description { get; }
+        public override string Description { get; }
 
         static void ValidateSymbol(string symbol)
         {
@@ -31,7 +31,7 @@ namespace Axe.Cli.Parser
             }
         }
 
-        public override bool IsConflict(ICliCommandDefinition commandDefinition)
+        public override bool IsConflict(ICliCommandSymbolDefinition commandDefinition)
         {
             if (!(commandDefinition is CliCommandDefinition c)) { return true; }
             return Symbol.Equals(c.Symbol, StringComparison.OrdinalIgnoreCase);
@@ -40,6 +40,11 @@ namespace Axe.Cli.Parser
         public override string ToString()
         {
             return $"{Symbol}: {Description}";
+        }
+
+        public override bool IsMatch(string argument)
+        {
+            return Symbol.Equals(argument, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

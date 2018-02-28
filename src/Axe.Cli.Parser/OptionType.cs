@@ -1,6 +1,6 @@
 ﻿namespace Axe.Cli.Parser
 {
-    enum OptionType
+    public enum OptionType
     {
         Flag = 1,
         KeyValue = 2

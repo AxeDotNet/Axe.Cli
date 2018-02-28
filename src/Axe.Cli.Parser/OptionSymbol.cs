@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Axe.Cli.Parser
 {
-    class OptionSymbol
+    class OptionSymbol : ICliOptionSymbol
     {
         static readonly Regex Pattern = new Regex(
             "^[A-Z0-9_][A-Z0-9_\\-]{0,}$",
@@ -41,7 +41,22 @@ namespace Axe.Cli.Parser
             return $"full form: {symbolOutput}; abbr. form: {abbrOutput}";
         }
 
-        public bool IsConflict(OptionSymbol other)
+        public bool IsMatch(string argument)
+        {
+            if (argument.StartsWith("--", StringComparison.Ordinal))
+            {
+                return SymbolEqual(argument.Substring(2));
+            }
+
+            if (argument.StartsWith("-", StringComparison.Ordinal) && argument.Length == 2)
+            {
+                return AbbreviationEqual(argument[1]);
+            }
+
+            return false;
+        }
+
+        public bool IsConflict(ICliOptionSymbol other)
         {
             if (other == null) {throw new ArgumentNullException(nameof(other));}
             return SymbolEqual(other.Symbol) || AbbreviationEqual(other.Abbreviation);

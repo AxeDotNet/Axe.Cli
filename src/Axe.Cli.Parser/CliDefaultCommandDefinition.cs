@@ -2,9 +2,17 @@
 {
     class CliDefaultCommandDefinition : CliCommandDefinitionBase
     {
-        public override bool IsConflict(ICliCommandDefinition commandDefinition)
+        public override string Symbol => null;
+        public override string Description => null;
+
+        public override bool IsConflict(ICliCommandSymbolDefinition commandDefinition)
         {
             return true;
+        }
+
+        public override bool IsMatch(string argument)
+        {
+            return false;
         }
 
         public override string ToString()

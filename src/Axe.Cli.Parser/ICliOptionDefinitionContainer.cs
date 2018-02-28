@@ -2,11 +2,9 @@
 
 namespace Axe.Cli.Parser
 {
-    interface ICliCommandDefinition
+    interface ICliOptionDefinitionContainer
     {
         IReadOnlyList<CliOptionDefinition> GetRegisteredOptions();
         void RegisterOption(CliOptionDefinition option);
-        bool IsConflict(ICliCommandDefinition commandDefinition);
-        string ToString();
     }
 }

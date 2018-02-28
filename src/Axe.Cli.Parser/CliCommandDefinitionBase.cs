@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Axe.Cli.Parser
 {
-    abstract class CliCommandDefinitionBase : ICliCommandDefinition
+    abstract class CliCommandDefinitionBase : ICliOptionDefinitionContainer, ICliCommandSymbolDefinition
     {
         readonly List<CliOptionDefinition> options = new List<CliOptionDefinition>();
 
@@ -26,6 +26,9 @@ namespace Axe.Cli.Parser
             options.Add(option);
         }
 
-        public abstract bool IsConflict(ICliCommandDefinition commandDefinition);
+        public abstract string Symbol { get; }
+        public abstract string Description { get; }
+        public abstract bool IsConflict(ICliCommandSymbolDefinition commandDefinition);
+        public abstract bool IsMatch(string argument);
     }
 }

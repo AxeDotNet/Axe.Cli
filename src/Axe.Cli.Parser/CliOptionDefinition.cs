@@ -2,7 +2,7 @@
 
 namespace Axe.Cli.Parser
 {
-    class CliOptionDefinition
+    class CliOptionDefinition : ICliOptionDefinition
     {
         public CliOptionDefinition(
             string symbol,
@@ -17,12 +17,12 @@ namespace Axe.Cli.Parser
             Type = type;
         }
 
-        public OptionSymbol Symbol { get; }
+        public ICliOptionSymbol Symbol { get; }
         public string Description { get; }
         public bool IsRequired { get; }
         public OptionType Type { get; }
 
-        public bool IsConflict(CliOptionDefinition optionDefinition)
+        public bool IsConflict(ICliOptionDefinition optionDefinition)
         {
             if (optionDefinition == null) { throw new ArgumentNullException(nameof(optionDefinition)); }
             return Symbol.IsConflict(optionDefinition.Symbol);
@@ -33,6 +33,11 @@ namespace Axe.Cli.Parser
             string symbolString = Symbol.ToString();
             string required = IsRequired ? "required" : "optional";
             return $"{symbolString}; {required}; {Type}";
+        }
+
+        public bool IsMatch(string argument)
+        {
+            return Symbol.IsMatch(argument);
         }
     }
 }
