@@ -10,7 +10,7 @@ namespace Axe.Cli.Parser.Tokenizer
         }
 
         protected static ICliOptionDefinition ResolveKeyValueOptionLabel(
-            ICliOptionDefinitionContainer defaultCommand,
+            ICliCommandDefinition defaultCommand,
             string argument)
         {
             return defaultCommand.GetRegisteredOptions()

@@ -5,13 +5,13 @@ namespace Axe.Cli.Parser.Tokenizer
 {
     class WaitingValueWithCommandState : TokenizerStateBase
     {
-        readonly ICliCommandSymbolDefinition defaultCommand;
+        readonly ICliCommandDefinition defaultCommand;
         readonly ICliOptionDefinition kvOption;
         readonly string labelArgument;
         readonly TokenizedResultBuilder resultBuilder;
 
         public WaitingValueWithCommandState(
-            ICliCommandSymbolDefinition defaultCommand,
+            ICliCommandDefinition defaultCommand,
             ICliOptionDefinition kvOption,
             string labelArgument,
             TokenizedResultBuilder resultBuilder)

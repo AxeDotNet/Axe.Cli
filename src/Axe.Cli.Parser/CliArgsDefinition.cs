@@ -9,7 +9,7 @@ namespace Axe.Cli.Parser
         readonly List<CliCommandDefinition> commands = new List<CliCommandDefinition>();
         CliDefaultCommandDefinition defaultCommand;
 
-        public ICliCommandSymbolDefinition DefaultCommand => defaultCommand;
+        public ICliCommandDefinition DefaultCommand => defaultCommand;
 
         public void RegisterCommand(CliCommandDefinition command)
         {

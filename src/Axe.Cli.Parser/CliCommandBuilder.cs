@@ -3,7 +3,7 @@
     public class CliCommandBuilder
     {
         readonly CliArgsParserBuilder parentBuilder;
-        readonly ICliOptionDefinitionContainer commandDefinition;
+        readonly ICliCommandDefinition commandDefinition;
         readonly bool isDefaultCommand;
 
         public CliCommandBuilder(CliArgsParserBuilder parentBuilder, string commandName, string description)
@@ -11,7 +11,7 @@
             this.parentBuilder = parentBuilder;
             isDefaultCommand = commandName == null;
             commandDefinition = isDefaultCommand
-                ? (ICliOptionDefinitionContainer) new CliDefaultCommandDefinition()
+                ? (ICliCommandDefinition) new CliDefaultCommandDefinition()
                 : new CliCommandDefinition(commandName, description);
         }
 

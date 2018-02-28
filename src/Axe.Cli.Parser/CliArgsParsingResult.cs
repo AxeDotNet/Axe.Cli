@@ -10,7 +10,7 @@ namespace Axe.Cli.Parser
         readonly IList<KeyValuePair<ICliOptionDefinition, bool>> optionFlags;
         readonly IList<KeyValuePair<ICliOptionDefinition, object[]>> optionValues;
 
-        public ICliCommandSymbolDefinition Command { get; }
+        public ICliCommandDefinition Command { get; }
         public bool IsSuccess { get; }
         public CliArgsParsingError Error { get; }
 
@@ -21,7 +21,7 @@ namespace Axe.Cli.Parser
         }
 
         public CliArgsParsingResult(
-            ICliCommandSymbolDefinition command,
+            ICliCommandDefinition command,
             IEnumerable<KeyValuePair<ICliOptionDefinition, object[]>> optionValues,
             IEnumerable<KeyValuePair<ICliOptionDefinition, bool>> optionFlags,
             IEnumerable<string> freeValues)

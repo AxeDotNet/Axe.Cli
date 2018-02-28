@@ -31,7 +31,7 @@ namespace Axe.Cli.Parser
             }
         }
 
-        public override bool IsConflict(ICliCommandSymbolDefinition commandDefinition)
+        public override bool IsConflict(ICliCommandDefinition commandDefinition)
         {
             if (!(commandDefinition is CliCommandDefinition c)) { return true; }
             return Symbol.Equals(c.Symbol, StringComparison.OrdinalIgnoreCase);

@@ -33,10 +33,10 @@ namespace Axe.Cli.Parser.Tokenizer
                 return new ContinueWithCommandState(command, resultBuilder);
             }
 
-            ICliCommandSymbolDefinition defaultCommand = EnsureDefaultCommandSet(argument);
+            ICliCommandDefinition defaultCommand = EnsureDefaultCommandSet(argument);
 
             ICliOptionDefinition kvOption = ResolveKeyValueOptionLabel(
-                (ICliOptionDefinitionContainer) defaultCommand,
+                (ICliCommandDefinition) defaultCommand,
                 argument);
             if (kvOption != null)
             {
@@ -46,7 +46,7 @@ namespace Axe.Cli.Parser.Tokenizer
             throw new NotImplementedException();
         }
 
-        ICliCommandSymbolDefinition EnsureDefaultCommandSet(string argument)
+        ICliCommandDefinition EnsureDefaultCommandSet(string argument)
         {
             if (!HasDefaultCommand)
             {

@@ -36,13 +36,17 @@ namespace Axe.Cli.Parser.Test
 
             CliArgsParsingResult result = parser.Parse(args);
 
-            AssertError(result, CliArgsParsingErrorCode.DoesNotMatchAnyCommand, "not_matched_command");
+            AssertError(
+                result,
+                CliArgsParsingErrorCode.DoesNotMatchAnyCommand,
+                "not_matched_command");
         }
 
         [Theory]
         [InlineData("--option")]
         [InlineData("-o")]
-        public void should_be_error_if_default_command_kv_option_contains_no_value(string argumentExpression)
+        public void should_be_error_if_default_command_kv_option_contains_no_value(
+            string argumentExpression)
         {
             CliArgsParser parser = new CliArgsParserBuilder()
                 .BeginDefaultCommand()
@@ -53,7 +57,10 @@ namespace Axe.Cli.Parser.Test
             string[] args = { argumentExpression };
             CliArgsParsingResult result = parser.Parse(args);
 
-            AssertError(result, CliArgsParsingErrorCode.CannotFindValueForOption, argumentExpression);
+            AssertError(
+                result,
+                CliArgsParsingErrorCode.CannotFindValueForOption,
+                argumentExpression);
         }
 
         [Theory]
@@ -77,7 +84,8 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_be_ok_for_non_argument_if_default_command_is_set()
         {
-            CliArgsParser parser = new CliArgsParserBuilder().BeginDefaultCommand().EndCommand().Build();
+            CliArgsParser parser = new CliArgsParserBuilder()
+                .BeginDefaultCommand().EndCommand().Build();
 
             CliArgsParsingResult result = parser.Parse(Array.Empty<string>());
 
@@ -92,11 +100,17 @@ namespace Axe.Cli.Parser.Test
 
             CliArgsParsingResult result = parser.Parse(Array.Empty<string>());
 
-            AssertError(result, CliArgsParsingErrorCode.DoesNotMatchAnyCommand, "Unexpected end of arguments.");
+            AssertError(
+                result,
+                CliArgsParsingErrorCode.DoesNotMatchAnyCommand,
+                "Unexpected end of arguments.");
         }
 
         [SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
-        static void AssertError(CliArgsParsingResult result, CliArgsParsingErrorCode code, string trigger)
+        static void AssertError(
+            CliArgsParsingResult result,
+            CliArgsParsingErrorCode code,
+            string trigger)
         {
             Assert.False(result.IsSuccess);
             Assert.NotNull(result.Error);

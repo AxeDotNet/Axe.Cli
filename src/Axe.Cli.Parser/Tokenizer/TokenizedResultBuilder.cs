@@ -6,10 +6,10 @@ namespace Axe.Cli.Parser.Tokenizer
 {
     class TokenizedResultBuilder
     {
-        ICliCommandSymbolDefinition command;
+        ICliCommandDefinition command;
         readonly IList<ICliOptionToken> tokens = new List<ICliOptionToken>();
 
-        public void SetCommand(ICliCommandSymbolDefinition commandDefinition)
+        public void SetCommand(ICliCommandDefinition commandDefinition)
         {
             Debug.Assert(commandDefinition != null);
 

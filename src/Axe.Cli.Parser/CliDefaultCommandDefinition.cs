@@ -5,7 +5,7 @@
         public override string Symbol => null;
         public override string Description => null;
 
-        public override bool IsConflict(ICliCommandSymbolDefinition commandDefinition)
+        public override bool IsConflict(ICliCommandDefinition commandDefinition)
         {
             return true;
         }

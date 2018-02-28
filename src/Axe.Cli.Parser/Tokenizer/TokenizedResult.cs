@@ -5,7 +5,7 @@ namespace Axe.Cli.Parser.Tokenizer
 {
     class TokenizedResult
     {
-        public TokenizedResult(ICliCommandSymbolDefinition command, IList<ICliOptionToken> tokens)
+        public TokenizedResult(ICliCommandDefinition command, IList<ICliOptionToken> tokens)
         {
             Debug.Assert(command != null);
             Debug.Assert(tokens != null);
@@ -14,7 +14,7 @@ namespace Axe.Cli.Parser.Tokenizer
             Tokens = tokens;
         }
 
-        public ICliCommandSymbolDefinition Command { get; }
+        public ICliCommandDefinition Command { get; }
         public IList<ICliOptionToken> Tokens { get; }
     }
 }

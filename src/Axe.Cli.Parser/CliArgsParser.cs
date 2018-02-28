@@ -34,7 +34,7 @@ namespace Axe.Cli.Parser
 
         static CliArgsParsingResult Merge(TokenizedResult tokenResult)
         {
-            ICliCommandSymbolDefinition command = tokenResult.Command;
+            ICliCommandDefinition command = tokenResult.Command;
             return new CliArgsParsingResult(command, null, null, null);
         }
     }
