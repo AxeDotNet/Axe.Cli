@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -26,24 +25,40 @@ namespace Axe.Cli.Parser.Tokenizer
                 return HandleEndOfArgument();
             }
 
-            CliCommandDefinition command = ResolveCommand(argument);
-            if (command != null)
+            ICliCommandDefinition selectedCommand;
+            
+            selectedCommand = ResolveCommand(argument);
+            if (selectedCommand != null)
             {
-                resultBuilder.SetCommand(command);
-                return new ContinueWithCommandState(command, resultBuilder);
+                resultBuilder.SetCommand(selectedCommand);
+                return new ContinueWithCommandState(selectedCommand, resultBuilder);
             }
 
-            ICliCommandDefinition defaultCommand = EnsureDefaultCommandSet(argument);
+            selectedCommand = EnsureDefaultCommandSet(argument);
 
             ICliOptionDefinition kvOption = ResolveKeyValueOptionLabel(
-                (ICliCommandDefinition) defaultCommand,
+                selectedCommand,
                 argument);
             if (kvOption != null)
             {
-                return new WaitingValueWithCommandState(defaultCommand, kvOption, argument, resultBuilder);
+                return new WaitingValueWithCommandState(selectedCommand, kvOption, argument, resultBuilder);
             }
 
-            throw new NotImplementedException();
+            IList<ICliOptionDefinition> flagOptions = ResolveFlagOptionLabels(
+                selectedCommand,
+                argument);
+            if (flagOptions.Count > 0)
+            {
+                foreach (ICliOptionDefinition flagOption in flagOptions)
+                {
+                    resultBuilder.AppendOptionToken(new CliOptionToken(flagOption, true));
+                }
+                return new ContinueWithCommandState(selectedCommand, resultBuilder);
+            }
+
+            throw new CliArgParsingException(
+                CliArgsParsingErrorCode.FreeValueNotSupported,
+                argument);
         }
 
         ICliCommandDefinition EnsureDefaultCommandSet(string argument)

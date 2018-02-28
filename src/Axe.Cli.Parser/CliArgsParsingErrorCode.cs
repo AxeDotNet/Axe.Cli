@@ -4,6 +4,8 @@
     {
         Unknown = 0,
         DoesNotMatchAnyCommand,
-        CannotFindValueForOption
+        CannotFindValueForOption,
+        FreeValueNotSupported,
+        DuplicateFlagsInArgs
     }
 }

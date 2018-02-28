@@ -5,10 +5,10 @@ namespace Axe.Cli.Parser.Tokenizer
 {
     class ContinueWithCommandState : TokenizerStateBase
     {
-        readonly CliCommandDefinition command;
+        readonly ICliCommandDefinition command;
         readonly TokenizedResultBuilder resultBuilder;
 
-        public ContinueWithCommandState(CliCommandDefinition command, TokenizedResultBuilder resultBuilder)
+        public ContinueWithCommandState(ICliCommandDefinition command, TokenizedResultBuilder resultBuilder)
         {
             Debug.Assert(command != null);
             Debug.Assert(resultBuilder != null);

@@ -24,7 +24,10 @@ namespace Axe.Cli.Parser
             new Dictionary<CliArgsParsingErrorCode, string>
             {
                 { CliArgsParsingErrorCode.Unknown, "Unknown error." },
-                { CliArgsParsingErrorCode.DoesNotMatchAnyCommand, "The input does not match any command." }
+                { CliArgsParsingErrorCode.DoesNotMatchAnyCommand, "The input does not match any command." },
+                { CliArgsParsingErrorCode.CannotFindValueForOption, "The option requires a value." },
+                { CliArgsParsingErrorCode.FreeValueNotSupported, "This command does not support free value." },
+                { CliArgsParsingErrorCode.DuplicateFlagsInArgs, "Duplicate flag switches." }
             };
 
         public CliArgsParsingError CreateError()

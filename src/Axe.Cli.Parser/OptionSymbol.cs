@@ -7,8 +7,19 @@ namespace Axe.Cli.Parser
     {
         static readonly Regex Pattern = new Regex(
             "^[A-Z0-9_][A-Z0-9_\\-]{0,}$",
-            RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline |
+            RegexOptions.IgnoreCase);
 
+        static readonly Regex FullFormPattern = new Regex(
+            "^--[A-Z0-9_][A-Z0-9_\\-]{0,}",
+            RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline |
+            RegexOptions.IgnoreCase);
+        
+        static readonly Regex AbbrFormPattern = new Regex(
+            "^-[A-Z]{1,}$",
+            RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline |
+            RegexOptions.IgnoreCase);
+        
         public string Symbol { get; }
 
         public char? Abbreviation { get; }
@@ -72,6 +83,16 @@ namespace Axe.Cli.Parser
         {
             return Symbol != null && otherSymbol != null &&
                 Symbol.Equals(otherSymbol, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static bool CanBeFullForm(string argument)
+        {
+            return argument != null && FullFormPattern.IsMatch(argument);
+        }
+
+        public static bool CanBeAbbreviationForm(string argument)
+        {
+            return argument != null && AbbrFormPattern.IsMatch(argument);
         }
     }
 }

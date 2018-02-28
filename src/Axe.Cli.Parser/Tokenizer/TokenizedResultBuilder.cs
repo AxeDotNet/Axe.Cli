@@ -13,7 +13,11 @@ namespace Axe.Cli.Parser.Tokenizer
         {
             Debug.Assert(commandDefinition != null);
 
-            if (command != null) { throw new InvalidOperationException("The command has been set."); }
+            if (command != null)
+            {
+                throw new InvalidOperationException("The command has been set.");
+            }
+            
             command = commandDefinition;
         }
 

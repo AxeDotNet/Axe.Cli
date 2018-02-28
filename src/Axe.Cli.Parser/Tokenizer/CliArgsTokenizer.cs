@@ -21,7 +21,6 @@ namespace Axe.Cli.Parser.Tokenizer
              * (start) --[command]--> (save command|continue with command)
              * (start) --[option(kv) in default command]--> (save default command|waiting value with command)
              * (start) --[option-groups(f) in default command]--> (save default command|yield flag|continue with command)
-             * (start) --[unresolved option in default command]--> (error|stop)
              * (start) --[other]--> (save default command|yield free value|continue with command-free value)
              * 
              * (continue with command) --[option(kv) in command]--> (waiting value with command)

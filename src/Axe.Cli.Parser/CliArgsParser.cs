@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Axe.Cli.Parser.Tokenizer;
 
 namespace Axe.Cli.Parser
@@ -35,7 +36,52 @@ namespace Axe.Cli.Parser
         static CliArgsParsingResult Merge(TokenizedResult tokenResult)
         {
             ICliCommandDefinition command = tokenResult.Command;
-            return new CliArgsParsingResult(command, null, null, null);
+            IList<KeyValuePair<ICliOptionDefinition, bool>> flags = MergeFlags(tokenResult, command);
+
+            return new CliArgsParsingResult(command, null, flags, null);
+        }
+
+        static IList<KeyValuePair<ICliOptionDefinition, bool>> MergeFlags(TokenizedResult tokenResult, ICliCommandDefinition command)
+        {
+            ICliOptionToken[] flagTokensInResult = tokenResult
+                .Tokens
+                .Where(t => t.Definition.Type == OptionType.Flag)
+                .ToArray();
+            if (HasDuplicateDefinitions(
+                flagTokensInResult,
+                out ICliOptionToken duplicatedToken))
+            {
+                throw new CliArgParsingException(
+                    CliArgsParsingErrorCode.DuplicateFlagsInArgs,
+                    duplicatedToken.Definition.Symbol.ToString());
+            }
+
+            Dictionary<ICliOptionDefinition, bool> flags = flagTokensInResult
+                .ToDictionary(t => t.Definition, t => true);
+            foreach (var flag in command.GetRegisteredOptions()
+                .Where(o => o.Type == OptionType.Flag))
+            {
+                if (flags.ContainsKey(flag)) { continue; }
+                flags.Add(flag, false);
+            }
+
+            return flags.ToArray();
+        }
+
+        static bool HasDuplicateDefinitions(
+            ICliOptionToken[] tokens,
+            out ICliOptionToken duplicate)
+        {
+            var definitionSet = new HashSet<ICliOptionDefinition>();
+            foreach (ICliOptionToken token in tokens)
+            {
+                if (definitionSet.Add(token.Definition)) { continue; }
+                duplicate = token;
+                return true;
+            }
+
+            duplicate = null;
+            return false;
         }
     }
 }
