@@ -1,4 +1,4 @@
-﻿namespace Axe.Cli.Parser.TokenizerStates
+﻿namespace Axe.Cli.Parser.Tokenizer
 {
     interface ITokenizerState
     {

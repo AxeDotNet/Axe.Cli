@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Axe.Cli.Parser.TokenizerStates
+namespace Axe.Cli.Parser.Tokenizer
 {
     abstract class TokenizerStateBase : ITokenizerState
     {

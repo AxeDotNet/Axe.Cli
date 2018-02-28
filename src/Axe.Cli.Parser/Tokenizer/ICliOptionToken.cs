@@ -1,4 +1,4 @@
-﻿namespace Axe.Cli.Parser
+﻿namespace Axe.Cli.Parser.Tokenizer
 {
     interface ICliOptionToken
     {

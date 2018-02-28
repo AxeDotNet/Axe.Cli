@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Axe.Cli.Parser
+namespace Axe.Cli.Parser.Tokenizer
 {
     class TokenizedResultBuilder
     {

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using Axe.Cli.Parser.TokenizerStates;
 
-namespace Axe.Cli.Parser
+namespace Axe.Cli.Parser.Tokenizer
 {
     class CliArgsTokenizer
     {

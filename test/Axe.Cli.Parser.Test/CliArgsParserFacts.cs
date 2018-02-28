@@ -66,7 +66,7 @@ namespace Axe.Cli.Parser.Test
                 .AddFlagOption("flag", 'f', string.Empty)
                 .EndCommand()
                 .Build();
-
+             
             string[] args = { argumentExpression };
             CliArgsParsingResult result = parser.Parse(args);
 

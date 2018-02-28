@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Axe.Cli.Parser.TokenizerStates
+namespace Axe.Cli.Parser.Tokenizer
 {
     class ContinueWithCommandState : TokenizerStateBase
     {
