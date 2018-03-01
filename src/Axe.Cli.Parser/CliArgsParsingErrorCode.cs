@@ -7,6 +7,7 @@
         CannotFindValueForOption,
         FreeValueNotSupported,
         DuplicateFlagsInArgs,
-        UnknownOptionType
+        UnknownOptionType,
+        RequiredOptionNotPresent
     }
 }

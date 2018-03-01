@@ -36,5 +36,17 @@ namespace Axe.Cli.Parser
             if (matchedFlag.Key == null) { throw new ArgumentException($"The flag you specified is not defined: '{flag}'");}
             return matchedFlag.Value;
         }
+
+        public IList<string> GetOptionValue(string option)
+        {
+            KeyValuePair<ICliOptionDefinition, IList<string>> matchedKeyValue = 
+                optionValues.FirstOrDefault(o => o.Key.IsMatch(option));
+            if (matchedKeyValue.Key == null)
+            {
+                throw new ArgumentException($"The option you specified is not defined: '{option}'");
+            }
+
+            return matchedKeyValue.Value;
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
+using Axe.Cli.Parser.Test.Helpers;
 using Xunit;
 
 namespace Axe.Cli.Parser.Test
@@ -42,8 +42,7 @@ namespace Axe.Cli.Parser.Test
 
             CliArgsParsingResult result = parser.Parse(args);
 
-            AssertError(
-                result,
+            result.AssertError(
                 CliArgsParsingErrorCode.DoesNotMatchAnyCommand,
                 "not_matched_command");
         }
@@ -66,8 +65,7 @@ namespace Axe.Cli.Parser.Test
 
             CliArgsParsingResult result = parser.Parse(args);
 
-            AssertError(
-                result,
+            result.AssertError(
                 CliArgsParsingErrorCode.FreeValueNotSupported,
                 "not_matched_command");
         }
@@ -90,8 +88,7 @@ namespace Axe.Cli.Parser.Test
             string[] args = { argumentExpression };
             CliArgsParsingResult result = parser.Parse(args);
 
-            AssertError(
-                result,
+            result.AssertError(
                 CliArgsParsingErrorCode.CannotFindValueForOption,
                 argumentExpression);
         }
@@ -154,7 +151,7 @@ namespace Axe.Cli.Parser.Test
             CliArgsParsingResult result = parser.Parse(args);
 
             Assert.False(result.IsSuccess);
-            AssertError(result, CliArgsParsingErrorCode.DuplicateFlagsInArgs, "-ff");
+            result.AssertError(CliArgsParsingErrorCode.DuplicateFlagsInArgs, "-ff");
         }
         
         /// <summary>
@@ -203,22 +200,9 @@ namespace Axe.Cli.Parser.Test
 
             CliArgsParsingResult result = parser.Parse(Array.Empty<string>());
 
-            AssertError(
-                result,
+            result.AssertError(
                 CliArgsParsingErrorCode.DoesNotMatchAnyCommand,
                 "Unexpected end of arguments.");
-        }
-
-        [SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
-        static void AssertError(
-            CliArgsParsingResult result,
-            CliArgsParsingErrorCode code,
-            string trigger)
-        {
-            Assert.False(result.IsSuccess);
-            Assert.NotNull(result.Error);
-            Assert.Equal(code, result.Error.Code);
-            Assert.Equal(trigger, result.Error.Trigger);
         }
     }
 }

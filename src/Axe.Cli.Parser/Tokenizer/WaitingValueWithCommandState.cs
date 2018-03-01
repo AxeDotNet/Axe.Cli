@@ -5,22 +5,22 @@ namespace Axe.Cli.Parser.Tokenizer
 {
     class WaitingValueWithCommandState : TokenizerStateBase
     {
-        readonly ICliCommandDefinition defaultCommand;
+        readonly ICliCommandDefinition command;
         readonly ICliOptionDefinition kvOption;
         readonly string labelArgument;
         readonly TokenizedResultBuilder resultBuilder;
 
         public WaitingValueWithCommandState(
-            ICliCommandDefinition defaultCommand,
+            ICliCommandDefinition command,
             ICliOptionDefinition kvOption,
             string labelArgument,
             TokenizedResultBuilder resultBuilder)
         {
-            Debug.Assert(defaultCommand != null);
+            Debug.Assert(command != null);
             Debug.Assert(kvOption != null);
             Debug.Assert(resultBuilder != null);
 
-            this.defaultCommand = defaultCommand;
+            this.command = command;
             this.kvOption = kvOption;
             this.labelArgument = labelArgument;
             this.resultBuilder = resultBuilder;
@@ -33,7 +33,8 @@ namespace Axe.Cli.Parser.Tokenizer
                 throw new CliArgParsingException(CliArgsParsingErrorCode.CannotFindValueForOption, labelArgument);
             }
 
-            throw new NotImplementedException();
+            resultBuilder.AppendOptionToken(new CliOptionToken(kvOption, argument), $"{labelArgument} {argument}");
+            return new ContinueWithCommandState(command, resultBuilder);
         }
     }
 }

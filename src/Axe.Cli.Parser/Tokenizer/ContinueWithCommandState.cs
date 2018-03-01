@@ -19,7 +19,7 @@ namespace Axe.Cli.Parser.Tokenizer
 
         public override ITokenizerState MoveToNext(string argument)
         {
-            if (argument == null) { return null; }
+            if (IsEndOfArguments(argument)) { return null; }
             throw new NotImplementedException();
         }
     }

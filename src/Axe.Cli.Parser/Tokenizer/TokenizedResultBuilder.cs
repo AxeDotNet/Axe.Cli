@@ -37,12 +37,49 @@ namespace Axe.Cli.Parser.Tokenizer
             if (hasBeenBuilt) { throw new InvalidOperationException("The builder has been built."); }
             if (command == null) { throw new InvalidOperationException("The command has not been set."); }
 
+            ValidateRequiredKeyValues();
             MergeFlags();
+            MergeNotRequiredKeyValues();
 
             var result = new CliArgsParsingResult(command, keyValues, flags);
             hasBeenBuilt = true;
 
             return result;
+        }
+
+        void ValidateRequiredKeyValues()
+        {
+            ICliOptionDefinition notPresentedRequiredOption = command.GetRegisteredOptions()
+                .Where(o => o.Type == OptionType.KeyValue && o.IsRequired)
+                .FirstOrDefault(o => !keyValues.ContainsKey(o));
+            if (notPresentedRequiredOption != null)
+            {
+                throw new CliArgParsingException(
+                    CliArgsParsingErrorCode.RequiredOptionNotPresent,
+                    notPresentedRequiredOption.Symbol.ToString());
+            }
+        }
+
+        void MergeNotRequiredKeyValues()
+        {
+            IEnumerable<ICliOptionDefinition> nonRequiredButNotPresent = command.GetRegisteredOptions()
+                .Where(o => o.Type == OptionType.KeyValue && !o.IsRequired)
+                .Where(o => !keyValues.ContainsKey(o));
+            foreach (ICliOptionDefinition option in nonRequiredButNotPresent)
+            {
+                keyValues.Add(option, Array.Empty<string>());
+            }
+        }
+
+        void MergeFlags()
+        {
+            IEnumerable<ICliOptionDefinition> notSetFlags = command.GetRegisteredOptions()
+                .Where(o => o.Type == OptionType.Flag)
+                .Where(o => !flags.ContainsKey(o));
+            foreach (ICliOptionDefinition notSetFlag in notSetFlags)
+            {
+                flags.Add(notSetFlag, false);
+            }
         }
 
         bool AppendKeyValueOption(ICliOptionToken optionToken)
@@ -75,17 +112,6 @@ namespace Axe.Cli.Parser.Tokenizer
 
             flags.Add(optionToken.Definition, true);
             return true;
-        }
-
-        void MergeFlags()
-        {
-            IEnumerable<ICliOptionDefinition> notSetFlags = command.GetRegisteredOptions()
-                .Where(o => o.Type == OptionType.Flag)
-                .Where(o => !flags.ContainsKey(o));
-            foreach (ICliOptionDefinition notSetFlag in notSetFlags)
-            {
-                flags.Add(notSetFlag, false);
-            }
         }
     }
 }

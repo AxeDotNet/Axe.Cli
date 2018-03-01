@@ -41,6 +41,7 @@ namespace Axe.Cli.Parser.Tokenizer
             foreach (string arg in args)
             {
                 state = state.MoveToNext(arg);
+                if (state == null) { return builder.Build(); }
             }
 
             state.MoveToNext(null);

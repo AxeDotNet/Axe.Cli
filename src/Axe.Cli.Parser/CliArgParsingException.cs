@@ -28,7 +28,8 @@ namespace Axe.Cli.Parser
                 { CliArgsParsingErrorCode.CannotFindValueForOption, "The option requires a value." },
                 { CliArgsParsingErrorCode.FreeValueNotSupported, "This command does not support free value." },
                 { CliArgsParsingErrorCode.DuplicateFlagsInArgs, "Duplicate flag switches." },
-                { CliArgsParsingErrorCode.UnknownOptionType, "Unsupported option." }
+                { CliArgsParsingErrorCode.UnknownOptionType, "Unsupported option." },
+                { CliArgsParsingErrorCode.RequiredOptionNotPresent, "The option is mandatory." },
             };
 
         public CliArgsParsingError CreateError()
