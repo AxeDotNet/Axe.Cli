@@ -4,18 +4,31 @@ namespace Axe.Cli.Parser.Tokenizer
 {
     class CliOptionToken : ICliOptionToken
     {
-        public CliOptionToken(ICliOptionDefinition definition, object value)
+        public CliOptionToken(ICliOptionDefinition definition)
         {
-            if (definition.Type == OptionType.Flag && !(value is bool))
+            if (definition.Type != OptionType.Flag)
             {
                 throw new ArgumentException(
-                    $"The definition is a flag while the value is '{value}'");
+                    $"This constructor is for flag definition only. While current is {definition.Type}");
+            }
+
+            Definition = definition;
+            Value = null;
+        }
+
+        public CliOptionToken(ICliOptionDefinition definition, string value)
+        {
+            if (definition.Type == OptionType.Flag && value != null)
+            {
+                throw new ArgumentException(
+                    $"The value for flag option should be null. While current is '{value}'");
             }
             
-            if (definition.Type == OptionType.KeyValue && !(value is string))
+            if (definition.Type == OptionType.KeyValue && value == null)
             {
-                throw new ArgumentException(
-                    $"The definition is a key-value and the value is '{value}'");
+                throw new ArgumentNullException(
+                    nameof(value),
+                    "The value for key-value option cannot be null");
             }
 
             Definition = definition;
@@ -23,6 +36,6 @@ namespace Axe.Cli.Parser.Tokenizer
         }
         
         public ICliOptionDefinition Definition { get; }
-        public object Value { get; }
+        public string Value { get; }
     }
 }

@@ -1,7 +1,11 @@
-﻿namespace Axe.Cli.Parser
+﻿using System;
+
+namespace Axe.Cli.Parser
 {
-    public interface ICliOptionDefinition
+    public interface ICliOptionDefinition : IEquatable<ICliOptionDefinition>
     {
+        Guid Id { get; }
+
         ICliOptionSymbol Symbol { get; }
         string Description { get; }
         bool IsRequired { get; }

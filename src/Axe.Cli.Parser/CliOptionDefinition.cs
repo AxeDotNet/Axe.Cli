@@ -17,6 +17,7 @@ namespace Axe.Cli.Parser
             Type = type;
         }
 
+        public Guid Id { get; } = Guid.NewGuid();
         public ICliOptionSymbol Symbol { get; }
         public string Description { get; }
         public bool IsRequired { get; }
@@ -26,6 +27,25 @@ namespace Axe.Cli.Parser
         {
             if (optionDefinition == null) { throw new ArgumentNullException(nameof(optionDefinition)); }
             return Symbol.IsConflict(optionDefinition.Symbol);
+        }
+
+        public bool Equals(ICliOptionDefinition other)
+        {
+            return Id.Equals(other.Id);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+
+            return Equals((ICliOptionDefinition) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
         }
 
         public override string ToString()

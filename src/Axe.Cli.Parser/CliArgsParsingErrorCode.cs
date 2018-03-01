@@ -6,6 +6,7 @@
         DoesNotMatchAnyCommand,
         CannotFindValueForOption,
         FreeValueNotSupported,
-        DuplicateFlagsInArgs
+        DuplicateFlagsInArgs,
+        UnknownOptionType
     }
 }

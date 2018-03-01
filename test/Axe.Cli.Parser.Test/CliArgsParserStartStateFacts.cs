@@ -9,6 +9,7 @@ namespace Axe.Cli.Parser.Test
         /// <summary>
         /// start-(command)->ok
         /// </summary>
+        [Fact]
         public void should_get_command_from_parsing_result()
         {
             const string commandName = "command";
@@ -22,12 +23,13 @@ namespace Axe.Cli.Parser.Test
             CliArgsParsingResult result = parser.Parse(args);
 
             Assert.True(result.IsSuccess);
-            Assert.Same(commandName, result.Command.Symbol);
+            Assert.Equal(commandName, result.Command.Symbol);
         }
 
         /// <summary>
         /// start-(unresolved command)->no default command ? error
         /// </summary>
+        [Fact]
         public void should_be_error_if_command_does_not_match_without_default_command()
         {
             const string commandName = "command";
@@ -43,6 +45,30 @@ namespace Axe.Cli.Parser.Test
             AssertError(
                 result,
                 CliArgsParsingErrorCode.DoesNotMatchAnyCommand,
+                "not_matched_command");
+        }
+
+        /// <summary>
+        /// start-(unresolved command)->default command ? error
+        /// </summary>
+        [Fact]
+        public void should_be_error_for_free_values()
+        {
+            const string commandName = "command";
+            CliArgsParser parser = new CliArgsParserBuilder()
+                .BeginDefaultCommand()
+                .EndCommand()
+                .BeginCommand(commandName, string.Empty)
+                .EndCommand()
+                .Build();
+
+            string[] args = { "not_matched_command" };
+
+            CliArgsParsingResult result = parser.Parse(args);
+
+            AssertError(
+                result,
+                CliArgsParsingErrorCode.FreeValueNotSupported,
                 "not_matched_command");
         }
 

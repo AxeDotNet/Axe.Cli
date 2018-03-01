@@ -49,7 +49,7 @@ namespace Axe.Cli.Parser.Tokenizer
             {
                 foreach (ICliOptionDefinition flagOption in flagOptions)
                 {
-                    resultBuilder.AppendOptionToken(new CliOptionToken(flagOption, true));
+                    resultBuilder.AppendOptionToken(new CliOptionToken(flagOption), argument);
                 }
                 return new ContinueWithCommandState(selectedCommand, resultBuilder);
             }

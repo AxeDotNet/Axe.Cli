@@ -35,7 +35,7 @@ namespace Axe.Cli.Parser.Test
             var defaultCommand = new CliDefaultCommandDefinition();
 
             argsDefinition.SetDefaultCommand(defaultCommand);
-            Assert.Same(defaultCommand, argsDefinition.DefaultCommand);
+            Assert.Equal(defaultCommand, argsDefinition.DefaultCommand);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace Axe.Cli.Parser.Test
             argsDefinition.SetDefaultCommand(defaultCommand);
             argsDefinition.SetDefaultCommand(anotherDefaultCommand, true);
 
-            Assert.Same(anotherDefaultCommand, argsDefinition.DefaultCommand);
+            Assert.Equal(anotherDefaultCommand, argsDefinition.DefaultCommand);
         }
     }
 }
