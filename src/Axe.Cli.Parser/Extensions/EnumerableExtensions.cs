@@ -24,5 +24,21 @@ namespace Axe.Cli.Parser.Extensions
                     return acc;
                 });
         }
+
+        public static bool HasDuplication<T>(this IEnumerable<T> source)
+        {
+            return HasDuplication(source, EqualityComparer<T>.Default);
+        }
+
+        public static bool HasDuplication<T>(this IEnumerable<T> source, IEqualityComparer<T> comparer)
+        {
+            var set = new HashSet<T>(comparer);
+            foreach (T o in source)
+            {
+                if (!set.Add(o)) { return true; }
+            }
+
+            return false;
+        }
     }
 }

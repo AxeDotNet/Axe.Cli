@@ -57,21 +57,5 @@ namespace Axe.Cli.Parser
 
             return flags.ToArray();
         }
-
-        static bool HasDuplicateDefinitions(
-            ICliOptionToken[] tokens,
-            out ICliOptionToken duplicate)
-        {
-            var definitionSet = new HashSet<ICliOptionDefinition>();
-            foreach (ICliOptionToken token in tokens)
-            {
-                if (definitionSet.Add(token.Definition)) { continue; }
-                duplicate = token;
-                return true;
-            }
-
-            duplicate = null;
-            return false;
-        }
     }
 }

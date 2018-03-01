@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Axe.Cli.Parser.Extensions;
 
 namespace Axe.Cli.Parser.Tokenizer
 {
@@ -15,6 +16,11 @@ namespace Axe.Cli.Parser.Tokenizer
             ICliCommandDefinition selectedCommand,
             string argument)
         {
+            if (!OptionSymbol.CanBeFullForm(argument) && !OptionSymbol.CanBeAbbreviationSingleForm(argument))
+            {
+                return null;
+            }
+
             return selectedCommand.GetRegisteredOptions()
                 .FirstOrDefault(o => o.Type == OptionType.KeyValue && o.IsMatch(argument));
         }
@@ -32,7 +38,12 @@ namespace Axe.Cli.Parser.Tokenizer
             
             if (OptionSymbol.CanBeAbbreviationForm(argument))
             {
-                IEnumerable<string> flagArguments = SplitAbbrArgument(argument);
+                string[] flagArguments = SplitAbbrArgument(argument);
+                if (flagArguments.HasDuplication(StringComparer.OrdinalIgnoreCase))
+                {
+                    throw new CliArgParsingException(CliArgsParsingErrorCode.DuplicateFlagsInArgs, argument);
+                }
+
                 return selectedCommand.GetRegisteredOptions()
                     .Where(o => o.Type == OptionType.Flag && flagArguments.Any(o.IsMatch))
                     .ToArray();
@@ -41,7 +52,7 @@ namespace Axe.Cli.Parser.Tokenizer
             return Array.Empty<ICliOptionDefinition>();
         }
 
-        static IEnumerable<string> SplitAbbrArgument(string argument)
+        static string[] SplitAbbrArgument(string argument)
         {
             return argument.Skip(1).Select(c => $"-{c}").ToArray();
         }

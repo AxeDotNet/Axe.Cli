@@ -4,9 +4,11 @@ using Xunit;
 
 namespace Axe.Cli.Parser.Test
 {
-    public class CliArgsParserFacts
+    public class CliArgsParserStartStateFacts
     {
-        [Fact]
+        /// <summary>
+        /// start-(command)->ok
+        /// </summary>
         public void should_get_command_from_parsing_result()
         {
             const string commandName = "command";
@@ -23,8 +25,10 @@ namespace Axe.Cli.Parser.Test
             Assert.Same(commandName, result.Command.Symbol);
         }
 
-        [Fact]
-        public void should_be_error_if_command_does_not_match_and_no_default_command_is_specified()
+        /// <summary>
+        /// start-(unresolved command)->no default command ? error
+        /// </summary>
+        public void should_be_error_if_command_does_not_match_without_default_command()
         {
             const string commandName = "command";
             CliArgsParser parser = new CliArgsParserBuilder()
@@ -42,6 +46,9 @@ namespace Axe.Cli.Parser.Test
                 "not_matched_command");
         }
 
+        /// <summary>
+        /// start-(kv-optin)-(EoA)->error
+        /// </summary>
         [Theory]
         [InlineData("--option")]
         [InlineData("-o")]
@@ -63,6 +70,9 @@ namespace Axe.Cli.Parser.Test
                 argumentExpression);
         }
 
+        /// <summary>
+        /// start-(flag-option)-(EoA)->ok
+        /// </summary>
         [Theory]
         [InlineData("--flag")]
         [InlineData("-f")]
@@ -80,9 +90,33 @@ namespace Axe.Cli.Parser.Test
             Assert.True(result.IsSuccess);
             Assert.True(result.GetFlagValue(argumentExpression));
         }
-        
+
+        /// <summary>
+        /// start-(abbr-flag-options)-(EoA)->ok
+        /// </summary>
         [Fact]
-        public void should_be_ok_for_duplicated_flags_with_default_command()
+        public void should_be_ok_for_multiple_abbr_form_flags_with_default_command()
+        {
+            CliArgsParser parser = new CliArgsParserBuilder()
+                .BeginDefaultCommand()
+                .AddFlagOption("recursive", 'r', string.Empty)
+                .AddFlagOption("force", 'f', string.Empty)
+                .EndCommand()
+                .Build();
+
+            string[] args = {"-rf"};
+            CliArgsParsingResult result = parser.Parse(args);
+
+            Assert.True(result.IsSuccess);
+            Assert.True(result.GetFlagValue("--recursive"));
+            Assert.True(result.GetFlagValue("--force"));
+        }
+        
+        /// <summary>
+        /// start-(dup-flag-options)->error
+        /// </summary>
+        [Fact]
+        public void should_be_error_for_duplicated_flags_with_default_command()
         {
             CliArgsParser parser = new CliArgsParserBuilder()
                 .BeginDefaultCommand()
@@ -93,10 +127,13 @@ namespace Axe.Cli.Parser.Test
             string[] args = { "-ff" };
             CliArgsParsingResult result = parser.Parse(args);
 
-            Assert.True(result.IsSuccess);
-            Assert.True(result.GetFlagValue("-f"));
+            Assert.False(result.IsSuccess);
+            AssertError(result, CliArgsParsingErrorCode.DuplicateFlagsInArgs, "-ff");
         }
         
+        /// <summary>
+        /// start-(flag-option)->(EoA)->other flag option should be false.
+        /// </summary>
         [Fact]
         public void should_be_ok_for_non_specified_flags_with_default_command()
         {
@@ -115,6 +152,9 @@ namespace Axe.Cli.Parser.Test
             Assert.False(result.GetFlagValue("-o"));
         }
 
+        /// <summary>
+        /// start-(EoA)->ok
+        /// </summary>
         [Fact]
         public void should_be_ok_for_non_argument_if_default_command_is_set()
         {
@@ -127,6 +167,9 @@ namespace Axe.Cli.Parser.Test
             Assert.Equal("DEFAULT_COMMAND", result.Command.ToString());
         }
 
+        /// <summary>
+        /// start-(EoA)->no default command ? error
+        /// </summary>
         [Fact]
         public void should_be_error_for_non_argument_if_default_command_is_not_set()
         {

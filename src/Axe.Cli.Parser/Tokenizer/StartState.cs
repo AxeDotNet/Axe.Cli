@@ -25,9 +25,7 @@ namespace Axe.Cli.Parser.Tokenizer
                 return HandleEndOfArgument();
             }
 
-            ICliCommandDefinition selectedCommand;
-            
-            selectedCommand = ResolveCommand(argument);
+            ICliCommandDefinition selectedCommand = ResolveCommand(argument);
             if (selectedCommand != null)
             {
                 resultBuilder.SetCommand(selectedCommand);
@@ -88,6 +86,11 @@ namespace Axe.Cli.Parser.Tokenizer
 
         CliCommandDefinition ResolveCommand(string argument)
         {
+            if (!CliCommandDefinition.CanBeCommand(argument))
+            {
+                return null;
+            }
+
             IReadOnlyList<CliCommandDefinition> commands = definition.GetRegisteredCommands();
             return commands.FirstOrDefault(c => c.IsMatch(argument));
         }

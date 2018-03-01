@@ -19,6 +19,11 @@ namespace Axe.Cli.Parser
             "^-[A-Z]{1,}$",
             RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline |
             RegexOptions.IgnoreCase);
+
+        static readonly Regex AbbrSingleFormPattern = new Regex(
+            "^-[A-Z]$",
+            RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline |
+            RegexOptions.IgnoreCase);
         
         public string Symbol { get; }
 
@@ -93,6 +98,11 @@ namespace Axe.Cli.Parser
         public static bool CanBeAbbreviationForm(string argument)
         {
             return argument != null && AbbrFormPattern.IsMatch(argument);
+        }
+
+        public static bool CanBeAbbreviationSingleForm(string argument)
+        {
+            return argument != null && AbbrSingleFormPattern.IsMatch(argument);
         }
     }
 }

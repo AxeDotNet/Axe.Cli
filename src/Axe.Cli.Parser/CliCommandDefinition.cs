@@ -46,5 +46,10 @@ namespace Axe.Cli.Parser
         {
             return Symbol.Equals(argument, StringComparison.OrdinalIgnoreCase);
         }
+
+        public static bool CanBeCommand(string argument)
+        {
+            return Pattern.IsMatch(argument);
+        }
     }
 }
