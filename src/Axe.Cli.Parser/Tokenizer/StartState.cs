@@ -34,25 +34,14 @@ namespace Axe.Cli.Parser.Tokenizer
 
             selectedCommand = EnsureDefaultCommandSet(argument);
 
-            ICliOptionDefinition kvOption = ResolveKeyValueOptionLabel(
+            ITokenizerState nextStateForKeyValueOption = HandleKeyValueOptionArgument(
                 selectedCommand,
+                resultBuilder,
                 argument);
-            if (kvOption != null)
-            {
-                return new WaitingValueWithCommandState(selectedCommand, kvOption, argument, resultBuilder);
-            }
-
-            IList<ICliOptionDefinition> flagOptions = ResolveFlagOptionLabels(
-                selectedCommand,
-                argument);
-            if (flagOptions.Count > 0)
-            {
-                foreach (ICliOptionDefinition flagOption in flagOptions)
-                {
-                    resultBuilder.AppendOptionToken(new CliOptionToken(flagOption), argument);
-                }
-                return new ContinueWithCommandState(selectedCommand, resultBuilder);
-            }
+            if (nextStateForKeyValueOption != null) { return nextStateForKeyValueOption; }
+            
+            ITokenizerState nextStateForFlagOption = HandleFlagOptionArgument(selectedCommand, resultBuilder, argument);
+            if (nextStateForFlagOption != null) { return nextStateForFlagOption;}
 
             throw new CliArgParsingException(
                 CliArgsParsingErrorCode.FreeValueNotSupported,

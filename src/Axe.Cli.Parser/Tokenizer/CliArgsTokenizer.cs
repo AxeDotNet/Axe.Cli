@@ -25,7 +25,6 @@ namespace Axe.Cli.Parser.Tokenizer
              * 
              * (continue with command) --[option(kv) in command]--> (waiting value with command)
              * (continue with command) --[option-groups(f) in command]--> (yield flag|continue with command)
-             * (continue with command) --[unresolved option in command]--> (error|stop)
              * (continue with command) --[EoA]--> (stop)
              * (continue with command) --[other]--> (yield free value|continue with command-free value)
              * 

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Axe.Cli.Parser.Tokenizer
@@ -20,7 +20,24 @@ namespace Axe.Cli.Parser.Tokenizer
         public override ITokenizerState MoveToNext(string argument)
         {
             if (IsEndOfArguments(argument)) { return null; }
-            throw new NotImplementedException();
+            
+            ICliOptionDefinition kvOption = ResolveKeyValueOptionLabel(command, argument);
+            if (kvOption != null)
+            {
+                return new WaitingValueWithCommandState(command, kvOption, argument, resultBuilder);
+            }
+
+            IList<ICliOptionDefinition> flagOptions = ResolveFlagOptionLabels(command, argument);
+            if (flagOptions.Count > 0)
+            {
+                foreach (ICliOptionDefinition flagOption in flagOptions)
+                {
+                    resultBuilder.AppendOptionToken(new CliOptionToken(flagOption), argument);
+                }
+                return new ContinueWithCommandState(command, resultBuilder);
+            }
+
+            throw new CliArgParsingException(CliArgsParsingErrorCode.FreeValueNotSupported, argument);
         }
     }
 }
