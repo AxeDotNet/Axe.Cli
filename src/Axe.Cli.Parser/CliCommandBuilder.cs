@@ -5,6 +5,7 @@
         readonly CliArgsParserBuilder parentBuilder;
         readonly ICliCommandDefinition commandDefinition;
         readonly bool isDefaultCommand;
+        bool allowFreeValue;
 
         public CliCommandBuilder(CliArgsParserBuilder parentBuilder, string commandName, string description)
         {
@@ -36,15 +37,25 @@
             return this;
         }
 
+        public CliCommandBuilder ConfigFreeValue(bool allow = false)
+        {
+            allowFreeValue = allow;
+            return this;
+        }
+
         public CliArgsParserBuilder EndCommand()
         {
             if (isDefaultCommand)
             {
-                parentBuilder.Definition.SetDefaultCommand((CliDefaultCommandDefinition) commandDefinition);
+                var command = (CliDefaultCommandDefinition) commandDefinition;
+                command.AllowFreeValue = allowFreeValue;
+                parentBuilder.Definition.SetDefaultCommand(command);
             }
             else
             {
-                parentBuilder.Definition.RegisterCommand((CliCommandDefinition)commandDefinition);
+                var command = (CliCommandDefinition)commandDefinition;
+                command.AllowFreeValue = allowFreeValue;
+                parentBuilder.Definition.RegisterCommand(command);
             }
 
             return parentBuilder;

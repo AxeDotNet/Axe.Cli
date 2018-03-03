@@ -9,6 +9,7 @@ namespace Axe.Cli.Parser
 
         string Symbol { get; }
         string Description { get; }
+        bool AllowFreeValue { get; }
         
         bool IsConflict(ICliCommandDefinition commandDefinition);
         bool IsMatch(string argument);

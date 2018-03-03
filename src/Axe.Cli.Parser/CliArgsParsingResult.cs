@@ -8,6 +8,7 @@ namespace Axe.Cli.Parser
     {
         readonly IList<KeyValuePair<ICliOptionDefinition, bool>> optionFlags;
         readonly IList<KeyValuePair<ICliOptionDefinition, IList<string>>> optionValues;
+        readonly string[] freeValues;
 
         public ICliCommandDefinition Command { get; }
         public bool IsSuccess { get; }
@@ -22,11 +23,13 @@ namespace Axe.Cli.Parser
         public CliArgsParsingResult(
             ICliCommandDefinition command,
             IEnumerable<KeyValuePair<ICliOptionDefinition, IList<string>>> optionValues,
-            IEnumerable<KeyValuePair<ICliOptionDefinition, bool>> optionFlags)
+            IEnumerable<KeyValuePair<ICliOptionDefinition, bool>> optionFlags,
+            IEnumerable<string> freeValues)
         {
             Command = command ?? throw new ArgumentNullException(nameof(command));
             this.optionValues = optionValues?.ToArray() ?? Array.Empty<KeyValuePair<ICliOptionDefinition, IList<string>>>();
             this.optionFlags = optionFlags?.ToArray() ?? Array.Empty<KeyValuePair<ICliOptionDefinition, bool>>();
+            this.freeValues = freeValues?.ToArray() ?? Array.Empty<string>();
             IsSuccess = true;
         }
 
@@ -47,6 +50,11 @@ namespace Axe.Cli.Parser
             }
 
             return matchedKeyValue.Value;
+        }
+
+        public IList<string> GetFreeValues()
+        {
+            return freeValues;
         }
     }
 }

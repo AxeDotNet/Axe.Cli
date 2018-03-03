@@ -3,12 +3,12 @@ using System.Diagnostics;
 
 namespace Axe.Cli.Parser.Tokenizer
 {
-    class ContinueWithCommandState : TokenizerStateBase
+    class ContinueState : TokenizerStateBase
     {
         readonly ICliCommandDefinition command;
         readonly TokenizedResultBuilder resultBuilder;
 
-        public ContinueWithCommandState(ICliCommandDefinition command, TokenizedResultBuilder resultBuilder)
+        public ContinueState(ICliCommandDefinition command, TokenizedResultBuilder resultBuilder)
         {
             Debug.Assert(command != null);
             Debug.Assert(resultBuilder != null);
@@ -24,7 +24,7 @@ namespace Axe.Cli.Parser.Tokenizer
             ICliOptionDefinition kvOption = ResolveKeyValueOptionLabel(command, argument);
             if (kvOption != null)
             {
-                return new WaitingValueWithCommandState(command, kvOption, argument, resultBuilder);
+                return new WaitingValueState(command, kvOption, argument, resultBuilder);
             }
 
             IList<ICliOptionDefinition> flagOptions = ResolveFlagOptionLabels(command, argument);
@@ -34,10 +34,10 @@ namespace Axe.Cli.Parser.Tokenizer
                 {
                     resultBuilder.AppendOptionToken(new CliOptionToken(flagOption), argument);
                 }
-                return new ContinueWithCommandState(command, resultBuilder);
+                return new ContinueState(command, resultBuilder);
             }
 
-            throw new CliArgParsingException(CliArgsParsingErrorCode.FreeValueNotSupported, argument);
+            return HandleFreeValueArgument(command, resultBuilder, argument);
         }
     }
 }

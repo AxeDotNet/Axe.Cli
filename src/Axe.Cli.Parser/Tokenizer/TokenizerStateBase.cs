@@ -61,7 +61,7 @@ namespace Axe.Cli.Parser.Tokenizer
                 command,
                 argument);
             return kvOption != null
-                ? new WaitingValueWithCommandState(command, kvOption, argument, resultBuilder)
+                ? new WaitingValueState(command, kvOption, argument, resultBuilder)
                 : null;
         }
 
@@ -79,7 +79,7 @@ namespace Axe.Cli.Parser.Tokenizer
                 {
                     resultBuilder.AppendOptionToken(new CliOptionToken(flagOption), argument);
                 }
-                return new ContinueWithCommandState(command, resultBuilder);
+                return new ContinueState(command, resultBuilder);
             }
 
             return null;
@@ -91,5 +91,19 @@ namespace Axe.Cli.Parser.Tokenizer
         }
 
         public abstract ITokenizerState MoveToNext(string argument);
+
+        protected static ITokenizerState HandleFreeValueArgument(ICliCommandDefinition selectedCommand,
+            TokenizedResultBuilder resultBuilder, string argument)
+        {
+            if (selectedCommand.AllowFreeValue)
+            {
+                resultBuilder.AppendFreeValue(argument);
+                return new ContinueFreeValueState(selectedCommand, resultBuilder);
+            }
+
+            throw new CliArgParsingException(
+                CliArgsParsingErrorCode.FreeValueNotSupported,
+                argument);
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace Axe.Cli.Parser.Tokenizer
 {
     class TokenizedResultBuilder
     {
-        readonly IList<ICliOptionToken> tokens = new List<ICliOptionToken>();
+        readonly IList<string> freeValues = new List<string>();
         readonly IDictionary<ICliOptionDefinition, bool> flags = new Dictionary<ICliOptionDefinition, bool>();
         readonly IDictionary<ICliOptionDefinition, IList<string>> keyValues = new Dictionary<ICliOptionDefinition, IList<string>>();
 
@@ -32,6 +32,16 @@ namespace Axe.Cli.Parser.Tokenizer
             if (!handled) { throw new CliArgParsingException(CliArgsParsingErrorCode.UnknownOptionType, argument); }
         }
 
+        public void AppendFreeValue(string freeValue)
+        {
+            if (string.IsNullOrEmpty(freeValue))
+            {
+                throw new ArgumentException("The free value cannot be null or empty");
+            }
+            
+            freeValues.Add(freeValue);
+        }
+
         public CliArgsParsingResult Build()
         {
             if (hasBeenBuilt) { throw new InvalidOperationException("The builder has been built."); }
@@ -41,7 +51,7 @@ namespace Axe.Cli.Parser.Tokenizer
             MergeFlags();
             MergeNotRequiredKeyValues();
 
-            var result = new CliArgsParsingResult(command, keyValues, flags);
+            var result = new CliArgsParsingResult(command, keyValues, flags, freeValues);
             hasBeenBuilt = true;
 
             return result;
@@ -87,12 +97,12 @@ namespace Axe.Cli.Parser.Tokenizer
             if (optionToken.Definition.Type != OptionType.KeyValue) { return false; }
             if (keyValues.ContainsKey(optionToken.Definition))
             {
-                keyValues[optionToken.Definition].Add((string) optionToken.Value);
+                keyValues[optionToken.Definition].Add(optionToken.Value);
             }
             else
             {
                 keyValues[optionToken.Definition] =
-                    new List<string> {(string) optionToken.Value};
+                    new List<string> {optionToken.Value};
             }
 
             return true;

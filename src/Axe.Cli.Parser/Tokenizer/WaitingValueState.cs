@@ -3,14 +3,14 @@ using System.Diagnostics;
 
 namespace Axe.Cli.Parser.Tokenizer
 {
-    class WaitingValueWithCommandState : TokenizerStateBase
+    class WaitingValueState : TokenizerStateBase
     {
         readonly ICliCommandDefinition command;
         readonly ICliOptionDefinition kvOption;
         readonly string labelArgument;
         readonly TokenizedResultBuilder resultBuilder;
 
-        public WaitingValueWithCommandState(
+        public WaitingValueState(
             ICliCommandDefinition command,
             ICliOptionDefinition kvOption,
             string labelArgument,
@@ -34,7 +34,7 @@ namespace Axe.Cli.Parser.Tokenizer
             }
 
             resultBuilder.AppendOptionToken(new CliOptionToken(kvOption, argument), $"{labelArgument} {argument}");
-            return new ContinueWithCommandState(command, resultBuilder);
+            return new ContinueState(command, resultBuilder);
         }
     }
 }

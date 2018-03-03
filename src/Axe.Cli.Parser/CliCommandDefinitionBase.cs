@@ -9,11 +9,12 @@ namespace Axe.Cli.Parser
         readonly List<ICliOptionDefinition> options = new List<ICliOptionDefinition>();
 
         public Guid Id { get; } = Guid.NewGuid();
+        public bool AllowFreeValue { get; set; }
         public abstract string Symbol { get; }
         public abstract string Description { get; }
         public abstract bool IsConflict(ICliCommandDefinition commandDefinition);
         public abstract bool IsMatch(string argument);
-
+        
         public IReadOnlyList<ICliOptionDefinition> GetRegisteredOptions()
         {
             return options.AsReadOnly();

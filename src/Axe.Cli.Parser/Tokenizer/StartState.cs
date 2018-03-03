@@ -29,7 +29,7 @@ namespace Axe.Cli.Parser.Tokenizer
             if (selectedCommand != null)
             {
                 resultBuilder.SetCommand(selectedCommand);
-                return new ContinueWithCommandState(selectedCommand, resultBuilder);
+                return new ContinueState(selectedCommand, resultBuilder);
             }
 
             selectedCommand = EnsureDefaultCommandSet(argument);
@@ -43,9 +43,7 @@ namespace Axe.Cli.Parser.Tokenizer
             ITokenizerState nextStateForFlagOption = HandleFlagOptionArgument(selectedCommand, resultBuilder, argument);
             if (nextStateForFlagOption != null) { return nextStateForFlagOption;}
 
-            throw new CliArgParsingException(
-                CliArgsParsingErrorCode.FreeValueNotSupported,
-                argument);
+            return HandleFreeValueArgument(selectedCommand, resultBuilder, argument);
         }
 
         ICliCommandDefinition EnsureDefaultCommandSet(string argument)
