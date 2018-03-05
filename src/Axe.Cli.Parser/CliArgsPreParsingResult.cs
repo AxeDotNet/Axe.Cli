@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Axe.Cli.Parser
 {
-    public class CliArgsParsingResult
+    public class CliArgsPreParsingResult
     {
         readonly IList<KeyValuePair<ICliOptionDefinition, bool>> optionFlags;
         readonly IList<KeyValuePair<ICliOptionDefinition, IList<string>>> optionValues;
@@ -14,13 +14,13 @@ namespace Axe.Cli.Parser
         public bool IsSuccess { get; }
         public CliArgsParsingError Error { get; }
 
-        public CliArgsParsingResult(CliArgsParsingError error)
+        public CliArgsPreParsingResult(CliArgsParsingError error)
         {
             Error = error ?? throw new ArgumentNullException(nameof(error));
             IsSuccess = false;
         }
 
-        public CliArgsParsingResult(
+        public CliArgsPreParsingResult(
             ICliCommandDefinition command,
             IEnumerable<KeyValuePair<ICliOptionDefinition, IList<string>>> optionValues,
             IEnumerable<KeyValuePair<ICliOptionDefinition, bool>> optionFlags,

@@ -5,7 +5,7 @@ using Axe.Cli.Parser.Extensions;
 
 namespace Axe.Cli.Parser.Tokenizer
 {
-    abstract class TokenizerStateBase : ITokenizerState
+    abstract class PreParsingStateBase : IPreParsingState
     {
         protected static bool IsEndOfArguments(string argument)
         {
@@ -52,9 +52,9 @@ namespace Axe.Cli.Parser.Tokenizer
             return Array.Empty<ICliOptionDefinition>();
         }
 
-        protected static ITokenizerState HandleKeyValueOptionArgument(
+        protected static IPreParsingState HandleKeyValueOptionArgument(
             ICliCommandDefinition command,
-            TokenizedResultBuilder resultBuilder,
+            PreParserResultBuilder resultBuilder,
             string argument)
         {
             ICliOptionDefinition kvOption = ResolveKeyValueOptionLabel(
@@ -65,9 +65,9 @@ namespace Axe.Cli.Parser.Tokenizer
                 : null;
         }
 
-        protected static ITokenizerState HandleFlagOptionArgument(
+        protected static IPreParsingState HandleFlagOptionArgument(
             ICliCommandDefinition command,
-            TokenizedResultBuilder resultBuilder,
+            PreParserResultBuilder resultBuilder,
             string argument)
         {
             IList<ICliOptionDefinition> flagOptions = ResolveFlagOptionLabels(
@@ -90,10 +90,10 @@ namespace Axe.Cli.Parser.Tokenizer
             return argument.Skip(1).Select(c => $"-{c}").ToArray();
         }
 
-        public abstract ITokenizerState MoveToNext(string argument);
+        public abstract IPreParsingState MoveToNext(string argument);
 
-        protected static ITokenizerState HandleFreeValueArgument(ICliCommandDefinition selectedCommand,
-            TokenizedResultBuilder resultBuilder, string argument)
+        protected static IPreParsingState HandleFreeValueArgument(ICliCommandDefinition selectedCommand,
+            PreParserResultBuilder resultBuilder, string argument)
         {
             if (selectedCommand.AllowFreeValue)
             {

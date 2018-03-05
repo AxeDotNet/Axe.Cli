@@ -3,18 +3,18 @@ using System.Diagnostics;
 
 namespace Axe.Cli.Parser.Tokenizer
 {
-    class WaitingValueState : TokenizerStateBase
+    class WaitingValueState : PreParsingStateBase
     {
         readonly ICliCommandDefinition command;
         readonly ICliOptionDefinition kvOption;
         readonly string labelArgument;
-        readonly TokenizedResultBuilder resultBuilder;
+        readonly PreParserResultBuilder resultBuilder;
 
         public WaitingValueState(
             ICliCommandDefinition command,
             ICliOptionDefinition kvOption,
             string labelArgument,
-            TokenizedResultBuilder resultBuilder)
+            PreParserResultBuilder resultBuilder)
         {
             Debug.Assert(command != null);
             Debug.Assert(kvOption != null);
@@ -26,7 +26,7 @@ namespace Axe.Cli.Parser.Tokenizer
             this.resultBuilder = resultBuilder;
         }
 
-        public override ITokenizerState MoveToNext(string argument)
+        public override IPreParsingState MoveToNext(string argument)
         {
             if (IsEndOfArguments(argument))
             {

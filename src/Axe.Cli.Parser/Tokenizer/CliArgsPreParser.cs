@@ -3,18 +3,18 @@ using System.Diagnostics;
 
 namespace Axe.Cli.Parser.Tokenizer
 {
-    class CliArgsTokenizer
+    class CliArgsPreParser
     {
         readonly CliArgsDefinition definition;
 
-        public CliArgsTokenizer(CliArgsDefinition definition)
+        public CliArgsPreParser(CliArgsDefinition definition)
         {
             Debug.Assert(definition != null);
 
             this.definition = definition;
         }
 
-        public CliArgsParsingResult Tokenize(IList<string> args)
+        public CliArgsPreParsingResult Parse(IList<string> args)
         {
             /*
              * (start) --[EoA]--> (no default? error|stop)
@@ -35,8 +35,8 @@ namespace Axe.Cli.Parser.Tokenizer
              * (continue with command-free value) --[other] --> (yield free value|continue with command-free value)
              */
 
-            var builder = new TokenizedResultBuilder();
-            ITokenizerState state = new StartState(definition, builder);
+            var builder = new PreParserResultBuilder();
+            IPreParsingState state = new StartState(definition, builder);
             foreach (string arg in args)
             {
                 state = state.MoveToNext(arg);

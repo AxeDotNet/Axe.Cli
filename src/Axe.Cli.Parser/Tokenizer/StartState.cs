@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace Axe.Cli.Parser.Tokenizer
 {
-    class StartState : TokenizerStateBase
+    class StartState : PreParsingStateBase
     {
         readonly CliArgsDefinition definition;
-        readonly TokenizedResultBuilder resultBuilder;
+        readonly PreParserResultBuilder resultBuilder;
 
-        public StartState(CliArgsDefinition definition, TokenizedResultBuilder resultBuilder)
+        public StartState(CliArgsDefinition definition, PreParserResultBuilder resultBuilder)
         {
             Debug.Assert(definition != null);
             Debug.Assert(resultBuilder != null);
@@ -18,7 +18,7 @@ namespace Axe.Cli.Parser.Tokenizer
             this.resultBuilder = resultBuilder;
         }
 
-        public override ITokenizerState MoveToNext(string argument)
+        public override IPreParsingState MoveToNext(string argument)
         {
             if (IsEndOfArguments(argument))
             {
@@ -34,13 +34,13 @@ namespace Axe.Cli.Parser.Tokenizer
 
             selectedCommand = EnsureDefaultCommandSet(argument);
 
-            ITokenizerState nextStateForKeyValueOption = HandleKeyValueOptionArgument(
+            IPreParsingState nextStateForKeyValueOption = HandleKeyValueOptionArgument(
                 selectedCommand,
                 resultBuilder,
                 argument);
             if (nextStateForKeyValueOption != null) { return nextStateForKeyValueOption; }
             
-            ITokenizerState nextStateForFlagOption = HandleFlagOptionArgument(selectedCommand, resultBuilder, argument);
+            IPreParsingState nextStateForFlagOption = HandleFlagOptionArgument(selectedCommand, resultBuilder, argument);
             if (nextStateForFlagOption != null) { return nextStateForFlagOption;}
 
             return HandleFreeValueArgument(selectedCommand, resultBuilder, argument);
@@ -59,7 +59,7 @@ namespace Axe.Cli.Parser.Tokenizer
             return definition.DefaultCommand;
         }
 
-        ITokenizerState HandleEndOfArgument()
+        IPreParsingState HandleEndOfArgument()
         {
             if (!HasDefaultCommand)
             {

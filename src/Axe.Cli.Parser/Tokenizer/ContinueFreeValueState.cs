@@ -1,17 +1,17 @@
 ﻿namespace Axe.Cli.Parser.Tokenizer
 {
-    class ContinueFreeValueState : TokenizerStateBase
+    class ContinueFreeValueState : PreParsingStateBase
     {
         readonly ICliCommandDefinition command;
-        readonly TokenizedResultBuilder resultBuilder;
+        readonly PreParserResultBuilder resultBuilder;
 
-        public ContinueFreeValueState(ICliCommandDefinition command, TokenizedResultBuilder resultBuilder)
+        public ContinueFreeValueState(ICliCommandDefinition command, PreParserResultBuilder resultBuilder)
         {
             this.command = command;
             this.resultBuilder = resultBuilder;
         }
 
-        public override ITokenizerState MoveToNext(string argument)
+        public override IPreParsingState MoveToNext(string argument)
         {
             if (IsEndOfArguments(argument)) { return null; }
             return HandleFreeValueArgument(command, resultBuilder, argument);

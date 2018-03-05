@@ -3,12 +3,12 @@ using System.Diagnostics;
 
 namespace Axe.Cli.Parser.Tokenizer
 {
-    class ContinueState : TokenizerStateBase
+    class ContinueState : PreParsingStateBase
     {
         readonly ICliCommandDefinition command;
-        readonly TokenizedResultBuilder resultBuilder;
+        readonly PreParserResultBuilder resultBuilder;
 
-        public ContinueState(ICliCommandDefinition command, TokenizedResultBuilder resultBuilder)
+        public ContinueState(ICliCommandDefinition command, PreParserResultBuilder resultBuilder)
         {
             Debug.Assert(command != null);
             Debug.Assert(resultBuilder != null);
@@ -17,7 +17,7 @@ namespace Axe.Cli.Parser.Tokenizer
             this.resultBuilder = resultBuilder;
         }
 
-        public override ITokenizerState MoveToNext(string argument)
+        public override IPreParsingState MoveToNext(string argument)
         {
             if (IsEndOfArguments(argument)) { return null; }
             

@@ -15,7 +15,7 @@ namespace Axe.Cli.Parser.Test
                 .EndCommand()
                 .Build();
 
-            CliArgsParsingResult result = parser.Parse(Array.Empty<string>());
+            CliArgsPreParsingResult result = parser.Parse(Array.Empty<string>());
 
             Assert.True(result.IsSuccess);
             Assert.Empty(result.GetOptionValue("--key"));
@@ -30,7 +30,7 @@ namespace Axe.Cli.Parser.Test
                 .EndCommand()
                 .Build();
 
-            CliArgsParsingResult result = parser.Parse(Array.Empty<string>());
+            CliArgsPreParsingResult result = parser.Parse(Array.Empty<string>());
 
             result.AssertError(
                 CliArgsParsingErrorCode.RequiredOptionNotPresent,

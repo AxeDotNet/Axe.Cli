@@ -18,7 +18,7 @@ namespace Axe.Cli.Parser.Test
                 .EndCommand()
                 .Build();
 
-            CliArgsParsingResult result = parser.Parse(new[] {"--key", "value"});
+            CliArgsPreParsingResult result = parser.Parse(new[] {"--key", "value"});
 
             Assert.True(result.IsSuccess);
             Assert.Equal("value", result.GetOptionValue("--key").First());
@@ -39,7 +39,7 @@ namespace Axe.Cli.Parser.Test
                 .EndCommand()
                 .Build();
 
-            CliArgsParsingResult result = parser.Parse(new[] { "--key", optionLikeValue });
+            CliArgsPreParsingResult result = parser.Parse(new[] { "--key", optionLikeValue });
 
             Assert.True(result.IsSuccess);
             Assert.Equal(optionLikeValue, result.GetOptionValue("--key").First());

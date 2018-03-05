@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Axe.Cli.Parser.Tokenizer
 {
-    class TokenizedResultBuilder
+    class PreParserResultBuilder
     {
         readonly IList<string> freeValues = new List<string>();
         readonly IDictionary<ICliOptionDefinition, bool> flags = new Dictionary<ICliOptionDefinition, bool>();
@@ -42,7 +42,7 @@ namespace Axe.Cli.Parser.Tokenizer
             freeValues.Add(freeValue);
         }
 
-        public CliArgsParsingResult Build()
+        public CliArgsPreParsingResult Build()
         {
             if (hasBeenBuilt) { throw new InvalidOperationException("The builder has been built."); }
             if (command == null) { throw new InvalidOperationException("The command has not been set."); }
@@ -51,7 +51,7 @@ namespace Axe.Cli.Parser.Tokenizer
             MergeFlags();
             MergeNotRequiredKeyValues();
 
-            var result = new CliArgsParsingResult(command, keyValues, flags, freeValues);
+            var result = new CliArgsPreParsingResult(command, keyValues, flags, freeValues);
             hasBeenBuilt = true;
 
             return result;
