@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Axe.Cli.Parser.Test
 {
-    public class CliArgsParserWaitingValueWithCommandStateFacts
+    public class CliArgsParserWaitingValueStateFacts
     {
         /// <summary>
         /// waiting-value -(any)-> ok
