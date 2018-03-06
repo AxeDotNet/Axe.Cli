@@ -20,7 +20,7 @@ namespace Axe.Cli.Parser.Test
 
             string[] args = { commandName };
 
-            CliArgsPreParsingResult result = parser.Parse(args);
+            CliArgsParsingResult result = parser.Parse(args);
 
             Assert.True(result.IsSuccess);
             Assert.Equal(commandName, result.Command.Symbol);
@@ -40,7 +40,7 @@ namespace Axe.Cli.Parser.Test
 
             string[] args = {"not_matched_command"};
 
-            CliArgsPreParsingResult result = parser.Parse(args);
+            CliArgsParsingResult result = parser.Parse(args);
 
             result.AssertError(
                 CliArgsParsingErrorCode.DoesNotMatchAnyCommand,
@@ -63,7 +63,7 @@ namespace Axe.Cli.Parser.Test
 
             string[] args = { "not_matched_command" };
 
-            CliArgsPreParsingResult result = parser.Parse(args);
+            CliArgsParsingResult result = parser.Parse(args);
 
             result.AssertError(
                 CliArgsParsingErrorCode.FreeValueNotSupported,
@@ -86,7 +86,7 @@ namespace Axe.Cli.Parser.Test
                 .Build();
 
             string[] args = { argumentExpression };
-            CliArgsPreParsingResult result = parser.Parse(args);
+            CliArgsParsingResult result = parser.Parse(args);
 
             result.AssertError(
                 CliArgsParsingErrorCode.CannotFindValueForOption,
@@ -108,10 +108,10 @@ namespace Axe.Cli.Parser.Test
                 .Build();
              
             string[] args = { argumentExpression };
-            CliArgsPreParsingResult result = parser.Parse(args);
+            CliArgsParsingResult result = parser.Parse(args);
 
             Assert.True(result.IsSuccess);
-            Assert.True(result.GetFlagValue(argumentExpression));
+            Assert.True(result.GetFlagValues(argumentExpression));
         }
 
         /// <summary>
@@ -128,11 +128,11 @@ namespace Axe.Cli.Parser.Test
                 .Build();
 
             string[] args = {"-rf"};
-            CliArgsPreParsingResult result = parser.Parse(args);
+            CliArgsParsingResult result = parser.Parse(args);
 
             Assert.True(result.IsSuccess);
-            Assert.True(result.GetFlagValue("--recursive"));
-            Assert.True(result.GetFlagValue("--force"));
+            Assert.True(result.GetFlagValues("--recursive"));
+            Assert.True(result.GetFlagValues("--force"));
         }
         
         /// <summary>
@@ -148,7 +148,7 @@ namespace Axe.Cli.Parser.Test
                 .Build();
              
             string[] args = { "-ff" };
-            CliArgsPreParsingResult result = parser.Parse(args);
+            CliArgsParsingResult result = parser.Parse(args);
 
             Assert.False(result.IsSuccess);
             result.AssertError(CliArgsParsingErrorCode.DuplicateFlagsInArgs, "-ff");
@@ -168,11 +168,11 @@ namespace Axe.Cli.Parser.Test
                 .Build();
              
             string[] args = { "-f" };
-            CliArgsPreParsingResult result = parser.Parse(args);
+            CliArgsParsingResult result = parser.Parse(args);
 
             Assert.True(result.IsSuccess);
-            Assert.True(result.GetFlagValue("-f"));
-            Assert.False(result.GetFlagValue("-o"));
+            Assert.True(result.GetFlagValues("-f"));
+            Assert.False(result.GetFlagValues("-o"));
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace Axe.Cli.Parser.Test
             CliArgsParser parser = new CliArgsParserBuilder()
                 .BeginDefaultCommand().EndCommand().Build();
 
-            CliArgsPreParsingResult result = parser.Parse(Array.Empty<string>());
+            CliArgsParsingResult result = parser.Parse(Array.Empty<string>());
 
             Assert.True(result.IsSuccess);
             Assert.Equal("DEFAULT_COMMAND", result.Command.ToString());
@@ -198,7 +198,7 @@ namespace Axe.Cli.Parser.Test
         {
             var parser = new CliArgsParserBuilder().Build();
 
-            CliArgsPreParsingResult result = parser.Parse(Array.Empty<string>());
+            CliArgsParsingResult result = parser.Parse(Array.Empty<string>());
 
             result.AssertError(
                 CliArgsParsingErrorCode.DoesNotMatchAnyCommand,

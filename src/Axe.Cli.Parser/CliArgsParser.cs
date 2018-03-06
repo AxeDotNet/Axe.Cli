@@ -13,7 +13,7 @@ namespace Axe.Cli.Parser
             this.definition = definition ?? throw new ArgumentNullException(nameof(definition));
         }
 
-        public CliArgsPreParsingResult Parse(IList<string> args)
+        public CliArgsParsingResult Parse(IList<string> args)
         {
             if (args == null) { throw new ArgumentNullException(nameof(args)); }
 
@@ -23,11 +23,11 @@ namespace Axe.Cli.Parser
             }
             catch (CliArgParsingException error)
             {
-                return new CliArgsPreParsingResult(error.CreateError());
+                return new CliArgsParsingResult(error.CreateError());
             }
             catch (Exception)
             {
-                return new CliArgsPreParsingResult(new CliArgsParsingError(string.Join(" ", args), CliArgsParsingErrorCode.Unknown));
+                return new CliArgsParsingResult(new CliArgsParsingError(string.Join(" ", args), CliArgsParsingErrorCode.Unknown));
             }
         }
     }

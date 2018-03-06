@@ -51,6 +51,14 @@ namespace Axe.Cli.Parser.Test
         }
 
         [Fact]
+        public void should_accept_null_description()
+        {
+            var definition = new CliCommandDefinition("valid_symbol", null);
+
+            Assert.Equal(string.Empty, definition.Description);
+        }
+
+        [Fact]
         public void should_register_option_if_not_conflict()
         {
             var commandDefinition = new CliCommandDefinition("commit", "commit something");

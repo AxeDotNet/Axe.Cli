@@ -14,7 +14,7 @@ namespace Axe.Cli.Parser.Tokenizer
             this.definition = definition;
         }
 
-        public CliArgsPreParsingResult Parse(IList<string> args)
+        public CliArgsParsingResult Parse(IList<string> args)
         {
             /*
              * (start) --[EoA]--> (no default? error|stop)

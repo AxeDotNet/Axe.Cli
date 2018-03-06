@@ -20,10 +20,17 @@
             string fullForm,
             char? abbreviation,
             string description,
-            bool isRequired = false)
+            bool isRequired = false,
+            IValueTransformer transformer = null)
         {
             commandDefinition.RegisterOption(
-                new CliOptionDefinition(fullForm, abbreviation, description, isRequired));
+                new CliOptionDefinition(
+                    fullForm,
+                    abbreviation,
+                    description,
+                    isRequired,
+                    OptionType.KeyValue,
+                    transformer));
             return this;
         }
 

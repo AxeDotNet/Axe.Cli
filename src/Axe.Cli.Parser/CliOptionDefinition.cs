@@ -9,12 +9,14 @@ namespace Axe.Cli.Parser
             char? abbreviation,
             string description,
             bool isRequired = false,
-            OptionType type = OptionType.KeyValue)
+            OptionType type = OptionType.KeyValue,
+            IValueTransformer transformer = null)
         {
             Symbol = new OptionSymbol(symbol, abbreviation);
             Description = description;
             IsRequired = isRequired;
             Type = type;
+            Transformer = transformer ?? CliArgsTransformers.Default;
         }
 
         public Guid Id { get; } = Guid.NewGuid();
@@ -22,6 +24,7 @@ namespace Axe.Cli.Parser
         public string Description { get; }
         public bool IsRequired { get; }
         public OptionType Type { get; }
+        public IValueTransformer Transformer { get; }
 
         public bool IsConflict(ICliOptionDefinition optionDefinition)
         {

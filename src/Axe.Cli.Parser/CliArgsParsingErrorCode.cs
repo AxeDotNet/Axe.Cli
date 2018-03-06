@@ -8,6 +8,8 @@
         FreeValueNotSupported,
         DuplicateFlagsInArgs,
         UnknownOptionType,
-        RequiredOptionNotPresent
+        RequiredOptionNotPresent,
+        TransformOptionValueFailed,
+        TransformIntegerValueFailed
     }
 }

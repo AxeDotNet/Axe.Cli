@@ -3,11 +3,11 @@ using Xunit;
 
 namespace Axe.Cli.Parser.Test.Helpers
 {
-    static class ParsingResultExtensions
+    static class ParsingResultTestExtensions
     {
         [SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
         public static void AssertError(
-            this CliArgsPreParsingResult result,
+            this CliArgsParsingResult result,
             CliArgsParsingErrorCode code,
             string trigger)
         {

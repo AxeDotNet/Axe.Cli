@@ -8,7 +8,7 @@ namespace Axe.Cli.Parser.Extensions
     {
         public static string MakeSingleLine(this string description)
         {
-            if (description == null) { return String.Empty; }
+            if (description == null) { return string.Empty; }
             return description.Aggregate(
                 new StringBuilder(),
                 (builder, c) =>

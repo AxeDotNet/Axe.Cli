@@ -13,7 +13,7 @@ namespace Axe.Cli.Parser.Test
                 .EndCommand()
                 .Build();
 
-            CliArgsPreParsingResult result = parser.Parse(new[] {"free-value"});
+            CliArgsParsingResult result = parser.Parse(new[] {"free-value"});
 
             Assert.True(result.IsSuccess);
             Assert.Equal(new []{"free-value"}, result.GetFreeValues());
@@ -28,7 +28,7 @@ namespace Axe.Cli.Parser.Test
                 .EndCommand()
                 .Build();
 
-            CliArgsPreParsingResult result = parser.Parse(new[] {"free-value1", "free-value2"});
+            CliArgsParsingResult result = parser.Parse(new[] {"free-value1", "free-value2"});
 
             Assert.True(result.IsSuccess);
             Assert.Equal(new []{"free-value1", "free-value2"}, result.GetFreeValues());
@@ -43,7 +43,7 @@ namespace Axe.Cli.Parser.Test
                 .EndCommand()
                 .Build();
 
-            CliArgsPreParsingResult result = parser.Parse(new[] {"command", "free-value"});
+            CliArgsParsingResult result = parser.Parse(new[] {"command", "free-value"});
 
             Assert.True(result.IsSuccess);
             Assert.Equal(new [] {"free-value"}, result.GetFreeValues());
@@ -58,7 +58,7 @@ namespace Axe.Cli.Parser.Test
                 .EndCommand()
                 .Build();
 
-            CliArgsPreParsingResult result = parser.Parse(new[] {"command", "free-value1", "free-value2"});
+            CliArgsParsingResult result = parser.Parse(new[] {"command", "free-value1", "free-value2"});
 
             Assert.True(result.IsSuccess);
             Assert.Equal(new [] {"free-value1", "free-value2"}, result.GetFreeValues());
@@ -74,11 +74,11 @@ namespace Axe.Cli.Parser.Test
                 .EndCommand()
                 .Build();
 
-            CliArgsPreParsingResult result = parser.Parse(new [] {"command", "-f", "-a"});
+            CliArgsParsingResult result = parser.Parse(new [] {"command", "-f", "-a"});
             
             Assert.True(result.IsSuccess);
             Assert.Equal(new [] {"-a"}, result.GetFreeValues());
-            Assert.True(result.GetFlagValue("--flag"));
+            Assert.True(result.GetFlagValues("--flag"));
         }
 
         [Fact]
@@ -91,11 +91,11 @@ namespace Axe.Cli.Parser.Test
                 .EndCommand()
                 .Build();
 
-            CliArgsPreParsingResult result = parser.Parse(new [] {"command", "-a", "-f"});
+            CliArgsParsingResult result = parser.Parse(new [] {"command", "-a", "-f"});
             
             Assert.True(result.IsSuccess);
             Assert.Equal(new [] {"-a", "-f"}, result.GetFreeValues());
-            Assert.False(result.GetFlagValue("--flag"));
+            Assert.False(result.GetFlagValues("--flag"));
         }
     }
 }

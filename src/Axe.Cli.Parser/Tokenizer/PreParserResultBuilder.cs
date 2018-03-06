@@ -42,7 +42,7 @@ namespace Axe.Cli.Parser.Tokenizer
             freeValues.Add(freeValue);
         }
 
-        public CliArgsPreParsingResult Build()
+        public CliArgsParsingResult Build()
         {
             if (hasBeenBuilt) { throw new InvalidOperationException("The builder has been built."); }
             if (command == null) { throw new InvalidOperationException("The command has not been set."); }
@@ -51,7 +51,7 @@ namespace Axe.Cli.Parser.Tokenizer
             MergeFlags();
             MergeNotRequiredKeyValues();
 
-            var result = new CliArgsPreParsingResult(command, keyValues, flags, freeValues);
+            var result = new CliArgsParsingResult(command, keyValues, flags, freeValues);
             hasBeenBuilt = true;
 
             return result;

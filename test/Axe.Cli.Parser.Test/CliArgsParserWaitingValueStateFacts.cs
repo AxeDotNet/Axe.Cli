@@ -18,11 +18,11 @@ namespace Axe.Cli.Parser.Test
                 .EndCommand()
                 .Build();
 
-            CliArgsPreParsingResult result = parser.Parse(new[] {"--key", "value"});
+            CliArgsParsingResult result = parser.Parse(new[] {"--key", "value"});
 
             Assert.True(result.IsSuccess);
-            Assert.Equal("value", result.GetOptionValue("--key").First());
-            Assert.Equal("value", result.GetOptionValue("-k").First());
+            Assert.Equal("value", result.GetOptionRawValues("--key").First());
+            Assert.Equal("value", result.GetOptionRawValues("-k").First());
         }
 
         /// <summary>
@@ -39,14 +39,14 @@ namespace Axe.Cli.Parser.Test
                 .EndCommand()
                 .Build();
 
-            CliArgsPreParsingResult result = parser.Parse(new[] { "--key", optionLikeValue });
+            CliArgsParsingResult result = parser.Parse(new[] { "--key", optionLikeValue });
 
             Assert.True(result.IsSuccess);
-            Assert.Equal(optionLikeValue, result.GetOptionValue("--key").First());
-            Assert.Equal(optionLikeValue, result.GetOptionValue("-k").First());
+            Assert.Equal(optionLikeValue, result.GetOptionRawValues("--key").First());
+            Assert.Equal(optionLikeValue, result.GetOptionRawValues("-k").First());
 
-            Assert.Throws<ArgumentException>(() => result.GetOptionValue("--value"));
-            Assert.Throws<ArgumentException>(() => result.GetOptionValue("-v"));
+            Assert.Throws<ArgumentException>(() => result.GetOptionRawValues("--value"));
+            Assert.Throws<ArgumentException>(() => result.GetOptionRawValues("-v"));
         }
     }
 }

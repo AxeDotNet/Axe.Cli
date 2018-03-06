@@ -30,6 +30,8 @@ namespace Axe.Cli.Parser
                 { CliArgsParsingErrorCode.DuplicateFlagsInArgs, "Duplicate flag switches." },
                 { CliArgsParsingErrorCode.UnknownOptionType, "Unsupported option." },
                 { CliArgsParsingErrorCode.RequiredOptionNotPresent, "The option is mandatory." },
+                { CliArgsParsingErrorCode.TransformOptionValueFailed, "The format of option value is not correct." },
+                { CliArgsParsingErrorCode.TransformIntegerValueFailed, "The option value is not an integer." }
             };
 
         public CliArgsParsingError CreateError()
