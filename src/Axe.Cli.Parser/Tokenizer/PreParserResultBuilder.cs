@@ -7,9 +7,11 @@ namespace Axe.Cli.Parser.Tokenizer
 {
     class PreParserResultBuilder
     {
-        readonly IList<string> freeValues = new List<string>();
+        readonly IList<KeyValuePair<ICliFreeValueDefinition, string>> freeValues =
+            new List<KeyValuePair<ICliFreeValueDefinition, string>>();
         readonly IDictionary<ICliOptionDefinition, bool> flags = new Dictionary<ICliOptionDefinition, bool>();
-        readonly IDictionary<ICliOptionDefinition, IList<string>> keyValues = new Dictionary<ICliOptionDefinition, IList<string>>();
+        readonly IDictionary<ICliOptionDefinition, IList<string>> keyValues =
+            new Dictionary<ICliOptionDefinition, IList<string>>();
 
         bool hasBeenBuilt;
         ICliCommandDefinition command;
@@ -38,8 +40,13 @@ namespace Axe.Cli.Parser.Tokenizer
             {
                 throw new ArgumentException("The free value cannot be null or empty");
             }
-            
-            freeValues.Add(freeValue);
+
+            int nextIndex = freeValues.Count;
+            ICliFreeValueDefinition[] freeValueDefinitions = command.GetRegisteredFreeValues().ToArray();
+            freeValues.Add(
+                freeValueDefinitions.Length <= nextIndex
+                    ? new KeyValuePair<ICliFreeValueDefinition, string>(CliNullFreeValueDefinition.Instance, freeValue)
+                    : new KeyValuePair<ICliFreeValueDefinition, string>(freeValueDefinitions[nextIndex], freeValue));
         }
 
         public CliArgsParsingResult Build()
@@ -48,6 +55,7 @@ namespace Axe.Cli.Parser.Tokenizer
             if (command == null) { throw new InvalidOperationException("The command has not been set."); }
 
             ValidateRequiredKeyValues();
+            
             MergeFlags();
             MergeNotRequiredKeyValues();
 

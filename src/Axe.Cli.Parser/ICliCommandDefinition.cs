@@ -10,8 +10,10 @@ namespace Axe.Cli.Parser
         
         bool IsConflict(ICliCommandDefinition commandDefinition);
         bool IsMatch(string argument);
-        IReadOnlyList<ICliOptionDefinition> GetRegisteredOptions();
+        IEnumerable<ICliOptionDefinition> GetRegisteredOptions();
         void RegisterOption(ICliOptionDefinition option);
         string ToString();
+        void RegisterFreeValue(ICliFreeValueDefinition freeValue);
+        IEnumerable<ICliFreeValueDefinition> GetRegisteredFreeValues();
     }
 }

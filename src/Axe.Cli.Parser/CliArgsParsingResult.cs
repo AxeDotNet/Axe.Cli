@@ -8,7 +8,7 @@ namespace Axe.Cli.Parser
     {
         readonly IList<KeyValuePair<ICliOptionDefinition, bool>> optionFlags;
         readonly IList<KeyValuePair<ICliOptionDefinition, OptionValue>> optionValues;
-        string[] FreeValues { get; }
+        readonly IList<KeyValuePair<ICliFreeValueDefinition, string>> freeValues;
 
         public ICliCommandDefinition Command { get; }
         public bool IsSuccess { get; }
@@ -24,12 +24,12 @@ namespace Axe.Cli.Parser
             ICliCommandDefinition command,
             IEnumerable<KeyValuePair<ICliOptionDefinition, IList<string>>> optionValues,
             IEnumerable<KeyValuePair<ICliOptionDefinition, bool>> optionFlags,
-            IEnumerable<string> freeValues)
+            IEnumerable<KeyValuePair<ICliFreeValueDefinition, string>> freeValues)
         {
             Command = command ?? throw new ArgumentNullException(nameof(command));
             this.optionValues = TransformOptionValues(optionValues);
             this.optionFlags = optionFlags?.ToArray() ?? Array.Empty<KeyValuePair<ICliOptionDefinition, bool>>();
-            FreeValues = freeValues?.ToArray() ?? Array.Empty<string>();
+            this.freeValues = freeValues?.ToArray() ?? Array.Empty<KeyValuePair<ICliFreeValueDefinition, string>>();
             IsSuccess = true;
         }
 
@@ -94,9 +94,21 @@ namespace Axe.Cli.Parser
             return GetOptionValueObject(option ?? throw new ArgumentNullException(nameof(option))).TransformedValues;
         }
 
-        public IList<string> GetFreeValues()
+        public IList<string> GetFreeValue(string name)
         {
-            return FreeValues;
+            KeyValuePair<ICliFreeValueDefinition, string> matchedFreeValue =
+                freeValues.FirstOrDefault(f => f.Key.IsMatch(name));
+            if (matchedFreeValue.Key == null) 
+            {
+                throw new ArgumentException($"The free value name you specified is not defined: '{name}");
+            }
+
+            return new[] {matchedFreeValue.Value};
+        }
+
+        public IList<string> GetUndefinedFreeValues()
+        {
+            return freeValues.Where(f => f.Key is CliNullFreeValueDefinition).Select(f => f.Value).ToArray();
         }
     }
 }

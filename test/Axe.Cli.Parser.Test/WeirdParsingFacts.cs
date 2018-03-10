@@ -18,7 +18,11 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_be_error_when_parsing_null_command()
         {
+            CliArgsParser parser = new CliArgsParserBuilder()
+                .BeginCommand("command", string.Empty).EndCommand()
+                .Build();
 
+            Assert.Throws<ArgumentException>(() => parser.Parse(new string[] {null}));
         }
     }
 }

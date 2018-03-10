@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Axe.Cli.Parser.Tokenizer;
 
 namespace Axe.Cli.Parser
@@ -16,7 +17,11 @@ namespace Axe.Cli.Parser
         public CliArgsParsingResult Parse(IList<string> args)
         {
             if (args == null) { throw new ArgumentNullException(nameof(args)); }
-
+            if (args.Any(arg => arg == null))
+            {
+                throw new ArgumentException("The command argument contains null element.");
+            }
+            
             try
             {
                 return new CliArgsPreParser(definition).Parse(args);

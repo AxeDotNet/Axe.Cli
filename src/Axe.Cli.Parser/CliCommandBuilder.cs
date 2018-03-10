@@ -72,5 +72,13 @@
 
             return parentBuilder;
         }
+
+        public CliCommandBuilder AddFreeValue(string name, string description)
+        {
+            allowFreeValue = true;
+            var definition = new CliFreeValueDefinition(name, description);
+            commandDefinition.RegisterFreeValue(definition);
+            return this;
+        }
     }
 }
