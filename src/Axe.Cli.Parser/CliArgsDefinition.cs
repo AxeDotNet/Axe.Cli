@@ -13,7 +13,6 @@ namespace Axe.Cli.Parser
 
         public void RegisterCommand(CliCommandDefinition command)
         {
-            if (command == null) { throw new ArgumentNullException(nameof(command)); }
             CliCommandDefinition conflict = commands.FirstOrDefault(c => c.IsConflict(command));
             if (conflict != null)
             {
@@ -29,14 +28,14 @@ namespace Axe.Cli.Parser
             return commands.AsReadOnly();
         }
 
-        public void SetDefaultCommand(CliDefaultCommandDefinition defaultCommandDefinition, bool overwriteIfExist = false)
+        public void SetDefaultCommand(CliDefaultCommandDefinition command)
         {
-            if (defaultCommand != null && !overwriteIfExist)
+            if (defaultCommand != null)
             {
                 throw new InvalidOperationException("The default command has been set.");
             }
 
-            defaultCommand = defaultCommandDefinition ?? throw new ArgumentNullException(nameof(defaultCommandDefinition));
+            defaultCommand = command ?? throw new ArgumentNullException(nameof(command));
         }
     }
 }

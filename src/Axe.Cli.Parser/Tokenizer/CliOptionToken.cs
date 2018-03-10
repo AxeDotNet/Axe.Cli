@@ -18,21 +18,14 @@ namespace Axe.Cli.Parser.Tokenizer
 
         public CliOptionToken(ICliOptionDefinition definition, string value)
         {
-            if (definition.Type == OptionType.Flag && value != null)
+            if (definition.Type != OptionType.KeyValue)
             {
                 throw new ArgumentException(
-                    $"The value for flag option should be null. While current is '{value}'");
-            }
-            
-            if (definition.Type == OptionType.KeyValue && value == null)
-            {
-                throw new ArgumentNullException(
-                    nameof(value),
-                    "The value for key-value option cannot be null");
+                    $"This constructor is for key-value definition only. While current is {definition.Type}.");
             }
 
             Definition = definition;
-            Value = value;
+            Value = value ?? throw new ArgumentNullException(nameof(value));
         }
         
         public ICliOptionDefinition Definition { get; }

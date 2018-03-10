@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Axe.Cli.Parser
 {
-    public interface ICliCommandDefinition : IEquatable<ICliCommandDefinition>
+    public interface ICliCommandDefinition
     {
-        Guid Id { get; }
-
         string Symbol { get; }
         string Description { get; }
         bool AllowFreeValue { get; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Axe.Cli.Parser
@@ -7,8 +8,6 @@ namespace Axe.Cli.Parser
     abstract class CliCommandDefinitionBase : ICliCommandDefinition
     {
         readonly List<ICliOptionDefinition> options = new List<ICliOptionDefinition>();
-
-        public Guid Id { get; } = Guid.NewGuid();
         public bool AllowFreeValue { get; set; }
         public abstract string Symbol { get; }
         public abstract string Description { get; }
@@ -22,7 +21,8 @@ namespace Axe.Cli.Parser
 
         public void RegisterOption(ICliOptionDefinition option)
         {
-            if (option == null) { throw new ArgumentNullException(nameof(option)); }
+            Debug.Assert(option != null);
+
             ICliOptionDefinition conflictOptionDefinition = options.FirstOrDefault(o => o.IsConflict(option));
             if (conflictOptionDefinition != null)
             {
@@ -31,25 +31,6 @@ namespace Axe.Cli.Parser
             }
 
             options.Add(option);
-        }
-
-        public bool Equals(ICliCommandDefinition other)
-        {
-            return Id.Equals(other.Id);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-
-            return Equals((ICliCommandDefinition) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
         }
     }
 }

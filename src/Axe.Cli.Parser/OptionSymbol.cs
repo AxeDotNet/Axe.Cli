@@ -74,7 +74,6 @@ namespace Axe.Cli.Parser
 
         public bool IsConflict(ICliOptionSymbol other)
         {
-            if (other == null) {throw new ArgumentNullException(nameof(other));}
             return SymbolEqual(other.Symbol) || AbbreviationEqual(other.Abbreviation);
         }
 

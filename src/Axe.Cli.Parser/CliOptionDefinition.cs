@@ -28,7 +28,6 @@ namespace Axe.Cli.Parser
 
         public bool IsConflict(ICliOptionDefinition optionDefinition)
         {
-            if (optionDefinition == null) { throw new ArgumentNullException(nameof(optionDefinition)); }
             return Symbol.IsConflict(optionDefinition.Symbol);
         }
 

@@ -6,7 +6,7 @@
 
         public CliCommandBuilder BeginDefaultCommand()
         {
-            return new CliCommandBuilder(this, null, null);
+            return new CliCommandBuilder(this);
         }
 
         public CliCommandBuilder BeginCommand(string commandName, string description)

@@ -7,13 +7,18 @@
         readonly bool isDefaultCommand;
         bool allowFreeValue;
 
+        public CliCommandBuilder(CliArgsParserBuilder parentBuilder)
+        {
+            this.parentBuilder = parentBuilder;
+            isDefaultCommand = true;
+            commandDefinition = new CliDefaultCommandDefinition();
+        }
+
         public CliCommandBuilder(CliArgsParserBuilder parentBuilder, string commandName, string description)
         {
             this.parentBuilder = parentBuilder;
-            isDefaultCommand = commandName == null;
-            commandDefinition = isDefaultCommand
-                ? (ICliCommandDefinition) new CliDefaultCommandDefinition()
-                : new CliCommandDefinition(commandName, description);
+            isDefaultCommand = false;
+            commandDefinition = new CliCommandDefinition(commandName, description);
         }
 
         public CliCommandBuilder AddOptionWithValue(

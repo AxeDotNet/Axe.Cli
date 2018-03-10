@@ -19,6 +19,7 @@ namespace Axe.Cli.Parser.Test
 
             Assert.True(result.IsSuccess);
             Assert.Equal(12, result.GetOptionValues("-i").Single());
+            Assert.Equal(12, result.GetOptionValue<int>("--integer"));
         }
 
         [Fact]
@@ -33,7 +34,7 @@ namespace Axe.Cli.Parser.Test
             CliArgsParsingResult result = parser.Parse(new [] {"-i", "12", "--integer", "13"});
 
             Assert.True(result.IsSuccess);
-            Assert.Equal(new object[] {12, 13}, result.GetOptionValues("-i"));
+            Assert.Equal(new [] {12, 13}, result.GetOptionValues<int>("-i"));
         }
 
         [Fact]
