@@ -56,9 +56,10 @@ namespace Axe.Cli.Parser.Tokenizer
 
             ValidateRequiredKeyValues();
             
-            MergeFlags();
-            MergeNotRequiredKeyValues();
-
+            AppendUnspecifiedFlags();
+            AppendOptionalKeyValues();
+            AppendOptionalFreeValues();
+            
             var result = new CliArgsParsingResult(command, keyValues, flags, freeValues);
             hasBeenBuilt = true;
 
@@ -78,7 +79,18 @@ namespace Axe.Cli.Parser.Tokenizer
             }
         }
 
-        void MergeNotRequiredKeyValues()
+        void AppendOptionalFreeValues()
+        {
+            IEnumerable<ICliFreeValueDefinition> unspecifiedFreeValueDefinitions = command
+                .GetRegisteredFreeValues()
+                .Where(fvDef => !freeValues.Any(fv => fv.Key.Equals(fvDef)));
+            foreach (ICliFreeValueDefinition definition in unspecifiedFreeValueDefinitions)
+            {
+                freeValues.Add(new KeyValuePair<ICliFreeValueDefinition, string>(definition, string.Empty));
+            }
+        }
+
+        void AppendOptionalKeyValues()
         {
             IEnumerable<ICliOptionDefinition> nonRequiredButNotPresent = command.GetRegisteredOptions()
                 .Where(o => o.Type == OptionType.KeyValue && !o.IsRequired)
@@ -89,7 +101,7 @@ namespace Axe.Cli.Parser.Tokenizer
             }
         }
 
-        void MergeFlags()
+        void AppendUnspecifiedFlags()
         {
             IEnumerable<ICliOptionDefinition> notSetFlags = command.GetRegisteredOptions()
                 .Where(o => o.Type == OptionType.Flag)

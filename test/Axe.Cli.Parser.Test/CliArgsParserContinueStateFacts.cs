@@ -18,7 +18,7 @@ namespace Axe.Cli.Parser.Test
             CliArgsParsingResult result = parser.Parse(new [] {"command", "-k", "value"});
 
             Assert.True(result.IsSuccess);
-            Assert.Equal("value", result.GetOptionRawValues("--key").Single());
+            Assert.Equal("value", result.GetOptionRawValue("--key").Single());
         }
 
         [Fact]
@@ -48,8 +48,8 @@ namespace Axe.Cli.Parser.Test
             CliArgsParsingResult result = parser.Parse(new[] {"command", "--key-a", "value-a", "-b", "value-b"});
 
             Assert.True(result.IsSuccess);
-            Assert.Equal("value-a", result.GetOptionRawValues("-a").Single());
-            Assert.Equal("value-b", result.GetOptionRawValues("--key-b").Single());
+            Assert.Equal("value-a", result.GetOptionRawValue("-a").Single());
+            Assert.Equal("value-b", result.GetOptionRawValue("--key-b").Single());
         }
 
         
@@ -81,8 +81,8 @@ namespace Axe.Cli.Parser.Test
             CliArgsParsingResult result = parser.Parse(new[] {"--key-a", "value-a", "-b", "value-b"});
 
             Assert.True(result.IsSuccess);
-            Assert.Equal("value-a", result.GetOptionRawValues("-a").Single());
-            Assert.Equal("value-b", result.GetOptionRawValues("--key-b").Single());
+            Assert.Equal("value-a", result.GetOptionRawValue("-a").Single());
+            Assert.Equal("value-b", result.GetOptionRawValue("--key-b").Single());
         }
         
         [Fact]
@@ -167,7 +167,7 @@ namespace Axe.Cli.Parser.Test
             CliArgsParsingResult result = parser.Parse(new[] { "--key-a", "value", "-b" });
 
             Assert.True(result.IsSuccess);
-            Assert.Equal("value", result.GetOptionRawValues("-a").Single());
+            Assert.Equal("value", result.GetOptionRawValue("-a").Single());
             Assert.True(result.GetFlagValues("--flag-b"));
             Assert.False(result.GetFlagValues("--flag-c"));
         }

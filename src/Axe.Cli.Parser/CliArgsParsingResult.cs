@@ -8,7 +8,7 @@ namespace Axe.Cli.Parser
     {
         readonly IList<KeyValuePair<ICliOptionDefinition, bool>> optionFlags;
         readonly IList<KeyValuePair<ICliOptionDefinition, OptionValue>> optionValues;
-        readonly IList<KeyValuePair<ICliFreeValueDefinition, string>> freeValues;
+        readonly IList<KeyValuePair<ICliFreeValueDefinition, FreeValue>> freeValues;
 
         public ICliCommandDefinition Command { get; }
         public bool IsSuccess { get; }
@@ -24,13 +24,44 @@ namespace Axe.Cli.Parser
             ICliCommandDefinition command,
             IEnumerable<KeyValuePair<ICliOptionDefinition, IList<string>>> optionValues,
             IEnumerable<KeyValuePair<ICliOptionDefinition, bool>> optionFlags,
-            IEnumerable<KeyValuePair<ICliFreeValueDefinition, string>> freeValues)
+            IList<KeyValuePair<ICliFreeValueDefinition, string>> freeValues)
         {
             Command = command ?? throw new ArgumentNullException(nameof(command));
             this.optionValues = TransformOptionValues(optionValues);
             this.optionFlags = optionFlags?.ToArray() ?? Array.Empty<KeyValuePair<ICliOptionDefinition, bool>>();
-            this.freeValues = freeValues?.ToArray() ?? Array.Empty<KeyValuePair<ICliFreeValueDefinition, string>>();
+            this.freeValues = TransformFreeValues(freeValues);
             IsSuccess = true;
+        }
+
+        IList<KeyValuePair<ICliFreeValueDefinition, FreeValue>> TransformFreeValues(
+            IList<KeyValuePair<ICliFreeValueDefinition, string>> rawFreeValues)
+        {
+            if (rawFreeValues == null) { return Array.Empty<KeyValuePair<ICliFreeValueDefinition, FreeValue>>(); }
+
+            return rawFreeValues.Select(fv =>
+                {
+                    ICliFreeValueDefinition freeValueDefinition = fv.Key;
+                    IValueTransformer transformer = freeValueDefinition.Transformer;
+
+                    try
+                    {
+                        string[] rawValues = string.IsNullOrEmpty(fv.Value) ? Array.Empty<string>() : new[] {fv.Value};
+                        return new KeyValuePair<ICliFreeValueDefinition, FreeValue>(
+                            freeValueDefinition,
+                            new FreeValue(fv.Value, transformer.Transform(rawValues)));
+                    }
+                    catch (CliArgParsingException)
+                    {
+                        throw;
+                    }
+                    catch
+                    {
+                        throw new CliArgParsingException(
+                            CliArgsParsingErrorCode.TransformValueFailed,
+                            fv.Value);
+                    }
+                })
+                .ToArray();
         }
 
         static IList<KeyValuePair<ICliOptionDefinition, OptionValue>> TransformOptionValues(
@@ -58,7 +89,7 @@ namespace Axe.Cli.Parser
                         catch
                         {
                             throw new CliArgParsingException(
-                                CliArgsParsingErrorCode.TransformOptionValueFailed,
+                                CliArgsParsingErrorCode.TransformValueFailed,
                                 $"Option: {ov.Key.ToString()}; Values: {string.Join(" ", ov.Value)}.");
                         }
                     })
@@ -77,6 +108,18 @@ namespace Axe.Cli.Parser
             return matchedKeyValue.Value;
         }
 
+        FreeValue GetFreeValueObject(string name)
+        {
+            KeyValuePair<ICliFreeValueDefinition, FreeValue> matchedFreeValue =
+                freeValues.FirstOrDefault(f => f.Key.IsMatch(name));
+            if (matchedFreeValue.Key == null) 
+            {
+                throw new ArgumentException($"The free value name you specified is not defined: '{name}");
+            }
+
+            return matchedFreeValue.Value;
+        }
+
         public bool GetFlagValues(string flag)
         {
             KeyValuePair<ICliOptionDefinition, bool> matchedFlag = optionFlags.FirstOrDefault(o => o.Key.IsMatch(flag));
@@ -84,31 +127,32 @@ namespace Axe.Cli.Parser
             return matchedFlag.Value;
         }
 
-        public IList<string> GetOptionRawValues(string option)
+        public IList<string> GetOptionRawValue(string option)
         {
             return GetOptionValueObject(option ?? throw new ArgumentNullException(nameof(option))).RawValues;
         }
 
-        public IList<object> GetOptionValues(string option)
+        public IList<object> GetOptionValue(string option)
         {
             return GetOptionValueObject(option ?? throw new ArgumentNullException(nameof(option))).TransformedValues;
         }
 
-        public IList<string> GetFreeValue(string name)
+        public IList<object> GetFreeValue(string name)
         {
-            KeyValuePair<ICliFreeValueDefinition, string> matchedFreeValue =
-                freeValues.FirstOrDefault(f => f.Key.IsMatch(name));
-            if (matchedFreeValue.Key == null) 
-            {
-                throw new ArgumentException($"The free value name you specified is not defined: '{name}");
-            }
+            return GetFreeValueObject(name ?? throw new ArgumentNullException(nameof(name))).TransformedValues;
+        }
 
-            return new[] {matchedFreeValue.Value};
+        public string GetFreeRawValue(string name)
+        {
+            return GetFreeValueObject(name ?? throw new ArgumentNullException(nameof(name))).RawValue;
         }
 
         public IList<string> GetUndefinedFreeValues()
         {
-            return freeValues.Where(f => f.Key is CliNullFreeValueDefinition).Select(f => f.Value).ToArray();
+            return freeValues
+                .Where(f => f.Key is CliNullFreeValueDefinition)
+                .Select(f => f.Value.RawValue)
+                .ToArray();
         }
     }
 }

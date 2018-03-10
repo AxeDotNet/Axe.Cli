@@ -10,7 +10,7 @@ namespace Axe.Cli.Parser
         {
             if (result == null) {throw new ArgumentNullException(nameof(result));}
 
-            IList<object> values = result.GetOptionValues(option);
+            IList<object> values = result.GetOptionValue(option);
             if (typeof(IList<T>) == typeof(IList<object>)) { return (IList<T>)values; }
 
             return values.Cast<T>().ToArray();
@@ -21,7 +21,7 @@ namespace Axe.Cli.Parser
             if (result == null) {throw new ArgumentNullException(nameof(result));}
             Func<T> createDefaultValue = defaultFunc ?? (() => default(T));
 
-            IList<object> values = result.GetOptionValues(option);
+            IList<object> values = result.GetOptionValue(option);
             if (values.Count == 0) { return createDefaultValue(); }
 
             return (T) values.First();

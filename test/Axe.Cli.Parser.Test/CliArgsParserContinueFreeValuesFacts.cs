@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using Xunit;
 
 namespace Axe.Cli.Parser.Test
@@ -111,7 +111,7 @@ namespace Axe.Cli.Parser.Test
             CliArgsParsingResult result = parser.Parse(new[] {"command", "free_value"});
 
             Assert.True(result.IsSuccess);
-            Assert.Equal(new [] {"free_value"}, result.GetFreeValue("name"));
+            Assert.Equal("free_value", result.GetFreeRawValue("name"));
         }
 
         [Fact]
@@ -127,8 +127,8 @@ namespace Axe.Cli.Parser.Test
             CliArgsParsingResult result = parser.Parse(new[] {"command", "name_value", "age_value"});
 
             Assert.True(result.IsSuccess);
-            Assert.Equal(new [] {"name_value"}, result.GetFreeValue("name"));
-            Assert.Equal(new [] {"age_value"}, result.GetFreeValue("age"));
+            Assert.Equal("name_value", result.GetFreeRawValue("name"));
+            Assert.Equal("age_value", result.GetFreeRawValue("age"));
         }
 
         [Fact]
@@ -145,9 +145,27 @@ namespace Axe.Cli.Parser.Test
                 new[] {"command", "name_value", "age_value", "undefined_value1", "undefined_value2"});
 
             Assert.True(result.IsSuccess);
-            Assert.Equal(new [] {"name_value"}, result.GetFreeValue("name"));
-            Assert.Equal(new [] {"age_value"}, result.GetFreeValue("age"));
-            Assert.Equal(new [] {"undefined_value1", "undefined_value2"}, result.GetUndefinedFreeValues());
+            Assert.Equal("name_value", result.GetFreeRawValue("name"));
+            Assert.Equal("age_value", result.GetFreeRawValue("age"));
+            Assert.Equal(new object[] {"undefined_value1", "undefined_value2"}, result.GetUndefinedFreeValues());
+        }
+
+        [Fact]
+        public void should_ignore_uncaptured_definitions()
+        {
+            CliArgsParser parser = new CliArgsParserBuilder()
+                .BeginCommand("command", string.Empty)
+                .AddFreeValue("name", string.Empty)
+                .AddFreeValue("uncaptured_definition", string.Empty)
+                .EndCommand()
+                .Build();
+
+            CliArgsParsingResult result = parser.Parse(new[] {"command", "name_value"});
+
+            Assert.True(result.IsSuccess);
+            Assert.Equal("name_value", result.GetFreeRawValue("name"));
+            Assert.Empty(result.GetFreeValue("uncaptured_definition"));
+            Assert.Equal(string.Empty, result.GetFreeRawValue("uncaptured_definition"));
         }
     }
 }

@@ -14,7 +14,8 @@ namespace Axe.Cli.Parser
         public IValueTransformer Transformer { get; } = CliArgsTransformers.Default;
         public bool IsConflict(ICliFreeValueDefinition freeValueDefinition)
         {
-            return false;
+            // always return true to avoid registration.
+            return true;
         }
 
         public bool IsMatch(string name)

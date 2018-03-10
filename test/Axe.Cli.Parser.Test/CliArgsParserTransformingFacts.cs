@@ -18,7 +18,7 @@ namespace Axe.Cli.Parser.Test
             CliArgsParsingResult result = parser.Parse(new [] {"-i", "12"});
 
             Assert.True(result.IsSuccess);
-            Assert.Equal(12, result.GetOptionValues("-i").Single());
+            Assert.Equal(12, result.GetOptionValue("-i").Single());
             Assert.Equal(12, result.GetOptionValue<int>("--integer"));
         }
 

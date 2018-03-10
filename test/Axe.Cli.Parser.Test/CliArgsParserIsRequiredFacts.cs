@@ -18,7 +18,7 @@ namespace Axe.Cli.Parser.Test
             CliArgsParsingResult result = parser.Parse(Array.Empty<string>());
 
             Assert.True(result.IsSuccess);
-            Assert.Empty(result.GetOptionRawValues("--key"));
+            Assert.Empty(result.GetOptionRawValue("--key"));
         }
 
         [Fact]

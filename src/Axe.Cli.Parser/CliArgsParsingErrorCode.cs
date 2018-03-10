@@ -9,7 +9,7 @@
         DuplicateFlagsInArgs,
         UnknownOptionType,
         RequiredOptionNotPresent,
-        TransformOptionValueFailed,
+        TransformValueFailed,
         TransformIntegerValueFailed
     }
 }
