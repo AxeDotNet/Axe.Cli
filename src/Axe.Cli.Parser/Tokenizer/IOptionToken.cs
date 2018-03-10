@@ -1,6 +1,6 @@
 ﻿namespace Axe.Cli.Parser.Tokenizer
 {
-    interface ICliOptionToken
+    interface IOptionToken
     {
         ICliOptionDefinition Definition { get; }
         string Value { get; }

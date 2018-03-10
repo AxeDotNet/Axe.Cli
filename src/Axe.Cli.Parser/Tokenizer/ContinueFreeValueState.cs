@@ -2,10 +2,10 @@
 {
     class ContinueFreeValueState : PreParsingStateBase
     {
-        readonly ICliCommandDefinition command;
+        readonly ICommandDefinition command;
         readonly PreParserResultBuilder resultBuilder;
 
-        public ContinueFreeValueState(ICliCommandDefinition command, PreParserResultBuilder resultBuilder)
+        public ContinueFreeValueState(ICommandDefinition command, PreParserResultBuilder resultBuilder)
         {
             this.command = command;
             this.resultBuilder = resultBuilder;

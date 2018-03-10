@@ -8,8 +8,8 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_throw_if_result_is_null()
         {
-            Assert.Throws<ArgumentNullException>(() => ((CliArgsParsingResult) null).GetOptionValues<object>("-i"));
-            Assert.Throws<ArgumentNullException>(() => ((CliArgsParsingResult) null).GetOptionValue<object>("-i"));
+            Assert.Throws<ArgumentNullException>(() => ((ArgsParsingResult) null).GetOptionValues<object>("-i"));
+            Assert.Throws<ArgumentNullException>(() => ((ArgsParsingResult) null).GetOptionValue<object>("-i"));
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Axe.Cli.Parser
 {
-    public enum CliArgsParsingErrorCode
+    public enum ArgsParsingErrorCode
     {
         Unknown = 0,
         DoesNotMatchAnyCommand,

@@ -7,8 +7,8 @@ namespace Axe.Cli.Parser.Test.Helpers
     {
         [SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
         public static void AssertError(
-            this CliArgsParsingResult result,
-            CliArgsParsingErrorCode code,
+            this ArgsParsingResult result,
+            ArgsParsingErrorCode code,
             string trigger)
         {
             Assert.False(result.IsSuccess);

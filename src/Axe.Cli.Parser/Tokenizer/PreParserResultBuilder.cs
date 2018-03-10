@@ -14,9 +14,9 @@ namespace Axe.Cli.Parser.Tokenizer
             new Dictionary<ICliOptionDefinition, IList<string>>();
 
         bool hasBeenBuilt;
-        ICliCommandDefinition command;
+        ICommandDefinition command;
 
-        public void SetCommand(ICliCommandDefinition commandDefinition)
+        public void SetCommand(ICommandDefinition commandDefinition)
         {
             Debug.Assert(commandDefinition != null);
 
@@ -28,10 +28,10 @@ namespace Axe.Cli.Parser.Tokenizer
             command = commandDefinition;
         }
 
-        public void AppendOptionToken(ICliOptionToken optionToken, string argument)
+        public void AppendOptionToken(IOptionToken optionToken, string argument)
         {
             bool handled = AppendFlag(optionToken, argument) || AppendKeyValueOption(optionToken);
-            if (!handled) { throw new CliArgParsingException(CliArgsParsingErrorCode.UnknownOptionType, argument); }
+            if (!handled) { throw new ArgParsingException(ArgsParsingErrorCode.UnknownOptionType, argument); }
         }
 
         public void AppendFreeValue(string freeValue)
@@ -49,7 +49,7 @@ namespace Axe.Cli.Parser.Tokenizer
                     : new KeyValuePair<ICliFreeValueDefinition, string>(freeValueDefinitions[nextIndex], freeValue));
         }
 
-        public CliArgsParsingResult Build()
+        public ArgsParsingResult Build()
         {
             if (hasBeenBuilt) { throw new InvalidOperationException("The builder has been built."); }
             if (command == null) { throw new InvalidOperationException("The command has not been set."); }
@@ -60,7 +60,7 @@ namespace Axe.Cli.Parser.Tokenizer
             AppendOptionalKeyValues();
             AppendOptionalFreeValues();
             
-            var result = new CliArgsParsingResult(command, keyValues, flags, freeValues);
+            var result = new ArgsParsingResult(command, keyValues, flags, freeValues);
             hasBeenBuilt = true;
 
             return result;
@@ -73,8 +73,8 @@ namespace Axe.Cli.Parser.Tokenizer
                 .FirstOrDefault(o => !keyValues.ContainsKey(o));
             if (notPresentedRequiredOption != null)
             {
-                throw new CliArgParsingException(
-                    CliArgsParsingErrorCode.RequiredOptionNotPresent,
+                throw new ArgParsingException(
+                    ArgsParsingErrorCode.RequiredOptionNotPresent,
                     notPresentedRequiredOption.Symbol.ToString());
             }
         }
@@ -112,7 +112,7 @@ namespace Axe.Cli.Parser.Tokenizer
             }
         }
 
-        bool AppendKeyValueOption(ICliOptionToken optionToken)
+        bool AppendKeyValueOption(IOptionToken optionToken)
         {
             if (optionToken.Definition.Type != OptionType.KeyValue) { return false; }
             if (keyValues.ContainsKey(optionToken.Definition))
@@ -129,14 +129,14 @@ namespace Axe.Cli.Parser.Tokenizer
 
         }
 
-        bool AppendFlag(ICliOptionToken optionToken, string argument)
+        bool AppendFlag(IOptionToken optionToken, string argument)
         {
             if (optionToken.Definition.Type != OptionType.Flag) { return false; }
 
             if (flags.ContainsKey(optionToken.Definition))
             {
-                throw new CliArgParsingException(
-                    CliArgsParsingErrorCode.DuplicateFlagsInArgs,
+                throw new ArgParsingException(
+                    ArgsParsingErrorCode.DuplicateFlagsInArgs,
                     argument);
             }
 

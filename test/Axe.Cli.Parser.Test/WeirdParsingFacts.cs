@@ -8,7 +8,7 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_be_error_when_parsing_null()
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand("command", string.Empty).EndCommand()
                 .Build();
 
@@ -18,7 +18,7 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_be_error_when_parsing_null_command()
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand("command", string.Empty).EndCommand()
                 .Build();
 

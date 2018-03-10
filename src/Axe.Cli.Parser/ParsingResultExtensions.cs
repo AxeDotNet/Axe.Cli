@@ -6,7 +6,7 @@ namespace Axe.Cli.Parser
 {
     public static class ParsingResultExtensions
     {
-        public static IList<T> GetOptionValues<T>(this CliArgsParsingResult result, string option)
+        public static IList<T> GetOptionValues<T>(this ArgsParsingResult result, string option)
         {
             if (result == null) {throw new ArgumentNullException(nameof(result));}
 
@@ -16,7 +16,7 @@ namespace Axe.Cli.Parser
             return values.Cast<T>().ToArray();
         }
 
-        public static T GetOptionValue<T>(this CliArgsParsingResult result, string option, Func<T> defaultFunc = null)
+        public static T GetOptionValue<T>(this ArgsParsingResult result, string option, Func<T> defaultFunc = null)
         {
             if (result == null) {throw new ArgumentNullException(nameof(result));}
             Func<T> createDefaultValue = defaultFunc ?? (() => default(T));

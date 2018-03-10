@@ -16,7 +16,7 @@ namespace Axe.Cli.Parser
             
             Name = name;
             Description = description ?? string.Empty;
-            Transformer = transformer ?? CliArgsTransformers.Default;
+            Transformer = transformer ?? ArgsTransformers.Default;
         }
 
         static void ValidateName(string name)

@@ -23,14 +23,14 @@ namespace Axe.Cli.Parser
                             freeValueDefinition,
                             new FreeValue(fv.Value, transformed));
                     }
-                    catch (CliArgParsingException)
+                    catch (ArgParsingException)
                     {
                         throw;
                     }
                     catch
                     {
-                        throw new CliArgParsingException(
-                            CliArgsParsingErrorCode.TransformValueFailed,
+                        throw new ArgParsingException(
+                            ArgsParsingErrorCode.TransformValueFailed,
                             fv.Value);
                     }
                 })
@@ -55,14 +55,14 @@ namespace Axe.Cli.Parser
                                 optionDefinition,
                                 new OptionValue(ov.Value, transformer.Transform(ov.Value)));
                         }
-                        catch (CliArgParsingException)
+                        catch (ArgParsingException)
                         {
                             throw;
                         }
                         catch
                         {
-                            throw new CliArgParsingException(
-                                CliArgsParsingErrorCode.TransformValueFailed,
+                            throw new ArgParsingException(
+                                ArgsParsingErrorCode.TransformValueFailed,
                                 $"Option: {ov.Key.ToString()}; Values: {String.Join(" ", ov.Value)}.");
                         }
                     })

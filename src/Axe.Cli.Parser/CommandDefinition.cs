@@ -4,13 +4,13 @@ using Axe.Cli.Parser.Extensions;
 
 namespace Axe.Cli.Parser
 {
-    class CliCommandDefinition : CliCommandDefinitionBase
+    class CommandDefinition : CommandDefinitionBase
     {
         static readonly Regex Pattern = new Regex(
             "^[A-Z0-9_][A-Z0-9_\\-]{0,}$",
             RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline | RegexOptions.IgnoreCase);
         
-        public CliCommandDefinition(string symbol, string description)
+        public CommandDefinition(string symbol, string description)
         {
             ValidateSymbol(symbol);
 
@@ -31,9 +31,9 @@ namespace Axe.Cli.Parser
             }
         }
 
-        public override bool IsConflict(ICliCommandDefinition commandDefinition)
+        public override bool IsConflict(ICommandDefinition commandDefinition)
         {
-            if (!(commandDefinition is CliCommandDefinition c)) { return true; }
+            if (!(commandDefinition is CommandDefinition c)) { return true; }
             return Symbol.Equals(c.Symbol, StringComparison.OrdinalIgnoreCase);
         }
 

@@ -4,16 +4,16 @@ using System.Linq;
 
 namespace Axe.Cli.Parser
 {
-    class CliArgsDefinition
+    class ArgsDefinition
     {
-        readonly List<CliCommandDefinition> commands = new List<CliCommandDefinition>();
-        CliDefaultCommandDefinition defaultCommand;
+        readonly List<CommandDefinition> commands = new List<CommandDefinition>();
+        DefaultCommandDefinition defaultCommand;
 
-        public ICliCommandDefinition DefaultCommand => defaultCommand;
+        public ICommandDefinition DefaultCommand => defaultCommand;
 
-        public void RegisterCommand(CliCommandDefinition command)
+        public void RegisterCommand(CommandDefinition command)
         {
-            CliCommandDefinition conflict = commands.FirstOrDefault(c => c.IsConflict(command));
+            CommandDefinition conflict = commands.FirstOrDefault(c => c.IsConflict(command));
             if (conflict != null)
             {
                 throw new ArgumentException(
@@ -23,12 +23,12 @@ namespace Axe.Cli.Parser
             commands.Add(command);
         }
 
-        public IReadOnlyList<CliCommandDefinition> GetRegisteredCommands()
+        public IReadOnlyList<CommandDefinition> GetRegisteredCommands()
         {
             return commands.AsReadOnly();
         }
 
-        public void SetDefaultCommand(CliDefaultCommandDefinition command)
+        public void SetDefaultCommand(DefaultCommandDefinition command)
         {
             if (defaultCommand != null)
             {

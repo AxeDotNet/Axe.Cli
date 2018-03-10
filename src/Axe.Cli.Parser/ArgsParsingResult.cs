@@ -4,24 +4,24 @@ using System.Linq;
 
 namespace Axe.Cli.Parser
 {
-    public class CliArgsParsingResult
+    public class ArgsParsingResult
     {
         readonly IList<KeyValuePair<ICliOptionDefinition, bool>> optionFlags;
         readonly IList<KeyValuePair<ICliOptionDefinition, OptionValue>> optionValues;
         readonly IList<KeyValuePair<ICliFreeValueDefinition, FreeValue>> freeValues;
 
-        public ICliCommandDefinition Command { get; }
+        public ICommandDefinition Command { get; }
         public bool IsSuccess { get; }
-        public CliArgsParsingError Error { get; }
+        public ArgsParsingError Error { get; }
 
-        public CliArgsParsingResult(CliArgsParsingError error)
+        public ArgsParsingResult(ArgsParsingError error)
         {
             Error = error ?? throw new ArgumentNullException(nameof(error));
             IsSuccess = false;
         }
 
-        public CliArgsParsingResult(
-            ICliCommandDefinition command,
+        public ArgsParsingResult(
+            ICommandDefinition command,
             IEnumerable<KeyValuePair<ICliOptionDefinition, IList<string>>> optionValues,
             IEnumerable<KeyValuePair<ICliOptionDefinition, bool>> optionFlags,
             IList<KeyValuePair<ICliFreeValueDefinition, string>> freeValues)

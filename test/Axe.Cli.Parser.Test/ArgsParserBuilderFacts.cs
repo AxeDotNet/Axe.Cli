@@ -3,12 +3,12 @@ using Xunit;
 
 namespace Axe.Cli.Parser.Test
 {
-    public class CliArgsParserBuilderFacts
+    public class ArgsParserBuilderFacts
     {
         [Fact]
         public void should_throw_if_command_conflicts()
         {
-            CliArgsParserBuilder builder = new CliArgsParserBuilder()
+            ArgsParserBuilder builder = new ArgsParserBuilder()
                 .BeginCommand("command", string.Empty)
                 .EndCommand();
 
@@ -18,7 +18,7 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_throw_if_default_command_has_been_set()
         {
-            CliArgsParserBuilder builder = new CliArgsParserBuilder()
+            ArgsParserBuilder builder = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .EndCommand();
 
@@ -28,7 +28,7 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_not_be_null_symbol()
         {
-            Assert.Throws<ArgumentNullException>(() => new CliArgsParserBuilder().BeginCommand(null, string.Empty));
+            Assert.Throws<ArgumentNullException>(() => new ArgsParserBuilder().BeginCommand(null, string.Empty));
         }
 
         [Theory]
@@ -41,7 +41,7 @@ namespace Axe.Cli.Parser.Test
         public void should_not_be_incorrect_format(string incorrectCommandSymbol)
         {
             Assert.Throws<ArgumentException>(
-                () => new CliArgsParserBuilder().BeginCommand(incorrectCommandSymbol, string.Empty));
+                () => new ArgsParserBuilder().BeginCommand(incorrectCommandSymbol, string.Empty));
         }
 
         [Theory]
@@ -49,11 +49,11 @@ namespace Axe.Cli.Parser.Test
         [InlineData("line1\r\nline2", "line1 line2")]
         public void should_single_lined_the_description(string multiLined, string expected)
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand("command", multiLined).EndCommand()
                 .Build();
 
-            CliArgsParsingResult result = parser.Parse(new [] {"command"});
+            ArgsParsingResult result = parser.Parse(new [] {"command"});
             Assert.Equal(expected, result.Command.Description);
         }
 
@@ -66,11 +66,11 @@ namespace Axe.Cli.Parser.Test
         [InlineData("dash_tail-")]
         public void should_accept_valid_command_symbol(string validSymbol)
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand(validSymbol, string.Empty).EndCommand()
                 .Build();
 
-            CliArgsParsingResult result = parser.Parse(new [] {validSymbol});
+            ArgsParsingResult result = parser.Parse(new [] {validSymbol});
 
             Assert.Equal(validSymbol, result.Command.Symbol);
         }
@@ -78,11 +78,11 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_accept_null_description()
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand("valid_symbol", null).EndCommand()
                 .Build();
 
-            CliArgsParsingResult result = parser.Parse(new []{"valid_symbol"});
+            ArgsParsingResult result = parser.Parse(new []{"valid_symbol"});
 
             Assert.Equal(string.Empty, result.Command.Description);
         }
@@ -90,7 +90,7 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_throw_if_register_options_conflicts()
         {
-            CliCommandBuilder builder = new CliArgsParserBuilder()
+            CommandBuilder builder = new ArgsParserBuilder()
                 .BeginCommand("valid_symbol", null)
                 .AddOptionWithValue("message", 'm', string.Empty);
 
@@ -100,7 +100,7 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_throw_if_register_flags_conflicts()
         {
-            CliCommandBuilder builder = new CliArgsParserBuilder()
+            CommandBuilder builder = new ArgsParserBuilder()
                 .BeginCommand("valid_symbol", null)
                 .AddFlagOption("message", 'm', string.Empty);
 
@@ -110,7 +110,7 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_throw_if_register_flag_option_conflicts()
         {
-            CliCommandBuilder builder = new CliArgsParserBuilder()
+            CommandBuilder builder = new ArgsParserBuilder()
                 .BeginCommand("valid_symbol", null)
                 .AddFlagOption("message", 'm', string.Empty);
 
@@ -120,7 +120,7 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_throw_if_register_flag_option_conflicts2()
         {
-            CliCommandBuilder builder = new CliArgsParserBuilder()
+            CommandBuilder builder = new ArgsParserBuilder()
                 .BeginCommand("valid_symbol", null)
                 .AddOptionWithValue("message", 'm', string.Empty);
 
@@ -130,21 +130,21 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_not_be_null_for_both_fullname_and_abbreviation()
         {
-            CliCommandBuilder builder = new CliArgsParserBuilder().BeginDefaultCommand();
+            CommandBuilder builder = new ArgsParserBuilder().BeginDefaultCommand();
             Assert.Throws<ArgumentException>(() => builder.AddFlagOption(null, null, string.Empty));
         }
 
         [Fact]
         public void should_not_contains_dash_in_full_symbol()
         {
-            CliCommandBuilder builder = new CliArgsParserBuilder().BeginDefaultCommand();
+            CommandBuilder builder = new ArgsParserBuilder().BeginDefaultCommand();
             Assert.Throws<ArgumentException>(() => builder.AddFlagOption("-name", 'c', string.Empty));
         }
 
         [Fact]
         public void should_not_be_dash_for_abbreviation()
         {
-            CliCommandBuilder builder = new CliArgsParserBuilder().BeginDefaultCommand();
+            CommandBuilder builder = new ArgsParserBuilder().BeginDefaultCommand();
             Assert.Throws<ArgumentException>(() => builder.AddFlagOption("name", '-', string.Empty));
         }
 
@@ -160,13 +160,13 @@ namespace Axe.Cli.Parser.Test
         [InlineData(null, 'n', "-n")]
         public void should_create_valid_symbol(string symbol, char? abbr, string argument)
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .AddFlagOption(symbol, abbr, null)
                 .EndCommand()
                 .Build();
             
-            CliArgsParsingResult result = parser.Parse(new[] {argument});
+            ArgsParsingResult result = parser.Parse(new[] {argument});
 
             Assert.True(result.GetFlagValues(argument));
         }
@@ -180,7 +180,7 @@ namespace Axe.Cli.Parser.Test
         [InlineData("o", null, "o", 'v')]               // symbol equal
         public void should_determine_conflict(string s1, char? a1, string s2, char? a2)
         {
-            CliCommandBuilder builder = new CliArgsParserBuilder()
+            CommandBuilder builder = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .AddFlagOption(s1, a1, string.Empty);
 
@@ -194,14 +194,14 @@ namespace Axe.Cli.Parser.Test
         [InlineData("o", 'p', "v", 'q', "--o", "-q")]
         public void should_be_no_conflict(string s1, char? a1, string s2, char? a2, string argument1, string argument2)
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .AddOptionWithValue(s1, a1, string.Empty)
                 .AddOptionWithValue(s2, a2, string.Empty)
                 .EndCommand()
                 .Build();
 
-            CliArgsParsingResult result = parser.Parse(new [] {argument1, "value1", argument2, "value2"});
+            ArgsParsingResult result = parser.Parse(new [] {argument1, "value1", argument2, "value2"});
 
             Assert.Equal("value1", result.GetOptionValue<string>(argument1));
             Assert.Equal("value2", result.GetOptionValue<string>(argument2));

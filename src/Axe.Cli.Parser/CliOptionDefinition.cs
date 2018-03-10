@@ -16,7 +16,7 @@ namespace Axe.Cli.Parser
             Description = description;
             IsRequired = isRequired;
             Type = type;
-            Transformer = transformer ?? CliArgsTransformers.Default;
+            Transformer = transformer ?? ArgsTransformers.Default;
         }
 
         public Guid Id { get; } = Guid.NewGuid();

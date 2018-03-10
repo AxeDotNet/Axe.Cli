@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Axe.Cli.Parser.Test
 {
-    public class CliArgsParserWaitingValueStateFacts
+    public class ArgsParserWaitingValueStateFacts
     {
         /// <summary>
         /// waiting-value -(any)-> ok
@@ -12,13 +12,13 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_store_key_value_with_default_command()
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .AddOptionWithValue("key", 'k', string.Empty)
                 .EndCommand()
                 .Build();
 
-            CliArgsParsingResult result = parser.Parse(new[] {"--key", "value"});
+            ArgsParsingResult result = parser.Parse(new[] {"--key", "value"});
 
             Assert.True(result.IsSuccess);
             Assert.Equal("value", result.GetOptionRawValue("--key").First());
@@ -33,13 +33,13 @@ namespace Axe.Cli.Parser.Test
         [InlineData("-value")]
         public void should_store_key_value_even_if_value_looks_like_options(string optionLikeValue)
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .AddOptionWithValue("key", 'k', string.Empty)
                 .EndCommand()
                 .Build();
 
-            CliArgsParsingResult result = parser.Parse(new[] { "--key", optionLikeValue });
+            ArgsParsingResult result = parser.Parse(new[] { "--key", optionLikeValue });
 
             Assert.True(result.IsSuccess);
             Assert.Equal(optionLikeValue, result.GetOptionRawValue("--key").First());

@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Axe.Cli.Parser.Test
 {
-    public class CliArgsParserStartStateFacts
+    public class ArgsParserStartStateFacts
     {
         /// <summary>
         /// start-(command)->ok
@@ -13,14 +13,14 @@ namespace Axe.Cli.Parser.Test
         public void should_get_command_from_parsing_result()
         {
             const string commandName = "command";
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand(commandName, string.Empty)
                 .EndCommand()
                 .Build();
 
             string[] args = { commandName };
 
-            CliArgsParsingResult result = parser.Parse(args);
+            ArgsParsingResult result = parser.Parse(args);
 
             Assert.True(result.IsSuccess);
             Assert.Equal(commandName, result.Command.Symbol);
@@ -33,17 +33,17 @@ namespace Axe.Cli.Parser.Test
         public void should_be_error_if_command_does_not_match_without_default_command()
         {
             const string commandName = "command";
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand(commandName, string.Empty)
                 .EndCommand()
                 .Build();
 
             string[] args = {"not_matched_command"};
 
-            CliArgsParsingResult result = parser.Parse(args);
+            ArgsParsingResult result = parser.Parse(args);
 
             result.AssertError(
-                CliArgsParsingErrorCode.DoesNotMatchAnyCommand,
+                ArgsParsingErrorCode.DoesNotMatchAnyCommand,
                 "not_matched_command");
         }
 
@@ -54,7 +54,7 @@ namespace Axe.Cli.Parser.Test
         public void should_be_error_for_free_values()
         {
             const string commandName = "command";
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .EndCommand()
                 .BeginCommand(commandName, string.Empty)
@@ -63,10 +63,10 @@ namespace Axe.Cli.Parser.Test
 
             string[] args = { "not_matched_command" };
 
-            CliArgsParsingResult result = parser.Parse(args);
+            ArgsParsingResult result = parser.Parse(args);
 
             result.AssertError(
-                CliArgsParsingErrorCode.FreeValueNotSupported,
+                ArgsParsingErrorCode.FreeValueNotSupported,
                 "not_matched_command");
         }
 
@@ -79,17 +79,17 @@ namespace Axe.Cli.Parser.Test
         public void should_be_error_if_default_command_kv_option_contains_no_value(
             string argumentExpression)
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .AddOptionWithValue("option", 'o', string.Empty)
                 .EndCommand()
                 .Build();
 
             string[] args = { argumentExpression };
-            CliArgsParsingResult result = parser.Parse(args);
+            ArgsParsingResult result = parser.Parse(args);
 
             result.AssertError(
-                CliArgsParsingErrorCode.CannotFindValueForOption,
+                ArgsParsingErrorCode.CannotFindValueForOption,
                 argumentExpression);
         }
 
@@ -101,14 +101,14 @@ namespace Axe.Cli.Parser.Test
         [InlineData("-f")]
         public void should_be_ok_for_flag_with_default_command(string argumentExpression)
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .AddFlagOption("flag", 'f', string.Empty)
                 .EndCommand()
                 .Build();
              
             string[] args = { argumentExpression };
-            CliArgsParsingResult result = parser.Parse(args);
+            ArgsParsingResult result = parser.Parse(args);
 
             Assert.True(result.IsSuccess);
             Assert.True(result.GetFlagValues(argumentExpression));
@@ -120,7 +120,7 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_be_ok_for_multiple_abbr_form_flags_with_default_command()
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .AddFlagOption("recursive", 'r', string.Empty)
                 .AddFlagOption("force", 'f', string.Empty)
@@ -128,7 +128,7 @@ namespace Axe.Cli.Parser.Test
                 .Build();
 
             string[] args = {"-rf"};
-            CliArgsParsingResult result = parser.Parse(args);
+            ArgsParsingResult result = parser.Parse(args);
 
             Assert.True(result.IsSuccess);
             Assert.True(result.GetFlagValues("--recursive"));
@@ -141,17 +141,17 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_be_error_for_duplicated_flags_with_default_command()
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .AddFlagOption("flag", 'f', string.Empty)
                 .EndCommand()
                 .Build();
              
             string[] args = { "-ff" };
-            CliArgsParsingResult result = parser.Parse(args);
+            ArgsParsingResult result = parser.Parse(args);
 
             Assert.False(result.IsSuccess);
-            result.AssertError(CliArgsParsingErrorCode.DuplicateFlagsInArgs, "-ff");
+            result.AssertError(ArgsParsingErrorCode.DuplicateFlagsInArgs, "-ff");
         }
         
         /// <summary>
@@ -160,7 +160,7 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_be_ok_for_non_specified_flags_with_default_command()
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .AddFlagOption("flag", 'f', string.Empty)
                 .AddFlagOption("other-flag", 'o', string.Empty)
@@ -168,7 +168,7 @@ namespace Axe.Cli.Parser.Test
                 .Build();
              
             string[] args = { "-f" };
-            CliArgsParsingResult result = parser.Parse(args);
+            ArgsParsingResult result = parser.Parse(args);
 
             Assert.True(result.IsSuccess);
             Assert.True(result.GetFlagValues("-f"));
@@ -181,10 +181,10 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_be_ok_for_non_argument_if_default_command_is_set()
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand().EndCommand().Build();
 
-            CliArgsParsingResult result = parser.Parse(Array.Empty<string>());
+            ArgsParsingResult result = parser.Parse(Array.Empty<string>());
 
             Assert.True(result.IsSuccess);
             Assert.Equal("DEFAULT_COMMAND", result.Command.ToString());
@@ -196,12 +196,12 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_be_error_for_non_argument_if_default_command_is_not_set()
         {
-            var parser = new CliArgsParserBuilder().Build();
+            var parser = new ArgsParserBuilder().Build();
 
-            CliArgsParsingResult result = parser.Parse(Array.Empty<string>());
+            ArgsParsingResult result = parser.Parse(Array.Empty<string>());
 
             result.AssertError(
-                CliArgsParsingErrorCode.DoesNotMatchAnyCommand,
+                ArgsParsingErrorCode.DoesNotMatchAnyCommand,
                 "Unexpected end of arguments.");
         }
     }

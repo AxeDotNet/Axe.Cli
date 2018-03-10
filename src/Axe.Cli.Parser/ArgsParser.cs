@@ -5,16 +5,16 @@ using Axe.Cli.Parser.Tokenizer;
 
 namespace Axe.Cli.Parser
 {
-    public class CliArgsParser
+    public class ArgsParser
     {
-        readonly CliArgsDefinition definition;
+        readonly ArgsDefinition definition;
 
-        internal CliArgsParser(CliArgsDefinition definition)
+        internal ArgsParser(ArgsDefinition definition)
         {
             this.definition = definition ?? throw new ArgumentNullException(nameof(definition));
         }
 
-        public CliArgsParsingResult Parse(IList<string> args)
+        public ArgsParsingResult Parse(IList<string> args)
         {
             if (args == null) { throw new ArgumentNullException(nameof(args)); }
             if (args.Any(arg => arg == null))
@@ -24,15 +24,15 @@ namespace Axe.Cli.Parser
             
             try
             {
-                return new CliArgsPreParser(definition).Parse(args);
+                return new ArgsPreParser(definition).Parse(args);
             }
-            catch (CliArgParsingException error)
+            catch (ArgParsingException error)
             {
-                return new CliArgsParsingResult(error.CreateError());
+                return new ArgsParsingResult(error.CreateError());
             }
             catch (Exception)
             {
-                return new CliArgsParsingResult(new CliArgsParsingError(string.Join(" ", args), CliArgsParsingErrorCode.Unknown));
+                return new ArgsParsingResult(new ArgsParsingError(string.Join(" ", args), ArgsParsingErrorCode.Unknown));
             }
         }
     }

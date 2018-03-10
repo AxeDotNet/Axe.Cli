@@ -5,10 +5,10 @@ namespace Axe.Cli.Parser.Tokenizer
 {
     class ContinueState : PreParsingStateBase
     {
-        readonly ICliCommandDefinition command;
+        readonly ICommandDefinition command;
         readonly PreParserResultBuilder resultBuilder;
 
-        public ContinueState(ICliCommandDefinition command, PreParserResultBuilder resultBuilder)
+        public ContinueState(ICommandDefinition command, PreParserResultBuilder resultBuilder)
         {
             Debug.Assert(command != null);
             Debug.Assert(resultBuilder != null);
@@ -32,7 +32,7 @@ namespace Axe.Cli.Parser.Tokenizer
             {
                 foreach (ICliOptionDefinition flagOption in flagOptions)
                 {
-                    resultBuilder.AppendOptionToken(new CliOptionToken(flagOption), argument);
+                    resultBuilder.AppendOptionToken(new OptionToken(flagOption), argument);
                 }
                 return new ContinueState(command, resultBuilder);
             }

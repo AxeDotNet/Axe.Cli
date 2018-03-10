@@ -1,11 +1,11 @@
 ﻿namespace Axe.Cli.Parser
 {
-    class CliDefaultCommandDefinition : CliCommandDefinitionBase
+    class DefaultCommandDefinition : CommandDefinitionBase
     {
         public override string Symbol => null;
         public override string Description => null;
 
-        public override bool IsConflict(ICliCommandDefinition commandDefinition)
+        public override bool IsConflict(ICommandDefinition commandDefinition)
         {
             return true;
         }

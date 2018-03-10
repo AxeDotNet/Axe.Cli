@@ -1,27 +1,27 @@
 ﻿namespace Axe.Cli.Parser
 {
-    public class CliCommandBuilder
+    public class CommandBuilder
     {
-        readonly CliArgsParserBuilder parentBuilder;
-        readonly ICliCommandDefinition commandDefinition;
+        readonly ArgsParserBuilder parentBuilder;
+        readonly ICommandDefinition commandDefinition;
         readonly bool isDefaultCommand;
         bool allowFreeValue;
 
-        public CliCommandBuilder(CliArgsParserBuilder parentBuilder)
+        public CommandBuilder(ArgsParserBuilder parentBuilder)
         {
             this.parentBuilder = parentBuilder;
             isDefaultCommand = true;
-            commandDefinition = new CliDefaultCommandDefinition();
+            commandDefinition = new DefaultCommandDefinition();
         }
 
-        public CliCommandBuilder(CliArgsParserBuilder parentBuilder, string commandName, string description)
+        public CommandBuilder(ArgsParserBuilder parentBuilder, string commandName, string description)
         {
             this.parentBuilder = parentBuilder;
             isDefaultCommand = false;
-            commandDefinition = new CliCommandDefinition(commandName, description);
+            commandDefinition = new CommandDefinition(commandName, description);
         }
 
-        public CliCommandBuilder AddOptionWithValue(
+        public CommandBuilder AddOptionWithValue(
             string fullForm,
             char? abbreviation,
             string description,
@@ -39,7 +39,7 @@
             return this;
         }
 
-        public CliCommandBuilder AddFlagOption(
+        public CommandBuilder AddFlagOption(
             string fullForm,
             char? abbreviation,
             string description)
@@ -49,23 +49,23 @@
             return this;
         }
 
-        public CliCommandBuilder ConfigFreeValue(bool allow = false)
+        public CommandBuilder ConfigFreeValue(bool allow = false)
         {
             allowFreeValue = allow;
             return this;
         }
 
-        public CliArgsParserBuilder EndCommand()
+        public ArgsParserBuilder EndCommand()
         {
             if (isDefaultCommand)
             {
-                var command = (CliDefaultCommandDefinition) commandDefinition;
+                var command = (DefaultCommandDefinition) commandDefinition;
                 command.AllowFreeValue = allowFreeValue;
                 parentBuilder.Definition.SetDefaultCommand(command);
             }
             else
             {
-                var command = (CliCommandDefinition)commandDefinition;
+                var command = (CommandDefinition)commandDefinition;
                 command.AllowFreeValue = allowFreeValue;
                 parentBuilder.Definition.RegisterCommand(command);
             }
@@ -73,7 +73,7 @@
             return parentBuilder;
         }
 
-        public CliCommandBuilder AddFreeValue(string name, string description)
+        public CommandBuilder AddFreeValue(string name, string description)
         {
             allowFreeValue = true;
             var definition = new CliFreeValueDefinition(name, description);

@@ -6,10 +6,10 @@ namespace Axe.Cli.Parser.Tokenizer
 {
     class StartState : PreParsingStateBase
     {
-        readonly CliArgsDefinition definition;
+        readonly ArgsDefinition definition;
         readonly PreParserResultBuilder resultBuilder;
 
-        public StartState(CliArgsDefinition definition, PreParserResultBuilder resultBuilder)
+        public StartState(ArgsDefinition definition, PreParserResultBuilder resultBuilder)
         {
             Debug.Assert(definition != null);
             Debug.Assert(resultBuilder != null);
@@ -25,7 +25,7 @@ namespace Axe.Cli.Parser.Tokenizer
                 return HandleEndOfArgument();
             }
 
-            ICliCommandDefinition selectedCommand = ResolveCommand(argument);
+            ICommandDefinition selectedCommand = ResolveCommand(argument);
             if (selectedCommand != null)
             {
                 resultBuilder.SetCommand(selectedCommand);
@@ -46,12 +46,12 @@ namespace Axe.Cli.Parser.Tokenizer
             return HandleFreeValueArgument(selectedCommand, resultBuilder, argument);
         }
 
-        ICliCommandDefinition EnsureDefaultCommandSet(string argument)
+        ICommandDefinition EnsureDefaultCommandSet(string argument)
         {
             if (!HasDefaultCommand)
             {
-                throw new CliArgParsingException(
-                    CliArgsParsingErrorCode.DoesNotMatchAnyCommand,
+                throw new ArgParsingException(
+                    ArgsParsingErrorCode.DoesNotMatchAnyCommand,
                     argument);
             }
 
@@ -63,22 +63,22 @@ namespace Axe.Cli.Parser.Tokenizer
         {
             if (!HasDefaultCommand)
             {
-                throw new CliArgParsingException(
-                    CliArgsParsingErrorCode.DoesNotMatchAnyCommand, "Unexpected end of arguments.");
+                throw new ArgParsingException(
+                    ArgsParsingErrorCode.DoesNotMatchAnyCommand, "Unexpected end of arguments.");
             }
 
             resultBuilder.SetCommand(definition.DefaultCommand);
             return null;
         }
 
-        CliCommandDefinition ResolveCommand(string argument)
+        CommandDefinition ResolveCommand(string argument)
         {
-            if (!CliCommandDefinition.CanBeCommand(argument))
+            if (!CommandDefinition.CanBeCommand(argument))
             {
                 return null;
             }
 
-            IReadOnlyList<CliCommandDefinition> commands = definition.GetRegisteredCommands();
+            IReadOnlyList<CommandDefinition> commands = definition.GetRegisteredCommands();
             return commands.FirstOrDefault(c => c.IsMatch(argument));
         }
 

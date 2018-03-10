@@ -8,8 +8,8 @@ namespace Axe.Cli.Parser.Transformers
         {
             if (!int.TryParse(argument, NumberStyles.Integer, CultureInfo.InvariantCulture, out int result))
             {
-                throw new CliArgParsingException(
-                    CliArgsParsingErrorCode.TransformIntegerValueFailed, argument);
+                throw new ArgParsingException(
+                    ArgsParsingErrorCode.TransformIntegerValueFailed, argument);
             }
 
             return result;

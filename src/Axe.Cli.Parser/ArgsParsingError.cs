@@ -2,15 +2,15 @@
 
 namespace Axe.Cli.Parser
 {
-    public class CliArgsParsingError
+    public class ArgsParsingError
     {
-        public CliArgsParsingError(string trigger, CliArgsParsingErrorCode code)
+        public ArgsParsingError(string trigger, ArgsParsingErrorCode code)
         {
             Trigger = trigger ?? throw new ArgumentNullException(nameof(trigger));
             Code = code;
         }
 
         public string Trigger { get; }
-        public CliArgsParsingErrorCode Code { get; }
+        public ArgsParsingErrorCode Code { get; }
     }
 }

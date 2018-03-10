@@ -13,7 +13,7 @@ namespace Axe.Cli.Parser.Tokenizer
         }
 
         protected static ICliOptionDefinition ResolveKeyValueOptionLabel(
-            ICliCommandDefinition selectedCommand,
+            ICommandDefinition selectedCommand,
             string argument)
         {
             if (!OptionSymbol.CanBeFullForm(argument) && !OptionSymbol.CanBeAbbreviationSingleForm(argument))
@@ -26,7 +26,7 @@ namespace Axe.Cli.Parser.Tokenizer
         }
         
         protected static IList<ICliOptionDefinition> ResolveFlagOptionLabels(
-            ICliCommandDefinition selectedCommand, 
+            ICommandDefinition selectedCommand, 
             string argument)
         {
             if (OptionSymbol.CanBeFullForm(argument))
@@ -41,7 +41,7 @@ namespace Axe.Cli.Parser.Tokenizer
                 string[] flagArguments = SplitAbbrArgument(argument);
                 if (flagArguments.HasDuplication(StringComparer.OrdinalIgnoreCase))
                 {
-                    throw new CliArgParsingException(CliArgsParsingErrorCode.DuplicateFlagsInArgs, argument);
+                    throw new ArgParsingException(ArgsParsingErrorCode.DuplicateFlagsInArgs, argument);
                 }
 
                 return selectedCommand.GetRegisteredOptions()
@@ -53,7 +53,7 @@ namespace Axe.Cli.Parser.Tokenizer
         }
 
         protected static IPreParsingState HandleKeyValueOptionArgument(
-            ICliCommandDefinition command,
+            ICommandDefinition command,
             PreParserResultBuilder resultBuilder,
             string argument)
         {
@@ -66,7 +66,7 @@ namespace Axe.Cli.Parser.Tokenizer
         }
 
         protected static IPreParsingState HandleFlagOptionArgument(
-            ICliCommandDefinition command,
+            ICommandDefinition command,
             PreParserResultBuilder resultBuilder,
             string argument)
         {
@@ -77,7 +77,7 @@ namespace Axe.Cli.Parser.Tokenizer
             {
                 foreach (ICliOptionDefinition flagOption in flagOptions)
                 {
-                    resultBuilder.AppendOptionToken(new CliOptionToken(flagOption), argument);
+                    resultBuilder.AppendOptionToken(new OptionToken(flagOption), argument);
                 }
                 return new ContinueState(command, resultBuilder);
             }
@@ -92,7 +92,7 @@ namespace Axe.Cli.Parser.Tokenizer
 
         public abstract IPreParsingState MoveToNext(string argument);
 
-        protected static IPreParsingState HandleFreeValueArgument(ICliCommandDefinition selectedCommand,
+        protected static IPreParsingState HandleFreeValueArgument(ICommandDefinition selectedCommand,
             PreParserResultBuilder resultBuilder, string argument)
         {
             if (selectedCommand.AllowFreeValue)
@@ -101,8 +101,8 @@ namespace Axe.Cli.Parser.Tokenizer
                 return new ContinueFreeValueState(selectedCommand, resultBuilder);
             }
 
-            throw new CliArgParsingException(
-                CliArgsParsingErrorCode.FreeValueNotSupported,
+            throw new ArgParsingException(
+                ArgsParsingErrorCode.FreeValueNotSupported,
                 argument);
         }
     }

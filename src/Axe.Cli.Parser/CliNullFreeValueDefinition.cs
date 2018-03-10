@@ -11,7 +11,7 @@ namespace Axe.Cli.Parser
         public Guid Id { get; } = Guid.Empty;
         public string Name { get; } = string.Empty;
         public string Description { get; } = string.Empty;
-        public ValueTransformer Transformer { get; } = CliArgsTransformers.Default;
+        public ValueTransformer Transformer { get; } = ArgsTransformers.Default;
         public bool IsConflict(ICliFreeValueDefinition freeValueDefinition)
         {
             // always return true to avoid registration.

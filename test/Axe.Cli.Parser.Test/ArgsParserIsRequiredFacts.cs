@@ -4,18 +4,18 @@ using Xunit;
 
 namespace Axe.Cli.Parser.Test
 {
-    public class CliArgsParserIsRequiredFacts
+    public class ArgsParserIsRequiredFacts
     {
         [Fact]
         public void should_get_optional_value()
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .AddOptionWithValue("key", 'k', string.Empty)
                 .EndCommand()
                 .Build();
 
-            CliArgsParsingResult result = parser.Parse(Array.Empty<string>());
+            ArgsParsingResult result = parser.Parse(Array.Empty<string>());
 
             Assert.True(result.IsSuccess);
             Assert.Empty(result.GetOptionRawValue("--key"));
@@ -24,16 +24,16 @@ namespace Axe.Cli.Parser.Test
         [Fact]
         public void should_be_error_if_required_value_not_present()
         {
-            CliArgsParser parser = new CliArgsParserBuilder()
+            ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
                 .AddOptionWithValue("key", 'k', string.Empty, true)
                 .EndCommand()
                 .Build();
 
-            CliArgsParsingResult result = parser.Parse(Array.Empty<string>());
+            ArgsParsingResult result = parser.Parse(Array.Empty<string>());
 
             result.AssertError(
-                CliArgsParsingErrorCode.RequiredOptionNotPresent,
+                ArgsParsingErrorCode.RequiredOptionNotPresent,
                 "full form: --key; abbr. form: -k");
         }
     }

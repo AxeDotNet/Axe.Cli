@@ -4,13 +4,13 @@ namespace Axe.Cli.Parser.Tokenizer
 {
     class WaitingValueState : PreParsingStateBase
     {
-        readonly ICliCommandDefinition command;
+        readonly ICommandDefinition command;
         readonly ICliOptionDefinition kvOption;
         readonly string labelArgument;
         readonly PreParserResultBuilder resultBuilder;
 
         public WaitingValueState(
-            ICliCommandDefinition command,
+            ICommandDefinition command,
             ICliOptionDefinition kvOption,
             string labelArgument,
             PreParserResultBuilder resultBuilder)
@@ -29,10 +29,10 @@ namespace Axe.Cli.Parser.Tokenizer
         {
             if (IsEndOfArguments(argument))
             {
-                throw new CliArgParsingException(CliArgsParsingErrorCode.CannotFindValueForOption, labelArgument);
+                throw new ArgParsingException(ArgsParsingErrorCode.CannotFindValueForOption, labelArgument);
             }
 
-            resultBuilder.AppendOptionToken(new CliOptionToken(kvOption, argument), $"{labelArgument} {argument}");
+            resultBuilder.AppendOptionToken(new OptionToken(kvOption, argument), $"{labelArgument} {argument}");
             return new ContinueState(command, resultBuilder);
         }
     }
