@@ -8,7 +8,7 @@ namespace Axe.Cli.Parser
         
         string Name { get; }
         string Description { get; }
-        IValueTransformer Transformer { get; }
+        ValueTransformer Transformer { get; }
 
         bool IsConflict(ICliFreeValueDefinition freeValueDefinition);
         bool IsMatch(string name);

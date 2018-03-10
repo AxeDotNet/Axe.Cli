@@ -2,15 +2,10 @@
 
 namespace Axe.Cli.Parser
 {
-    class OptionValue
+    class OptionValue : TransformedValue<IList<string>, IList<object>>
     {
-        public OptionValue(IList<string> rawValues, IList<object> transformedValues)
+        public OptionValue(IList<string> raw, IList<object> transformed) : base(raw, transformed)
         {
-            RawValues = rawValues;
-            TransformedValues = transformedValues;
         }
-
-        public IList<string> RawValues { get; }
-        public IList<object> TransformedValues { get; }
     }
 }

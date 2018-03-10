@@ -26,7 +26,7 @@
             char? abbreviation,
             string description,
             bool isRequired = false,
-            IValueTransformer transformer = null)
+            ValueTransformer transformer = null)
         {
             commandDefinition.RegisterOption(
                 new CliOptionDefinition(

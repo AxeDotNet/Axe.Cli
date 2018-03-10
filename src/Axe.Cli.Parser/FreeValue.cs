@@ -2,15 +2,10 @@
 
 namespace Axe.Cli.Parser
 {
-    class FreeValue
+    class FreeValue : TransformedValue<string, IList<object>>
     {
-        public FreeValue(string rawValue, IList<object> transformedValues)
+        public FreeValue(string raw, IList<object> transformed) : base(raw, transformed)
         {
-            RawValue = rawValue;
-            TransformedValues = transformedValues;
         }
-
-        public string RawValue { get; }
-        public IList<object> TransformedValues { get; }
     }
 }

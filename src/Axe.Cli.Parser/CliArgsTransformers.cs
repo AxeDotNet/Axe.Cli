@@ -4,7 +4,7 @@ namespace Axe.Cli.Parser
 {
     public static class CliArgsTransformers
     {
-        public static IValueTransformer IntegerTransformer { get; } = new IntegerTransformer();
-        public static IValueTransformer Default { get; } = new DefaultTransformer();
+        public static ValueTransformer IntegerTransformer { get; } = new IntegerTransformer();
+        public static ValueTransformer Default { get; } = new DefaultTransformer();
     }
 }

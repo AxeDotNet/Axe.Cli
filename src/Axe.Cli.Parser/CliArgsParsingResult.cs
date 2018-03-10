@@ -27,73 +27,10 @@ namespace Axe.Cli.Parser
             IList<KeyValuePair<ICliFreeValueDefinition, string>> freeValues)
         {
             Command = command ?? throw new ArgumentNullException(nameof(command));
-            this.optionValues = TransformOptionValues(optionValues);
+            this.optionValues = TransformService.TransformOptionValues(optionValues);
             this.optionFlags = optionFlags?.ToArray() ?? Array.Empty<KeyValuePair<ICliOptionDefinition, bool>>();
-            this.freeValues = TransformFreeValues(freeValues);
+            this.freeValues = TransformService.TransformFreeValues(freeValues);
             IsSuccess = true;
-        }
-
-        IList<KeyValuePair<ICliFreeValueDefinition, FreeValue>> TransformFreeValues(
-            IList<KeyValuePair<ICliFreeValueDefinition, string>> rawFreeValues)
-        {
-            if (rawFreeValues == null) { return Array.Empty<KeyValuePair<ICliFreeValueDefinition, FreeValue>>(); }
-
-            return rawFreeValues.Select(fv =>
-                {
-                    ICliFreeValueDefinition freeValueDefinition = fv.Key;
-                    IValueTransformer transformer = freeValueDefinition.Transformer;
-
-                    try
-                    {
-                        string[] rawValues = string.IsNullOrEmpty(fv.Value) ? Array.Empty<string>() : new[] {fv.Value};
-                        return new KeyValuePair<ICliFreeValueDefinition, FreeValue>(
-                            freeValueDefinition,
-                            new FreeValue(fv.Value, transformer.Transform(rawValues)));
-                    }
-                    catch (CliArgParsingException)
-                    {
-                        throw;
-                    }
-                    catch
-                    {
-                        throw new CliArgParsingException(
-                            CliArgsParsingErrorCode.TransformValueFailed,
-                            fv.Value);
-                    }
-                })
-                .ToArray();
-        }
-
-        static IList<KeyValuePair<ICliOptionDefinition, OptionValue>> TransformOptionValues(
-            IEnumerable<KeyValuePair<ICliOptionDefinition, IList<string>>> rawOptionValues)
-        {
-            if (rawOptionValues == null) { return Array.Empty<KeyValuePair<ICliOptionDefinition, OptionValue>>(); }
-
-            return rawOptionValues
-                .Select(
-                    ov =>
-                    {
-                        ICliOptionDefinition optionDefinition = ov.Key;
-                        IValueTransformer transformer = optionDefinition.Transformer;
-
-                        try
-                        {
-                            return new KeyValuePair<ICliOptionDefinition, OptionValue>(
-                                optionDefinition,
-                                new OptionValue(ov.Value, transformer.Transform(ov.Value)));
-                        }
-                        catch (CliArgParsingException)
-                        {
-                            throw;
-                        }
-                        catch
-                        {
-                            throw new CliArgParsingException(
-                                CliArgsParsingErrorCode.TransformValueFailed,
-                                $"Option: {ov.Key.ToString()}; Values: {string.Join(" ", ov.Value)}.");
-                        }
-                    })
-                .ToArray();
         }
 
         OptionValue GetOptionValueObject(string option)
@@ -129,29 +66,29 @@ namespace Axe.Cli.Parser
 
         public IList<string> GetOptionRawValue(string option)
         {
-            return GetOptionValueObject(option ?? throw new ArgumentNullException(nameof(option))).RawValues;
+            return GetOptionValueObject(option ?? throw new ArgumentNullException(nameof(option))).Raw;
         }
 
         public IList<object> GetOptionValue(string option)
         {
-            return GetOptionValueObject(option ?? throw new ArgumentNullException(nameof(option))).TransformedValues;
+            return GetOptionValueObject(option ?? throw new ArgumentNullException(nameof(option))).Transformed;
         }
 
         public IList<object> GetFreeValue(string name)
         {
-            return GetFreeValueObject(name ?? throw new ArgumentNullException(nameof(name))).TransformedValues;
+            return GetFreeValueObject(name ?? throw new ArgumentNullException(nameof(name))).Transformed;
         }
 
         public string GetFreeRawValue(string name)
         {
-            return GetFreeValueObject(name ?? throw new ArgumentNullException(nameof(name))).RawValue;
+            return GetFreeValueObject(name ?? throw new ArgumentNullException(nameof(name))).Raw;
         }
 
         public IList<string> GetUndefinedFreeValues()
         {
             return freeValues
                 .Where(f => f.Key is CliNullFreeValueDefinition)
-                .Select(f => f.Value.RawValue)
+                .Select(f => f.Value.Raw)
                 .ToArray();
         }
     }

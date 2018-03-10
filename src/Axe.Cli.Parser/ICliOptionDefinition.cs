@@ -10,7 +10,7 @@ namespace Axe.Cli.Parser
         string Description { get; }
         bool IsRequired { get; }
         OptionType Type { get; }
-        IValueTransformer Transformer { get; }
+        ValueTransformer Transformer { get; }
 
         bool IsConflict(ICliOptionDefinition optionDefinition);
         string ToString();

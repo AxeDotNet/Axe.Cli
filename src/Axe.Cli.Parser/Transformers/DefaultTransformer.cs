@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Axe.Cli.Parser.Transformers
+﻿namespace Axe.Cli.Parser.Transformers
 {
-    class DefaultTransformer : IValueTransformer
+    class DefaultTransformer : SingleValueTransformer
     {
-        public IList<object> Transform(IList<string> values)
+        protected override object TransformSingleArgument(string argument)
         {
-            return values.Cast<object>().ToArray();
+            return argument;
         }
     }
 }

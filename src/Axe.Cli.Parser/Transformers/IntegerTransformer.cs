@@ -1,29 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 
 namespace Axe.Cli.Parser.Transformers
 {
-    class IntegerTransformer : IValueTransformer
+    class IntegerTransformer : SingleValueTransformer
     {
-        public IList<object> Transform(IList<string> values)
+        protected override object TransformSingleArgument(string argument)
         {
-            if (values.Count == 0) { return Array.Empty<object>(); }
+            if (!int.TryParse(argument, NumberStyles.Integer, CultureInfo.InvariantCulture, out int result))
+            {
+                throw new CliArgParsingException(
+                    CliArgsParsingErrorCode.TransformIntegerValueFailed, argument);
+            }
 
-            return values.Select(
-                v =>
-                {
-                    if (!int.TryParse(v, NumberStyles.Integer, CultureInfo.InvariantCulture, out int result))
-                    {
-                        throw new CliArgParsingException(
-                            CliArgsParsingErrorCode.TransformIntegerValueFailed, v);
-                    }
-
-                    return result;
-                })
-                .Cast<object>()
-                .ToArray();
+            return result;
         }
     }
 }

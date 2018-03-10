@@ -10,7 +10,7 @@ namespace Axe.Cli.Parser
             RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline |
             RegexOptions.IgnoreCase);
         
-        public CliFreeValueDefinition(string name, string description, IValueTransformer transformer = null)
+        public CliFreeValueDefinition(string name, string description, ValueTransformer transformer = null)
         {
             ValidateName(name);
             
@@ -30,7 +30,7 @@ namespace Axe.Cli.Parser
         public Guid Id { get; } = Guid.NewGuid();
         public string Name { get; }
         public string Description { get; }
-        public IValueTransformer Transformer { get; }
+        public ValueTransformer Transformer { get; }
         public bool IsConflict(ICliFreeValueDefinition freeValueDefinition)
         {
             return Name.Equals(freeValueDefinition.Name, StringComparison.OrdinalIgnoreCase);

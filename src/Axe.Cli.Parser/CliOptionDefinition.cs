@@ -10,7 +10,7 @@ namespace Axe.Cli.Parser
             string description,
             bool isRequired = false,
             OptionType type = OptionType.KeyValue,
-            IValueTransformer transformer = null)
+            ValueTransformer transformer = null)
         {
             Symbol = new OptionSymbol(symbol, abbreviation);
             Description = description;
@@ -24,7 +24,7 @@ namespace Axe.Cli.Parser
         public string Description { get; }
         public bool IsRequired { get; }
         public OptionType Type { get; }
-        public IValueTransformer Transformer { get; }
+        public ValueTransformer Transformer { get; }
 
         public bool IsConflict(ICliOptionDefinition optionDefinition)
         {
