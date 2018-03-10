@@ -203,8 +203,8 @@ namespace Axe.Cli.Parser.Test
 
             ArgsParsingResult result = parser.Parse(new [] {argument1, "value1", argument2, "value2"});
 
-            Assert.Equal("value1", result.GetOptionValue<string>(argument1));
-            Assert.Equal("value2", result.GetOptionValue<string>(argument2));
+            Assert.Equal("value1", result.GetFirstOptionValue<string>(argument1));
+            Assert.Equal("value2", result.GetFirstOptionValue<string>(argument2));
         }
     }
 }

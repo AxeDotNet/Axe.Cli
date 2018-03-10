@@ -11,19 +11,28 @@ namespace Axe.Cli.Parser
             if (result == null) {throw new ArgumentNullException(nameof(result));}
 
             IList<object> values = result.GetOptionValue(option);
-            if (typeof(IList<T>) == typeof(IList<object>)) { return (IList<T>)values; }
+            return values.Cast<T>().ToArray();
+        }
+
+        public static T GetFirstOptionValue<T>(this ArgsParsingResult result, string option)
+        {
+            if (result == null) {throw new ArgumentNullException(nameof(result));}
+            IList<object> values = result.GetOptionValue(option);
+            return (T) values.First();
+        }
+
+        public static IList<T> GetFreeValue<T>(this ArgsParsingResult result, string name)
+        {
+            if (result == null) { throw new ArgumentNullException(nameof(result)); }
+            IList<object> values = result.GetFreeValue(name);
 
             return values.Cast<T>().ToArray();
         }
 
-        public static T GetOptionValue<T>(this ArgsParsingResult result, string option, Func<T> defaultFunc = null)
+        public static T GetFirstFreeValue<T>(this ArgsParsingResult result, string name)
         {
-            if (result == null) {throw new ArgumentNullException(nameof(result));}
-            Func<T> createDefaultValue = defaultFunc ?? (() => default(T));
-
-            IList<object> values = result.GetOptionValue(option);
-            if (values.Count == 0) { return createDefaultValue(); }
-
+            if (result == null) { throw new ArgumentNullException(nameof(result)); }
+            IList<object> values = result.GetFreeValue(name);
             return (T) values.First();
         }
     }

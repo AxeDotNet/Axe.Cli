@@ -73,10 +73,10 @@
             return parentBuilder;
         }
 
-        public CommandBuilder AddFreeValue(string name, string description)
+        public CommandBuilder AddFreeValue(string name, string description, ValueTransformer transformer = null)
         {
             allowFreeValue = true;
-            var definition = new CliFreeValueDefinition(name, description);
+            var definition = new CliFreeValueDefinition(name, description, transformer);
             commandDefinition.RegisterFreeValue(definition);
             return this;
         }

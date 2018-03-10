@@ -19,7 +19,7 @@ namespace Axe.Cli.Parser.Test
 
             Assert.True(result.IsSuccess);
             Assert.Equal(12, result.GetOptionValue("-i").Single());
-            Assert.Equal(12, result.GetOptionValue<int>("--integer"));
+            Assert.Equal(12, result.GetFirstOptionValue<int>("--integer"));
         }
 
         [Fact]

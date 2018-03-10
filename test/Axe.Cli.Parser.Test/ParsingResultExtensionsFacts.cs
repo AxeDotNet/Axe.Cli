@@ -9,7 +9,7 @@ namespace Axe.Cli.Parser.Test
         public void should_throw_if_result_is_null()
         {
             Assert.Throws<ArgumentNullException>(() => ((ArgsParsingResult) null).GetOptionValues<object>("-i"));
-            Assert.Throws<ArgumentNullException>(() => ((ArgsParsingResult) null).GetOptionValue<object>("-i"));
+            Assert.Throws<ArgumentNullException>(() => ((ArgsParsingResult) null).GetFirstOptionValue<object>("-i"));
         }
     }
 }

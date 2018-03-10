@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Xunit;
 
 namespace Axe.Cli.Parser.Test
@@ -166,6 +167,38 @@ namespace Axe.Cli.Parser.Test
             Assert.Equal("name_value", result.GetFreeRawValue("name"));
             Assert.Empty(result.GetFreeValue("uncaptured_definition"));
             Assert.Equal(string.Empty, result.GetFreeRawValue("uncaptured_definition"));
+        }
+
+        [Fact]
+        public void should_throw_if_get_a_undefined_free_value()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginCommand("command", string.Empty)
+                .ConfigFreeValue(true)
+                .EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(new [] {"command", "free_value"});
+
+            Assert.True(result.IsSuccess);
+            Assert.Throws<ArgumentException>(() => result.GetFreeValue("undefined_name"));
+            Assert.Throws<ArgumentException>(() => result.GetFreeRawValue("undefined_name"));
+        }
+
+        [Fact]
+        public void should_support_transformer_on_free_values()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginCommand("command", string.Empty)
+                .AddFreeValue("name", string.Empty, ArgsTransformers.IntegerTransformer)
+                .EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(new [] {"command", "123"});
+
+            Assert.True(result.IsSuccess);
+            Assert.Equal(123, result.GetFreeValue<int>("name").Single());
+            Assert.Equal(123, result.GetFirstFreeValue<int>("name"));
         }
     }
 }
