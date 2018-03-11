@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace Axe.Cli.Parser
@@ -41,7 +42,7 @@ namespace Axe.Cli.Parser
                 throw new ArgumentException($"The symbol '{symbol}' is not in a valid format."); 
             }
 
-            if (abbreviation != null && abbreviation == '-')
+            if (abbreviation != null && !IsEnglishAlphabet(abbreviation.Value) )
             {
                 throw new ArgumentException("The abbreviation cannot be a dash sign.");
             }
@@ -75,6 +76,13 @@ namespace Axe.Cli.Parser
         public bool IsConflict(IOptionSymbol other)
         {
             return SymbolEqual(other.Symbol) || AbbreviationEqual(other.Abbreviation);
+        }
+
+        [SuppressMessage(
+            "ReSharper", "ArrangeRedundantParentheses", Justification = "We humans like parentheses.")]
+        static bool IsEnglishAlphabet(char value)
+        {
+            return (value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z');
         }
 
         bool AbbreviationEqual(char? otherAbbreviation)

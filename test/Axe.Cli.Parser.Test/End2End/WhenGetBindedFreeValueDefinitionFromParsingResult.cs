@@ -65,16 +65,5 @@ namespace Axe.Cli.Parser.Test.End2End
             string actualDescription = result.Command.GetRegisteredFreeValuesMetadata().Single().Description;
             Assert.Equal(string.Empty, actualDescription);
         }
-
-        [Theory]
-        [InlineData("name")]
-        [InlineData("namE")]
-        [InlineData("NamE")]
-        public void should_determine_conflict_free_value(string conflictName)
-        {
-            CommandBuilder builder = new ArgsParserBuilder().BeginCommand("command", string.Empty);
-            builder.AddFreeValue("name", "original");
-            Assert.Throws<ArgumentException>(() => builder.AddFreeValue(conflictName, "conflict"));
-        }
     }
 }
