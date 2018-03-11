@@ -12,7 +12,7 @@ namespace Axe.Cli.Parser.Tokenizer
             return argument == null;
         }
 
-        protected static ICliOptionDefinition ResolveKeyValueOptionLabel(
+        protected static IOptionDefinition ResolveKeyValueOptionLabel(
             ICommandDefinition selectedCommand,
             string argument)
         {
@@ -25,7 +25,7 @@ namespace Axe.Cli.Parser.Tokenizer
                 .FirstOrDefault(o => o.Type == OptionType.KeyValue && o.IsMatch(argument));
         }
         
-        protected static IList<ICliOptionDefinition> ResolveFlagOptionLabels(
+        protected static IList<IOptionDefinition> ResolveFlagOptionLabels(
             ICommandDefinition selectedCommand, 
             string argument)
         {
@@ -49,7 +49,7 @@ namespace Axe.Cli.Parser.Tokenizer
                     .ToArray();
             }
 
-            return Array.Empty<ICliOptionDefinition>();
+            return Array.Empty<IOptionDefinition>();
         }
 
         protected static IPreParsingState HandleKeyValueOptionArgument(
@@ -57,7 +57,7 @@ namespace Axe.Cli.Parser.Tokenizer
             PreParserResultBuilder resultBuilder,
             string argument)
         {
-            ICliOptionDefinition kvOption = ResolveKeyValueOptionLabel(
+            IOptionDefinition kvOption = ResolveKeyValueOptionLabel(
                 command,
                 argument);
             return kvOption != null
@@ -70,12 +70,12 @@ namespace Axe.Cli.Parser.Tokenizer
             PreParserResultBuilder resultBuilder,
             string argument)
         {
-            IList<ICliOptionDefinition> flagOptions = ResolveFlagOptionLabels(
+            IList<IOptionDefinition> flagOptions = ResolveFlagOptionLabels(
                 command,
                 argument);
             if (flagOptions.Count > 0)
             {
-                foreach (ICliOptionDefinition flagOption in flagOptions)
+                foreach (IOptionDefinition flagOption in flagOptions)
                 {
                     resultBuilder.AppendOptionToken(new OptionToken(flagOption), argument);
                 }

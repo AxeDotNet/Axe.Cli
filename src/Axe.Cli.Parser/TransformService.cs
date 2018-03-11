@@ -37,21 +37,21 @@ namespace Axe.Cli.Parser
                 .ToArray();
         }
 
-        public static IList<KeyValuePair<ICliOptionDefinition, OptionValue>> TransformOptionValues(
-            IEnumerable<KeyValuePair<ICliOptionDefinition, IList<string>>> rawOptionValues)
+        public static IList<KeyValuePair<IOptionDefinition, OptionValue>> TransformOptionValues(
+            IEnumerable<KeyValuePair<IOptionDefinition, IList<string>>> rawOptionValues)
         {
-            if (rawOptionValues == null) { return Array.Empty<KeyValuePair<ICliOptionDefinition, OptionValue>>(); }
+            if (rawOptionValues == null) { return Array.Empty<KeyValuePair<IOptionDefinition, OptionValue>>(); }
 
             return rawOptionValues
                 .Select(
                     ov =>
                     {
-                        ICliOptionDefinition optionDefinition = ov.Key;
+                        IOptionDefinition optionDefinition = ov.Key;
                         ValueTransformer transformer = optionDefinition.Transformer;
 
                         try
                         {
-                            return new KeyValuePair<ICliOptionDefinition, OptionValue>(
+                            return new KeyValuePair<IOptionDefinition, OptionValue>(
                                 optionDefinition,
                                 new OptionValue(ov.Value, transformer.Transform(ov.Value)));
                         }

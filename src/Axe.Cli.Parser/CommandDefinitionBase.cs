@@ -7,7 +7,7 @@ namespace Axe.Cli.Parser
 {
     abstract class CommandDefinitionBase : ICommandDefinition
     {
-        readonly List<ICliOptionDefinition> options = new List<ICliOptionDefinition>();
+        readonly List<IOptionDefinition> options = new List<IOptionDefinition>();
         readonly List<IFreeValueDefinition> freeValues = new List<IFreeValueDefinition>();
         public bool AllowFreeValue { get; set; }
 
@@ -19,7 +19,7 @@ namespace Axe.Cli.Parser
 
         public abstract bool IsMatch(string argument);
 
-        public IEnumerable<ICliOptionDefinition> GetRegisteredOptionsMetadata()
+        public IEnumerable<IOptionDefinitionMetadata> GetRegisteredOptionsMetadata()
         {
             return GetRegisteredOptions();
         }
@@ -29,7 +29,7 @@ namespace Axe.Cli.Parser
             return GetRegisteredFreeValues();
         }
 
-        public IEnumerable<ICliOptionDefinition> GetRegisteredOptions()
+        public IEnumerable<IOptionDefinition> GetRegisteredOptions()
         {
             return options;
         }
@@ -39,11 +39,11 @@ namespace Axe.Cli.Parser
             return freeValues;
         }
 
-        public void RegisterOption(ICliOptionDefinition option)
+        public void RegisterOption(IOptionDefinition option)
         {
             Debug.Assert(option != null);
 
-            ICliOptionDefinition conflictOptionDefinition = options.FirstOrDefault(o => o.IsConflict(option));
+            IOptionDefinition conflictOptionDefinition = options.FirstOrDefault(o => o.IsConflict(option));
             if (conflictOptionDefinition != null)
             {
                 throw new ArgumentException(

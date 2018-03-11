@@ -6,9 +6,9 @@ namespace Axe.Cli.Parser
     {
         bool IsConflict(ICommandDefinition commandDefinition);
         bool IsMatch(string argument);
-        void RegisterOption(ICliOptionDefinition option);
+        void RegisterOption(IOptionDefinition option);
         void RegisterFreeValue(IFreeValueDefinition freeValue);
-        IEnumerable<ICliOptionDefinition> GetRegisteredOptions();
+        IEnumerable<IOptionDefinition> GetRegisteredOptions();
         IEnumerable<IFreeValueDefinition> GetRegisteredFreeValues();
     }
 }

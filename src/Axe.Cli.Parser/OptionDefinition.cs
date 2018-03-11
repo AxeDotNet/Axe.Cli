@@ -3,9 +3,9 @@ using Axe.Cli.Parser.Extensions;
 
 namespace Axe.Cli.Parser
 {
-    class CliOptionDefinition : ICliOptionDefinition
+    class OptionDefinition : IOptionDefinition
     {
-        public CliOptionDefinition(
+        public OptionDefinition(
             string symbol,
             char? abbreviation,
             string description,
@@ -21,18 +21,18 @@ namespace Axe.Cli.Parser
         }
 
         public Guid Id { get; } = Guid.NewGuid();
-        public ICliOptionSymbol Symbol { get; }
+        public IOptionSymbol Symbol { get; }
         public string Description { get; }
         public bool IsRequired { get; }
         public OptionType Type { get; }
         public ValueTransformer Transformer { get; }
 
-        public bool IsConflict(ICliOptionDefinition optionDefinition)
+        public bool IsConflict(IOptionDefinition optionDefinition)
         {
             return Symbol.IsConflict(optionDefinition.Symbol);
         }
 
-        public bool Equals(ICliOptionDefinition other)
+        public bool Equals(IOptionDefinition other)
         {
             return Id.Equals(other.Id);
         }
@@ -43,7 +43,7 @@ namespace Axe.Cli.Parser
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
 
-            return Equals((ICliOptionDefinition) obj);
+            return Equals((IOptionDefinition) obj);
         }
 
         public override int GetHashCode()

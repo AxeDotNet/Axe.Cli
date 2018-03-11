@@ -1,12 +1,12 @@
 ﻿namespace Axe.Cli.Parser
 {
-    public interface ICliOptionSymbol
+    interface IOptionSymbol
     {
         char? Abbreviation { get; }
         string Symbol { get; }
 
-        bool IsConflict(ICliOptionSymbol other);
-        string ToString();
+        bool IsConflict(IOptionSymbol other);
         bool IsMatch(string argument);
+        string ToString();
     }
 }

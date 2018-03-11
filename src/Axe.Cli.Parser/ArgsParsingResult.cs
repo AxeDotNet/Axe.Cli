@@ -9,8 +9,8 @@ namespace Axe.Cli.Parser
     /// </summary>
     public class ArgsParsingResult
     {
-        readonly IList<KeyValuePair<ICliOptionDefinition, bool>> optionFlags;
-        readonly IList<KeyValuePair<ICliOptionDefinition, OptionValue>> optionValues;
+        readonly IList<KeyValuePair<IOptionDefinition, bool>> optionFlags;
+        readonly IList<KeyValuePair<IOptionDefinition, OptionValue>> optionValues;
         readonly IList<KeyValuePair<IFreeValueDefinition, FreeValue>> freeValues;
 
         /// <summary>
@@ -40,20 +40,20 @@ namespace Axe.Cli.Parser
 
         internal ArgsParsingResult(
             ICommandDefinition command,
-            IEnumerable<KeyValuePair<ICliOptionDefinition, IList<string>>> optionValues,
-            IEnumerable<KeyValuePair<ICliOptionDefinition, bool>> optionFlags,
+            IEnumerable<KeyValuePair<IOptionDefinition, IList<string>>> optionValues,
+            IEnumerable<KeyValuePair<IOptionDefinition, bool>> optionFlags,
             IList<KeyValuePair<IFreeValueDefinition, string>> freeValues)
         {
             Command = command ?? throw new ArgumentNullException(nameof(command));
             this.optionValues = TransformService.TransformOptionValues(optionValues);
-            this.optionFlags = optionFlags?.ToArray() ?? Array.Empty<KeyValuePair<ICliOptionDefinition, bool>>();
+            this.optionFlags = optionFlags?.ToArray() ?? Array.Empty<KeyValuePair<IOptionDefinition, bool>>();
             this.freeValues = TransformService.TransformFreeValues(freeValues);
             IsSuccess = true;
         }
 
         OptionValue GetOptionValueObject(string option)
         {
-            KeyValuePair<ICliOptionDefinition, OptionValue> matchedKeyValue = 
+            KeyValuePair<IOptionDefinition, OptionValue> matchedKeyValue = 
                 optionValues.FirstOrDefault(o => o.Key.IsMatch(option));
             if (matchedKeyValue.Key == null)
             {
@@ -106,7 +106,7 @@ namespace Axe.Cli.Parser
             if (flag == null) { throw new ArgumentNullException(nameof(flag)); }
 
             EnsureSuccess();
-            KeyValuePair<ICliOptionDefinition, bool> matchedFlag = optionFlags.FirstOrDefault(o => o.Key.IsMatch(flag));
+            KeyValuePair<IOptionDefinition, bool> matchedFlag = optionFlags.FirstOrDefault(o => o.Key.IsMatch(flag));
             if (matchedFlag.Key == null) { throw new ArgumentException($"The flag you specified is not defined: '{flag}'");}
             return matchedFlag.Value;
         }

@@ -9,7 +9,7 @@ namespace Axe.Cli.Parser
         bool AllowFreeValue { get; }
         string ToString();
 
-        IEnumerable<ICliOptionDefinition> GetRegisteredOptionsMetadata();
+        IEnumerable<IOptionDefinitionMetadata> GetRegisteredOptionsMetadata();
         IEnumerable<IFreeValueDefinitionMetadata> GetRegisteredFreeValuesMetadata();
     }
 }

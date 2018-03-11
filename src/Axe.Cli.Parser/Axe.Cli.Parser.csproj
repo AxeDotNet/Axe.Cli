@@ -11,4 +11,10 @@
     <PackageTags>commandline cli parser</PackageTags>
     <FileVersion>0.1.0.0</FileVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Axe.Cli.Parser.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Axe.Cli.Parser.xml</DocumentationFile>
+  </PropertyGroup>
 </Project>

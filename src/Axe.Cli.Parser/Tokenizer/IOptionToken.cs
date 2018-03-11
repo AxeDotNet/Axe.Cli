@@ -2,7 +2,7 @@
 {
     interface IOptionToken
     {
-        ICliOptionDefinition Definition { get; }
+        IOptionDefinition Definition { get; }
         string Value { get; }
     }
 }

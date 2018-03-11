@@ -21,16 +21,16 @@ namespace Axe.Cli.Parser.Tokenizer
         {
             if (IsEndOfArguments(argument)) { return null; }
             
-            ICliOptionDefinition kvOption = ResolveKeyValueOptionLabel(command, argument);
+            IOptionDefinition kvOption = ResolveKeyValueOptionLabel(command, argument);
             if (kvOption != null)
             {
                 return new WaitingValueState(command, kvOption, argument, resultBuilder);
             }
 
-            IList<ICliOptionDefinition> flagOptions = ResolveFlagOptionLabels(command, argument);
+            IList<IOptionDefinition> flagOptions = ResolveFlagOptionLabels(command, argument);
             if (flagOptions.Count > 0)
             {
-                foreach (ICliOptionDefinition flagOption in flagOptions)
+                foreach (IOptionDefinition flagOption in flagOptions)
                 {
                     resultBuilder.AppendOptionToken(new OptionToken(flagOption), argument);
                 }

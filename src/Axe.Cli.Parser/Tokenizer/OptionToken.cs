@@ -4,7 +4,7 @@ namespace Axe.Cli.Parser.Tokenizer
 {
     class OptionToken : IOptionToken
     {
-        public OptionToken(ICliOptionDefinition definition)
+        public OptionToken(IOptionDefinition definition)
         {
             if (definition.Type != OptionType.Flag)
             {
@@ -16,7 +16,7 @@ namespace Axe.Cli.Parser.Tokenizer
             Value = null;
         }
 
-        public OptionToken(ICliOptionDefinition definition, string value)
+        public OptionToken(IOptionDefinition definition, string value)
         {
             if (definition.Type != OptionType.KeyValue)
             {
@@ -28,7 +28,7 @@ namespace Axe.Cli.Parser.Tokenizer
             Value = value ?? throw new ArgumentNullException(nameof(value));
         }
         
-        public ICliOptionDefinition Definition { get; }
+        public IOptionDefinition Definition { get; }
         public string Value { get; }
     }
 }

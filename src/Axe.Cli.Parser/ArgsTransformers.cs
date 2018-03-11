@@ -10,7 +10,14 @@ namespace Axe.Cli.Parser
     /// </summary>
     public class ArgsTransformers
     {
+        /// <summary>
+        /// Representing the default tranformer key.
+        /// </summary>
         public const string DefaultTransformerKey = "Default";
+
+        /// <summary>
+        /// Representing the integer transformer key.
+        /// </summary>
         public const string IntegerTransformerKey = "IntegerTransformer";
 
         static readonly Regex NamePattern = new Regex(

@@ -29,7 +29,7 @@
             ValueTransformer transformer = null)
         {
             commandDefinition.RegisterOption(
-                new CliOptionDefinition(
+                new OptionDefinition(
                     fullForm,
                     abbreviation,
                     description,
@@ -45,7 +45,7 @@
             string description)
         {
             commandDefinition.RegisterOption(
-                new CliOptionDefinition(fullForm, abbreviation, description, false, OptionType.Flag));
+                new OptionDefinition(fullForm, abbreviation, description, false, OptionType.Flag));
             return this;
         }
 

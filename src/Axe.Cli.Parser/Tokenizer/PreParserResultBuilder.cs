@@ -9,9 +9,9 @@ namespace Axe.Cli.Parser.Tokenizer
     {
         readonly IList<KeyValuePair<IFreeValueDefinition, string>> freeValues =
             new List<KeyValuePair<IFreeValueDefinition, string>>();
-        readonly IDictionary<ICliOptionDefinition, bool> flags = new Dictionary<ICliOptionDefinition, bool>();
-        readonly IDictionary<ICliOptionDefinition, IList<string>> keyValues =
-            new Dictionary<ICliOptionDefinition, IList<string>>();
+        readonly IDictionary<IOptionDefinition, bool> flags = new Dictionary<IOptionDefinition, bool>();
+        readonly IDictionary<IOptionDefinition, IList<string>> keyValues =
+            new Dictionary<IOptionDefinition, IList<string>>();
 
         bool hasBeenBuilt;
         ICommandDefinition command;
@@ -68,7 +68,7 @@ namespace Axe.Cli.Parser.Tokenizer
 
         void ValidateRequiredKeyValues()
         {
-            ICliOptionDefinition notPresentedRequiredOption = command.GetRegisteredOptions()
+            IOptionDefinition notPresentedRequiredOption = command.GetRegisteredOptions()
                 .Where(o => o.Type == OptionType.KeyValue && o.IsRequired)
                 .FirstOrDefault(o => !keyValues.ContainsKey(o));
             if (notPresentedRequiredOption != null)
@@ -92,10 +92,10 @@ namespace Axe.Cli.Parser.Tokenizer
 
         void AppendOptionalKeyValues()
         {
-            IEnumerable<ICliOptionDefinition> nonRequiredButNotPresent = command.GetRegisteredOptions()
+            IEnumerable<IOptionDefinition> nonRequiredButNotPresent = command.GetRegisteredOptions()
                 .Where(o => o.Type == OptionType.KeyValue && !o.IsRequired)
                 .Where(o => !keyValues.ContainsKey(o));
-            foreach (ICliOptionDefinition option in nonRequiredButNotPresent)
+            foreach (IOptionDefinition option in nonRequiredButNotPresent)
             {
                 keyValues.Add(option, Array.Empty<string>());
             }
@@ -103,10 +103,10 @@ namespace Axe.Cli.Parser.Tokenizer
 
         void AppendUnspecifiedFlags()
         {
-            IEnumerable<ICliOptionDefinition> notSetFlags = command.GetRegisteredOptions()
+            IEnumerable<IOptionDefinition> notSetFlags = command.GetRegisteredOptions()
                 .Where(o => o.Type == OptionType.Flag)
                 .Where(o => !flags.ContainsKey(o));
-            foreach (ICliOptionDefinition notSetFlag in notSetFlags)
+            foreach (IOptionDefinition notSetFlag in notSetFlags)
             {
                 flags.Add(notSetFlag, false);
             }
