@@ -8,16 +8,35 @@ namespace Axe.Cli.Parser
     abstract class CommandDefinitionBase : ICommandDefinition
     {
         readonly List<ICliOptionDefinition> options = new List<ICliOptionDefinition>();
-        readonly List<ICliFreeValueDefinition> freeValues = new List<ICliFreeValueDefinition>();
+        readonly List<IFreeValueDefinition> freeValues = new List<IFreeValueDefinition>();
         public bool AllowFreeValue { get; set; }
+
         public abstract string Symbol { get; }
+
         public abstract string Description { get; }
+
         public abstract bool IsConflict(ICommandDefinition commandDefinition);
+
         public abstract bool IsMatch(string argument);
-        
+
+        public IEnumerable<ICliOptionDefinition> GetRegisteredOptionsMetadata()
+        {
+            return GetRegisteredOptions();
+        }
+
+        public IEnumerable<IFreeValueDefinitionMetadata> GetRegisteredFreeValuesMetadata()
+        {
+            return GetRegisteredFreeValues();
+        }
+
         public IEnumerable<ICliOptionDefinition> GetRegisteredOptions()
         {
             return options;
+        }
+
+        public IEnumerable<IFreeValueDefinition> GetRegisteredFreeValues()
+        {
+            return freeValues;
         }
 
         public void RegisterOption(ICliOptionDefinition option)
@@ -33,12 +52,12 @@ namespace Axe.Cli.Parser
 
             options.Add(option);
         }
-        
-        public void RegisterFreeValue(ICliFreeValueDefinition freeValue)
+
+        public void RegisterFreeValue(IFreeValueDefinition freeValue)
         {
             Debug.Assert(freeValue != null);
 
-            ICliFreeValueDefinition conflictFreeValueDefinition =
+            IFreeValueDefinition conflictFreeValueDefinition =
                 freeValues.FirstOrDefault(f => f.IsConflict(freeValue));
             if (conflictFreeValueDefinition != null)
             {
@@ -47,11 +66,6 @@ namespace Axe.Cli.Parser
             }
             
             freeValues.Add(freeValue);
-        }
-
-        public IEnumerable<ICliFreeValueDefinition> GetRegisteredFreeValues()
-        {
-            return freeValues;
         }
     }
 }

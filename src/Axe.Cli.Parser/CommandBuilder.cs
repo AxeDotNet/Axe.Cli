@@ -76,7 +76,7 @@
         public CommandBuilder AddFreeValue(string name, string description, ValueTransformer transformer = null)
         {
             allowFreeValue = true;
-            var definition = new CliFreeValueDefinition(name, description, transformer);
+            var definition = new FreeValueDefinition(name, description, transformer);
             commandDefinition.RegisterFreeValue(definition);
             return this;
         }

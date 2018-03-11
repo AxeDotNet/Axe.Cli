@@ -25,25 +25,6 @@ namespace Axe.Cli.Parser.Test
             Assert.Throws<InvalidOperationException>(() => builder.BeginDefaultCommand().EndCommand());
         }
 
-        [Fact]
-        public void should_not_be_null_symbol()
-        {
-            Assert.Throws<ArgumentNullException>(() => new ArgsParserBuilder().BeginCommand(null, string.Empty));
-        }
-
-        [Theory]
-        [InlineData("")]
-        [InlineData("-o")]
-        [InlineData("with space")]
-        [InlineData("multi\nline")]
-        [InlineData("with_other_symbol_@")]
-        [InlineData("--this-is-an-option")]
-        public void should_not_be_incorrect_format(string incorrectCommandSymbol)
-        {
-            Assert.Throws<ArgumentException>(
-                () => new ArgsParserBuilder().BeginCommand(incorrectCommandSymbol, string.Empty));
-        }
-
         [Theory]
         [InlineData("line1\nline2", "line1 line2")]
         [InlineData("line1\r\nline2", "line1 line2")]
@@ -168,7 +149,7 @@ namespace Axe.Cli.Parser.Test
             
             ArgsParsingResult result = parser.Parse(new[] {argument});
 
-            Assert.True(result.GetFlagValues(argument));
+            Assert.True(result.GetFlagValue(argument));
         }
 
         [Theory]

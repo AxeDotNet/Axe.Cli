@@ -1,11 +1,119 @@
 ﻿using System;
 using System.Linq;
+using Axe.Cli.Parser.Test.Helpers;
 using Xunit;
 
-namespace Axe.Cli.Parser.Test
+namespace Axe.Cli.Parser.Test.End2End
 {
-    public class ArgsParserContinueFreeValuesFacts
+    public class WhenGetFreeValueFromParsingResult
     {
+        [Fact]
+        public void should_throw_if_name_is_null_when_getting_free_value()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand()
+                .AddFreeValue("free_value_name", string.Empty)
+                .EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(new [] {"value"});
+
+            result.AssertSuccess();
+
+            Assert.Throws<ArgumentNullException>(() => result.GetFreeValue(null));
+            Assert.Throws<ArgumentNullException>(() => result.GetFreeRawValue(null));
+        }
+
+        [Fact]
+        public void should_throw_if_name_is_not_defined_when_getting_free_value()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand()
+                .AddFreeValue("free_value_name", string.Empty)
+                .EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(new [] {"value"});
+
+            result.AssertSuccess();
+
+            Assert.Throws<ArgumentException>(() => result.GetFreeValue("undefined"));
+            Assert.Throws<ArgumentException>(() => result.GetFreeRawValue("undefined"));
+        }
+
+        [Fact]
+        public void should_throw_if_getting_free_value_in_a_failure_result()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand()
+                .AddFreeValue("free_value_name", string.Empty)
+                .AddOptionWithValue("option", 'o', string.Empty, true)
+                .EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(new [] {"value"});
+
+            Assert.False(result.IsSuccess);
+
+            Assert.Throws<InvalidOperationException>(() => result.GetFreeValue("free_value_name"));
+            Assert.Throws<InvalidOperationException>(() => result.GetFreeRawValue("free_value_name"));
+        }
+
+        [Fact]
+        public void should_throw_if_getting_undefined_free_values_in_a_failure_result()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand()
+                .ConfigFreeValue(true)
+                .AddOptionWithValue("option", 'o', string.Empty, true)
+                .EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(new [] {"value"});
+
+            Assert.False(result.IsSuccess);
+
+            Assert.Throws<InvalidOperationException>(() => result.GetUndefinedFreeValues());
+        }
+
+        [Fact]
+        public void should_get_free_value_not_supported_if_free_value_is_not_configured()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand()
+                .AddOptionWithValue("key-a", 'a', string.Empty)
+                .AddFlagOption("flag-b", 'b', string.Empty)
+                .AddFlagOption("flag-c", 'c', string.Empty)
+                .EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(new[] { "--key-a", "value", "-b", "free-value" });
+
+            result.AssertError(ArgsParsingErrorCode.FreeValueNotSupported, "free-value");
+        }
+
+        [Fact]
+        public void should_get_free_value_not_supported_for_specified_command()
+        {
+            // start-(unresolved command)->default command ? error
+
+            const string commandName = "command";
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand()
+                .EndCommand()
+                .BeginCommand(commandName, string.Empty)
+                .EndCommand()
+                .Build();
+
+            string[] args = { "not_matched_command" };
+
+            ArgsParsingResult result = parser.Parse(args);
+
+            result.AssertError(
+                ArgsParsingErrorCode.FreeValueNotSupported,
+                "not_matched_command");
+        }
+
         [Fact]
         public void should_get_free_value_for_default_command()
         {
@@ -17,7 +125,7 @@ namespace Axe.Cli.Parser.Test
 
             ArgsParsingResult result = parser.Parse(new[] {"free-value"});
 
-            Assert.True(result.IsSuccess);
+            result.AssertSuccess();
             Assert.Equal(new []{"free-value"}, result.GetUndefinedFreeValues());
         }
 
@@ -32,7 +140,7 @@ namespace Axe.Cli.Parser.Test
 
             ArgsParsingResult result = parser.Parse(new[] {"free-value1", "free-value2"});
 
-            Assert.True(result.IsSuccess);
+            result.AssertSuccess();
             Assert.Equal(new []{"free-value1", "free-value2"}, result.GetUndefinedFreeValues());
         }
 
@@ -47,7 +155,7 @@ namespace Axe.Cli.Parser.Test
 
             ArgsParsingResult result = parser.Parse(new[] {"command", "free-value"});
 
-            Assert.True(result.IsSuccess);
+            result.AssertSuccess();
             Assert.Equal(new [] {"free-value"}, result.GetUndefinedFreeValues());
         }
         
@@ -62,7 +170,7 @@ namespace Axe.Cli.Parser.Test
 
             ArgsParsingResult result = parser.Parse(new[] {"command", "free-value1", "free-value2"});
 
-            Assert.True(result.IsSuccess);
+            result.AssertSuccess();
             Assert.Equal(new [] {"free-value1", "free-value2"}, result.GetUndefinedFreeValues());
         }
 
@@ -78,9 +186,9 @@ namespace Axe.Cli.Parser.Test
 
             ArgsParsingResult result = parser.Parse(new [] {"command", "-f", "-a"});
             
-            Assert.True(result.IsSuccess);
+            result.AssertSuccess();
             Assert.Equal(new [] {"-a"}, result.GetUndefinedFreeValues());
-            Assert.True(result.GetFlagValues("--flag"));
+            Assert.True(result.GetFlagValue("--flag"));
         }
 
         [Fact]
@@ -95,9 +203,9 @@ namespace Axe.Cli.Parser.Test
 
             ArgsParsingResult result = parser.Parse(new [] {"command", "-a", "-f"});
             
-            Assert.True(result.IsSuccess);
+            result.AssertSuccess();
             Assert.Equal(new [] {"-a", "-f"}, result.GetUndefinedFreeValues());
-            Assert.False(result.GetFlagValues("--flag"));
+            Assert.False(result.GetFlagValue("--flag"));
         }
 
         [Fact]
@@ -111,7 +219,7 @@ namespace Axe.Cli.Parser.Test
 
             ArgsParsingResult result = parser.Parse(new[] {"command", "free_value"});
 
-            Assert.True(result.IsSuccess);
+            result.AssertSuccess();
             Assert.Equal("free_value", result.GetFreeRawValue("name"));
         }
 
@@ -127,7 +235,7 @@ namespace Axe.Cli.Parser.Test
 
             ArgsParsingResult result = parser.Parse(new[] {"command", "name_value", "age_value"});
 
-            Assert.True(result.IsSuccess);
+            result.AssertSuccess();
             Assert.Equal("name_value", result.GetFreeRawValue("name"));
             Assert.Equal("age_value", result.GetFreeRawValue("age"));
         }
@@ -145,7 +253,7 @@ namespace Axe.Cli.Parser.Test
             ArgsParsingResult result = parser.Parse(
                 new[] {"command", "name_value", "age_value", "undefined_value1", "undefined_value2"});
 
-            Assert.True(result.IsSuccess);
+            result.AssertSuccess();
             Assert.Equal("name_value", result.GetFreeRawValue("name"));
             Assert.Equal("age_value", result.GetFreeRawValue("age"));
             Assert.Equal(new object[] {"undefined_value1", "undefined_value2"}, result.GetUndefinedFreeValues());
@@ -163,7 +271,7 @@ namespace Axe.Cli.Parser.Test
 
             ArgsParsingResult result = parser.Parse(new[] {"command", "name_value"});
 
-            Assert.True(result.IsSuccess);
+            result.AssertSuccess();
             Assert.Equal("name_value", result.GetFreeRawValue("name"));
             Assert.Empty(result.GetFreeValue("uncaptured_definition"));
             Assert.Equal(string.Empty, result.GetFreeRawValue("uncaptured_definition"));
@@ -180,7 +288,7 @@ namespace Axe.Cli.Parser.Test
 
             ArgsParsingResult result = parser.Parse(new [] {"command", "free_value"});
 
-            Assert.True(result.IsSuccess);
+            result.AssertSuccess();
             Assert.Throws<ArgumentException>(() => result.GetFreeValue("undefined_name"));
             Assert.Throws<ArgumentException>(() => result.GetFreeRawValue("undefined_name"));
         }
@@ -196,7 +304,7 @@ namespace Axe.Cli.Parser.Test
 
             ArgsParsingResult result = parser.Parse(new [] {"command", "123"});
 
-            Assert.True(result.IsSuccess);
+            result.AssertSuccess();
             Assert.Equal(123, result.GetFreeValue<int>("name").Single());
             Assert.Equal(123, result.GetFirstFreeValue<int>("name"));
         }

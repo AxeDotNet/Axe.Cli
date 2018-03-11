@@ -12,9 +12,16 @@ namespace Axe.Cli.Parser.Test.Helpers
             string trigger)
         {
             Assert.False(result.IsSuccess);
+            Assert.Null(result.Command);
             Assert.NotNull(result.Error);
             Assert.Equal(code, result.Error.Code);
             Assert.Equal(trigger, result.Error.Trigger);
+        }
+
+        public static void AssertSuccess(this ArgsParsingResult result)
+        {
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Command);
         }
     }
 }

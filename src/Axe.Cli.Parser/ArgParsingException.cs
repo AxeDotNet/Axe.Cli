@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Axe.Cli.Parser
 {
-    public class ArgParsingException : Exception
+    class ArgParsingException : Exception
     {
         readonly ArgsParsingErrorCode code;
         readonly string trigger;
 
-        public ArgParsingException(ArgsParsingErrorCode code, string trigger)
+        internal ArgParsingException(ArgsParsingErrorCode code, string trigger)
             : base(CreateMessage(code))
         {
             this.code = code;
@@ -33,8 +33,8 @@ namespace Axe.Cli.Parser
                 { ArgsParsingErrorCode.TransformValueFailed, "The format of value is not correct." },
                 { ArgsParsingErrorCode.TransformIntegerValueFailed, "The value is not an integer." }
             };
-
-        public ArgsParsingError CreateError()
+        
+        internal ArgsParsingError CreateError()
         {
             return new ArgsParsingError(trigger, code);
         }

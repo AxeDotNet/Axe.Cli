@@ -7,8 +7,8 @@ namespace Axe.Cli.Parser.Tokenizer
 {
     class PreParserResultBuilder
     {
-        readonly IList<KeyValuePair<ICliFreeValueDefinition, string>> freeValues =
-            new List<KeyValuePair<ICliFreeValueDefinition, string>>();
+        readonly IList<KeyValuePair<IFreeValueDefinition, string>> freeValues =
+            new List<KeyValuePair<IFreeValueDefinition, string>>();
         readonly IDictionary<ICliOptionDefinition, bool> flags = new Dictionary<ICliOptionDefinition, bool>();
         readonly IDictionary<ICliOptionDefinition, IList<string>> keyValues =
             new Dictionary<ICliOptionDefinition, IList<string>>();
@@ -42,11 +42,11 @@ namespace Axe.Cli.Parser.Tokenizer
             }
 
             int nextIndex = freeValues.Count;
-            ICliFreeValueDefinition[] freeValueDefinitions = command.GetRegisteredFreeValues().ToArray();
+            IFreeValueDefinition[] freeValueDefinitions = command.GetRegisteredFreeValues().ToArray();
             freeValues.Add(
                 freeValueDefinitions.Length <= nextIndex
-                    ? new KeyValuePair<ICliFreeValueDefinition, string>(CliNullFreeValueDefinition.Instance, freeValue)
-                    : new KeyValuePair<ICliFreeValueDefinition, string>(freeValueDefinitions[nextIndex], freeValue));
+                    ? new KeyValuePair<IFreeValueDefinition, string>(NullFreeValueDefinition.Instance, freeValue)
+                    : new KeyValuePair<IFreeValueDefinition, string>(freeValueDefinitions[nextIndex], freeValue));
         }
 
         public ArgsParsingResult Build()
@@ -81,12 +81,12 @@ namespace Axe.Cli.Parser.Tokenizer
 
         void AppendOptionalFreeValues()
         {
-            IEnumerable<ICliFreeValueDefinition> unspecifiedFreeValueDefinitions = command
+            IEnumerable<IFreeValueDefinition> unspecifiedFreeValueDefinitions = command
                 .GetRegisteredFreeValues()
                 .Where(fvDef => !freeValues.Any(fv => fv.Key.Equals(fvDef)));
-            foreach (ICliFreeValueDefinition definition in unspecifiedFreeValueDefinitions)
+            foreach (IFreeValueDefinition definition in unspecifiedFreeValueDefinitions)
             {
-                freeValues.Add(new KeyValuePair<ICliFreeValueDefinition, string>(definition, string.Empty));
+                freeValues.Add(new KeyValuePair<IFreeValueDefinition, string>(definition, string.Empty));
             }
         }
 

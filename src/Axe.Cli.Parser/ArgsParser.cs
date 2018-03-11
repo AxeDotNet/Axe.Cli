@@ -5,6 +5,10 @@ using Axe.Cli.Parser.Tokenizer;
 
 namespace Axe.Cli.Parser
 {
+    /// <summary>
+    /// Prepresent the parser to parse the command line arguments. Please use
+    /// <see cref="ArgsParserBuilder"/> to create the parser.
+    /// </summary>
     public class ArgsParser
     {
         readonly ArgsDefinition definition;
@@ -14,6 +18,19 @@ namespace Axe.Cli.Parser
             this.definition = definition ?? throw new ArgumentNullException(nameof(definition));
         }
 
+        /// <summary>
+        /// Parse the command line arguments.
+        /// </summary>
+        /// <param name="args">The command line arguments.</param>
+        /// <returns>
+        /// The parsing result.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="args"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// There is at least one element in <paramref name="args"/> that is <c>null</c>.
+        /// </exception>
         public ArgsParsingResult Parse(IList<string> args)
         {
             if (args == null) { throw new ArgumentNullException(nameof(args)); }

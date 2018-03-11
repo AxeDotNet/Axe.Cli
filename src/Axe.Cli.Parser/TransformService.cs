@@ -6,20 +6,20 @@ namespace Axe.Cli.Parser
 {
     class TransformService
     {
-        public static IList<KeyValuePair<ICliFreeValueDefinition, FreeValue>> TransformFreeValues(
-            IList<KeyValuePair<ICliFreeValueDefinition, string>> rawFreeValues)
+        public static IList<KeyValuePair<IFreeValueDefinition, FreeValue>> TransformFreeValues(
+            IList<KeyValuePair<IFreeValueDefinition, string>> rawFreeValues)
         {
-            if (rawFreeValues == null) { return Array.Empty<KeyValuePair<ICliFreeValueDefinition, FreeValue>>(); }
+            if (rawFreeValues == null) { return Array.Empty<KeyValuePair<IFreeValueDefinition, FreeValue>>(); }
 
             return rawFreeValues.Select(fv =>
                 {
-                    ICliFreeValueDefinition freeValueDefinition = fv.Key;
+                    IFreeValueDefinition freeValueDefinition = fv.Key;
                     ValueTransformer transformer = freeValueDefinition.Transformer;
 
                     try
                     {
                         IList<object> transformed = transformer.Transform(fv.Value);
-                        return new KeyValuePair<ICliFreeValueDefinition, FreeValue>(
+                        return new KeyValuePair<IFreeValueDefinition, FreeValue>(
                             freeValueDefinition,
                             new FreeValue(fv.Value, transformed));
                     }

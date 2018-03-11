@@ -1,4 +1,5 @@
 ﻿using System;
+using Axe.Cli.Parser.Extensions;
 
 namespace Axe.Cli.Parser
 {
@@ -13,7 +14,7 @@ namespace Axe.Cli.Parser
             ValueTransformer transformer = null)
         {
             Symbol = new OptionSymbol(symbol, abbreviation);
-            Description = description;
+            Description = description.MakeSingleLine();
             IsRequired = isRequired;
             Type = type;
             Transformer = transformer ?? ArgsTransformers.Default;
