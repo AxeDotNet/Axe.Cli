@@ -1,12 +1,8 @@
 ﻿namespace Axe.Cli.Parser
 {
-    interface IOptionSymbol
+    interface IOptionSymbol : IOptionSymbolMetadata
     {
-        char? Abbreviation { get; }
-        string Symbol { get; }
-
         bool IsConflict(IOptionSymbol other);
         bool IsMatch(string argument);
-        string ToString();
     }
 }

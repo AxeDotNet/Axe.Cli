@@ -22,6 +22,7 @@ namespace Axe.Cli.Parser
 
         public Guid Id { get; } = Guid.NewGuid();
         public IOptionSymbol Symbol { get; }
+        public IOptionSymbolMetadata SymbolMetadata => Symbol;
         public string Description { get; }
         public bool IsRequired { get; }
         public OptionType Type { get; }

@@ -39,5 +39,62 @@ namespace Axe.Cli.Parser.Test.End2End
                 ArgsParsingErrorCode.DoesNotMatchAnyCommand,
                 "Unexpected end of arguments.");
         }
+
+        [Theory]
+        [InlineData("c")]
+        [InlineData("word")]
+        [InlineData("multi-word")]
+        [InlineData("multi_word")]
+        [InlineData("underscore_tail_")]
+        [InlineData("dash_tail-")]
+        public void should_get_command_symbol(string validSymbol)
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginCommand(validSymbol, string.Empty).EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(new [] {validSymbol});
+
+            Assert.Equal(validSymbol, result.Command.Symbol);
+        }
+
+        [Fact]
+        public void should_get_default_command_symbol()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand().EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(Array.Empty<string>());
+
+            result.AssertSuccess();
+            Assert.True(result.Command.IsDefaultCommand());
+            Assert.Null(result.Command.Symbol);
+        }
+
+        [Theory]
+        [InlineData("line1\nline2", "line1 line2")]
+        [InlineData("line1\r\nline2", "line1 line2")]
+        public void should_single_lined_the_description(string multiLined, string expected)
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginCommand("command", multiLined).EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(new [] {"command"});
+            Assert.Equal(expected, result.Command.Description);
+        }
+
+        [Fact]
+        public void should_accept_null_description()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginCommand("valid_symbol", null).EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(new []{"valid_symbol"});
+
+            Assert.Equal(string.Empty, result.Command.Description);
+        }
     }
 }
