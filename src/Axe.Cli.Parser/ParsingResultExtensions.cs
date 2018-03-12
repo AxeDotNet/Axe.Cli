@@ -4,9 +4,25 @@ using System.Linq;
 
 namespace Axe.Cli.Parser
 {
+    /// <summary>
+    /// The extension to ease the usage of parsing result.
+    /// </summary>
     public static class ParsingResultExtensions
     {
-        public static IList<T> GetOptionValues<T>(this ArgsParsingResult result, string option)
+        
+        /// <summary>
+        /// Get translated option values and try to cast them to specified type.
+        /// </summary>
+        /// <param name="result">The argument parsing result.</param>
+        /// <param name="option">The full form or the abbreviation form of the option.</param>
+        /// <typeparam name="T">The destination type that you want each element to cast to</typeparam>
+        /// <returns>The values to the option.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <para>The <paramref name="result"/> is <c>null</c>.</para>
+        /// <para>-- Or --</para>
+        /// <para>The <paramref name="option"/> is <c>null</c>.</para>
+        /// </exception>
+        public static IList<T> GetOptionValue<T>(this ArgsParsingResult result, string option)
         {
             if (result == null) {throw new ArgumentNullException(nameof(result));}
 

@@ -26,7 +26,7 @@ namespace Axe.Cli.Parser
             RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline |
             RegexOptions.IgnoreCase);
         
-        public string Symbol { get; }
+        public string FullForm { get; }
 
         public char? Abbreviation { get; }
 
@@ -47,13 +47,13 @@ namespace Axe.Cli.Parser
                 throw new ArgumentException("The abbreviation cannot be a dash sign.");
             }
 
-            Symbol = symbol;
+            FullForm = symbol;
             Abbreviation = abbreviation;
         }
 
         public override string ToString()
         {
-            string symbolOutput = Symbol == null ? "(null)" : $"--{Symbol}";
+            string symbolOutput = FullForm == null ? "(null)" : $"--{FullForm}";
             string abbrOutput = Abbreviation == null ? "(null)" : $"-{Abbreviation}";
             return $"full form: {symbolOutput}; abbr. form: {abbrOutput}";
         }
@@ -75,7 +75,7 @@ namespace Axe.Cli.Parser
 
         public bool IsConflict(IOptionSymbol other)
         {
-            return SymbolEqual(other.Symbol) || AbbreviationEqual(other.Abbreviation);
+            return SymbolEqual(other.FullForm) || AbbreviationEqual(other.Abbreviation);
         }
 
         [SuppressMessage(
@@ -93,8 +93,8 @@ namespace Axe.Cli.Parser
 
         bool SymbolEqual(string otherSymbol)
         {
-            return Symbol != null && otherSymbol != null &&
-                Symbol.Equals(otherSymbol, StringComparison.OrdinalIgnoreCase);
+            return FullForm != null && otherSymbol != null &&
+                FullForm.Equals(otherSymbol, StringComparison.OrdinalIgnoreCase);
         }
 
         public static bool CanBeFullForm(string argument)

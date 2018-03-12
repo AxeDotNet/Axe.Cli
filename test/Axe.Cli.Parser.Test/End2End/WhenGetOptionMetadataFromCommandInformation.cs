@@ -24,17 +24,17 @@ namespace Axe.Cli.Parser.Test.End2End
             IOptionDefinitionMetadata[] optionDefinitionMetadatas =
                 result.Command.GetRegisteredOptionsMetadata().ToArray();
             IOptionDefinitionMetadata flagMetadata = optionDefinitionMetadatas
-                .Single(d => d.SymbolMetadata.Symbol.Equals("flag", StringComparison.OrdinalIgnoreCase));
+                .Single(d => d.SymbolMetadata.FullForm.Equals("flag", StringComparison.OrdinalIgnoreCase));
             IOptionDefinitionMetadata kvMetadata = optionDefinitionMetadatas
-                .Single(d => d.SymbolMetadata.Symbol.Equals("key-value", StringComparison.OrdinalIgnoreCase));
+                .Single(d => d.SymbolMetadata.FullForm.Equals("key-value", StringComparison.OrdinalIgnoreCase));
 
-            Assert.Equal("flag", flagMetadata.SymbolMetadata.Symbol);
+            Assert.Equal("flag", flagMetadata.SymbolMetadata.FullForm);
             Assert.Equal('f', flagMetadata.SymbolMetadata.Abbreviation);
             Assert.Equal("flag description", flagMetadata.Description);
             Assert.Equal(OptionType.Flag, flagMetadata.Type);
             Assert.False(flagMetadata.IsRequired);
 
-            Assert.Equal("key-value", kvMetadata.SymbolMetadata.Symbol);
+            Assert.Equal("key-value", kvMetadata.SymbolMetadata.FullForm);
             Assert.Equal('k', kvMetadata.SymbolMetadata.Abbreviation);
             Assert.Equal("key value description", kvMetadata.Description);
             Assert.Equal(OptionType.KeyValue, kvMetadata.Type);
