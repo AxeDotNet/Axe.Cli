@@ -2,9 +2,9 @@
 using Axe.Cli.Parser.Test.Helpers;
 using Xunit;
 
-namespace Axe.Cli.Parser.Test
+namespace Axe.Cli.Parser.Test.End2End
 {
-    public class ArgsParserTransformingFacts
+    public class WhenGettingTranslatedValues
     {
         [Fact]
         public void should_transform_integer_values()

@@ -198,5 +198,28 @@ namespace Axe.Cli.Parser.Test.End2End
 
             Assert.Throws<InvalidOperationException>(() => builder.BeginDefaultCommand().EndCommand());
         }
+
+        [Theory]
+        [InlineData("o", 'o', "-o")]
+        [InlineData("word", 'w', "-w")]
+        [InlineData("word-with-dash", 'w', "-w")]
+        [InlineData("word-with-tail-dash-", 'w', "-w")]
+        [InlineData("word_with_lodash", 'w', "-w")]
+        [InlineData("word_with_tail_lodash_", 'w', "-w")]
+        [InlineData("_word_with_lodash_prefix", 'w', "-w")]
+        [InlineData("not_null", null, "--not_null")]
+        [InlineData(null, 'n', "-n")]
+        public void should_create_valid_symbol(string symbol, char? abbr, string argument)
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand()
+                .AddFlagOption(symbol, abbr, null)
+                .EndCommand()
+                .Build();
+            
+            ArgsParsingResult result = parser.Parse(new[] {argument});
+
+            Assert.True(result.GetFlagValue(argument));
+        }
     }
 }
