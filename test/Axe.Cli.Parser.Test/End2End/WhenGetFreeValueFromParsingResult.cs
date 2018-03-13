@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Axe.Cli.Parser.Test.Helpers;
+using Axe.Cli.Parser.Transformers;
 using Xunit;
 
 namespace Axe.Cli.Parser.Test.End2End
@@ -298,7 +299,7 @@ namespace Axe.Cli.Parser.Test.End2End
         {
             ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand("command", string.Empty)
-                .AddFreeValue("name", string.Empty, ArgsTransformers.IntegerTransformer)
+                .AddFreeValue("name", string.Empty, IntegerTransformer.Instance)
                 .EndCommand()
                 .Build();
 

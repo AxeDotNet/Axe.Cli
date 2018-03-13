@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Axe.Cli.Parser.Test.Helpers;
+using Axe.Cli.Parser.Transformers;
 using Xunit;
 
 namespace Axe.Cli.Parser.Test.End2End
@@ -145,7 +146,7 @@ namespace Axe.Cli.Parser.Test.End2End
         {
             ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
-                .AddOptionWithValue("integer", 'i', string.Empty, true, ArgsTransformers.IntegerTransformer)
+                .AddOptionWithValue("integer", 'i', string.Empty, true, IntegerTransformer.Instance)
                 .EndCommand()
                 .Build();
 
@@ -161,7 +162,7 @@ namespace Axe.Cli.Parser.Test.End2End
         {
             ArgsParser parser = new ArgsParserBuilder()
                 .BeginDefaultCommand()
-                .AddOptionWithValue("integer", 'i', string.Empty, true, ArgsTransformers.IntegerTransformer)
+                .AddOptionWithValue("integer", 'i', string.Empty, true, IntegerTransformer.Instance)
                 .EndCommand()
                 .Build();
 

@@ -63,12 +63,6 @@ namespace Axe.Cli.Parser
         static readonly ArgsTransformers Instance = new ArgsTransformers();
 
         /// <summary>
-        /// Get the integer transformer to translate argument to a 32-bit integer. The key to the
-        /// transformer is <see cref="IntegerTransformerKey"/>.
-        /// </summary>
-        public static ValueTransformer IntegerTransformer => Instance.GetTransformer(IntegerTransformerKey);
-
-        /// <summary>
         /// Get the default transformer. The key to this transformer is
         /// <see cref="DefaultTransformerKey"/>.
         /// </summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Axe.Cli.Parser.Test.Helpers;
+using Axe.Cli.Parser.Transformers;
 using Xunit;
 
 namespace Axe.Cli.Parser.Test.End2End
@@ -15,7 +16,7 @@ namespace Axe.Cli.Parser.Test.End2End
 
             ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand("command", string.Empty)
-                .AddFreeValue(name, description, ArgsTransformers.IntegerTransformer)
+                .AddFreeValue(name, description, IntegerTransformer.Instance)
                 .EndCommand()
                 .Build();
 
@@ -28,7 +29,7 @@ namespace Axe.Cli.Parser.Test.End2End
 
             Assert.Equal(name, definition.Name);
             Assert.Equal(description, definition.Description);
-            Assert.Same(ArgsTransformers.IntegerTransformer, definition.Transformer);
+            Assert.Same(IntegerTransformer.Instance, definition.Transformer);
         }
 
         [Fact]
@@ -39,7 +40,7 @@ namespace Axe.Cli.Parser.Test.End2End
 
             ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand("command", string.Empty)
-                .AddFreeValue(name, description, ArgsTransformers.IntegerTransformer)
+                .AddFreeValue(name, description, IntegerTransformer.Instance)
                 .EndCommand()
                 .Build();
 
@@ -56,7 +57,7 @@ namespace Axe.Cli.Parser.Test.End2End
 
             ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand("command", string.Empty)
-                .AddFreeValue(name, null, ArgsTransformers.IntegerTransformer)
+                .AddFreeValue(name, null, IntegerTransformer.Instance)
                 .EndCommand()
                 .Build();
 
