@@ -5,7 +5,6 @@ namespace Axe.Cli.Parser.Test
 {
     public class ArgsParserBuilderFacts
     {
-
         [Theory]
         [InlineData("o", 'o', "-o")]
         [InlineData("word", 'w', "-w")]
