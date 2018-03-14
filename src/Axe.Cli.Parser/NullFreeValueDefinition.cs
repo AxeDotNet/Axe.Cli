@@ -1,4 +1,5 @@
 ﻿using System;
+using Axe.Cli.Parser.Transformers;
 
 namespace Axe.Cli.Parser
 {
@@ -11,7 +12,7 @@ namespace Axe.Cli.Parser
         public Guid Id { get; } = Guid.Empty;
         public string Name { get; } = string.Empty;
         public string Description { get; } = string.Empty;
-        public ValueTransformer Transformer { get; } = ArgsTransformers.Default;
+        public ValueTransformer Transformer { get; } = DefaultTransformer.Instance;
         public bool IsConflict(IFreeValueDefinition freeValueDefinition)
         {
             // always return true to avoid registration.

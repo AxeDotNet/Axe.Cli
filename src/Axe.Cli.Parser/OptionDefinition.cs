@@ -1,5 +1,6 @@
 ﻿using System;
 using Axe.Cli.Parser.Extensions;
+using Axe.Cli.Parser.Transformers;
 
 namespace Axe.Cli.Parser
 {
@@ -17,7 +18,7 @@ namespace Axe.Cli.Parser
             Description = description.MakeSingleLine();
             IsRequired = isRequired;
             Type = type;
-            Transformer = transformer ?? ArgsTransformers.Default;
+            Transformer = transformer ?? DefaultTransformer.Instance;
         }
 
         public Guid Id { get; } = Guid.NewGuid();

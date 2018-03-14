@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using Axe.Cli.Parser.Extensions;
+using Axe.Cli.Parser.Transformers;
 
 namespace Axe.Cli.Parser
 {
@@ -17,7 +18,7 @@ namespace Axe.Cli.Parser
             
             Name = name;
             Description = description.MakeSingleLine();
-            Transformer = transformer ?? ArgsTransformers.Default;
+            Transformer = transformer ?? DefaultTransformer.Instance;
         }
 
         static void ValidateName(string name)

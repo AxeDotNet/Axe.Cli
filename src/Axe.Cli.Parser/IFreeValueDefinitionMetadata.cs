@@ -1,4 +1,5 @@
 ﻿using System;
+using Axe.Cli.Parser.Transformers;
 
 namespace Axe.Cli.Parser
 {
@@ -28,7 +29,7 @@ namespace Axe.Cli.Parser
 
         /// <summary>
         /// The value transformer to translate the string argument. If not set, the
-        /// <see cref="ArgsTransformers.Default"/> will be used.
+        /// <see cref="DefaultTransformer.Instance"/> will be used.
         /// </summary>
         ValueTransformer Transformer { get; }
 
