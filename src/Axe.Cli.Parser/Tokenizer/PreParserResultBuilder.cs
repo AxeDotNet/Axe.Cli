@@ -55,6 +55,7 @@ namespace Axe.Cli.Parser.Tokenizer
             if (command == null) { throw new InvalidOperationException("The command has not been set."); }
 
             ValidateRequiredKeyValues();
+            ValidateRequiredFreeValues();
             
             AppendUnspecifiedFlags();
             AppendOptionalKeyValues();
@@ -64,6 +65,20 @@ namespace Axe.Cli.Parser.Tokenizer
             hasBeenBuilt = true;
 
             return result;
+        }
+
+        void ValidateRequiredFreeValues()
+        {
+            IFreeValueDefinition notPresentedRequiredFreeValue = command.GetRegisteredFreeValues()
+                .Where(fv => fv.IsRequired)
+                .FirstOrDefault(fv => !freeValues.Any(f => f.Key.Equals(fv)));
+
+            if (notPresentedRequiredFreeValue != null)
+            {
+                throw new ArgParsingException(
+                    ArgsParsingErrorCode.RequiredFreeValueNotPresent,
+                    $"<{notPresentedRequiredFreeValue.Name}>");
+            }
         }
 
         void ValidateRequiredKeyValues()

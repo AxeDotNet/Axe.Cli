@@ -138,6 +138,9 @@ namespace Axe.Cli.Parser
         /// The description of the free value. Please note that all the line-breaks will be
         /// removed for consisitency.
         /// </param>
+        /// <param name="isRequired">
+        /// Whether the free value is mandatory.
+        /// </param>
         /// <param name="transformer">
         /// The transformer of the value. If you would like to keep the original string representation,
         /// just pass <c>null</c>.
@@ -149,9 +152,9 @@ namespace Axe.Cli.Parser
         /// <exception cref="ArgumentException">
         /// Current free value is conflict with existing free value definitions.
         /// </exception>
-        public CommandBuilder AddFreeValue(string name, string description, ValueTransformer transformer = null)
+        public CommandBuilder AddFreeValue(string name, string description, bool isRequired = false, ValueTransformer transformer = null)
         {
-            var definition = new FreeValueDefinition(name, description, transformer);
+            var definition = new FreeValueDefinition(name, description, isRequired, transformer);
             commandDefinition.RegisterFreeValue(definition);
             allowFreeValue = true;
             return this;

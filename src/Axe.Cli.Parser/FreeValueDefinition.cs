@@ -12,11 +12,12 @@ namespace Axe.Cli.Parser
             RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline |
             RegexOptions.IgnoreCase);
         
-        public FreeValueDefinition(string name, string description, ValueTransformer transformer = null)
+        public FreeValueDefinition(string name, string description, bool isRequired = false, ValueTransformer transformer = null)
         {
             ValidateName(name);
             
             Name = name;
+            IsRequired = isRequired;
             Description = description.MakeSingleLine();
             Transformer = transformer ?? DefaultTransformer.Instance;
         }
@@ -32,6 +33,7 @@ namespace Axe.Cli.Parser
         public Guid Id { get; } = Guid.NewGuid();
         public string Name { get; }
         public string Description { get; }
+        public bool IsRequired { get; }
         public ValueTransformer Transformer { get; }
         public bool IsConflict(IFreeValueDefinition freeValueDefinition)
         {

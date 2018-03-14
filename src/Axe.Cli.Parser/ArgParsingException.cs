@@ -30,6 +30,7 @@ namespace Axe.Cli.Parser
                 { ArgsParsingErrorCode.DuplicateFlagsInArgs, "Duplicate flag switches." },
                 { ArgsParsingErrorCode.UnknownOptionType, "Unsupported option." },
                 { ArgsParsingErrorCode.RequiredOptionNotPresent, "The option is mandatory." },
+                { ArgsParsingErrorCode.RequiredFreeValueNotPresent, "The free value is mandatory. " },
                 { ArgsParsingErrorCode.TransformValueFailed, "The format of value is not correct." },
                 { ArgsParsingErrorCode.TransformIntegerValueFailed, "The value is not an integer." }
             };

@@ -46,6 +46,11 @@
         RequiredOptionNotPresent,
 
         /// <summary>
+        /// The command line parser cannot find a required free value option from the argument.
+        /// </summary>
+        RequiredFreeValueNotPresent,
+
+        /// <summary>
         /// The command line parser cannot translate values to an target type.
         /// </summary>
         TransformValueFailed,

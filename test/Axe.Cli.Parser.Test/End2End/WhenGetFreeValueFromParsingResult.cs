@@ -299,7 +299,7 @@ namespace Axe.Cli.Parser.Test.End2End
         {
             ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand("command", string.Empty)
-                .AddFreeValue("name", string.Empty, IntegerTransformer.Instance)
+                .AddFreeValue("name", string.Empty, false, IntegerTransformer.Instance)
                 .EndCommand()
                 .Build();
 
@@ -308,6 +308,35 @@ namespace Axe.Cli.Parser.Test.End2End
             result.AssertSuccess();
             Assert.Equal(123, result.GetFreeValue<int>("name").Single());
             Assert.Equal(123, result.GetFirstFreeValue<int>("name"));
+        }
+
+        [Fact]
+        public void should_support_mandatory_free_values_for_default_command()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand()
+                .AddFreeValue("name", string.Empty, true, DefaultTransformer.Instance)
+                .EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(new [] {"free_value"});
+            
+            result.AssertSuccess();
+            Assert.Equal("free_value", result.GetFirstFreeValue<string>("name"));
+        }
+
+        [Fact]
+        public void should_throw_if_mandatory_free_value_is_not_present()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand()
+                .AddFreeValue("name", string.Empty, true, DefaultTransformer.Instance)
+                .EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(new string[0]);
+            
+            result.AssertError(ArgsParsingErrorCode.RequiredFreeValueNotPresent, "<name>");
         }
     }
 }

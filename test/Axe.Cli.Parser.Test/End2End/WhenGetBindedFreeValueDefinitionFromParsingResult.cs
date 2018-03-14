@@ -16,7 +16,7 @@ namespace Axe.Cli.Parser.Test.End2End
 
             ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand("command", string.Empty)
-                .AddFreeValue(name, description, IntegerTransformer.Instance)
+                .AddFreeValue(name, description, false, IntegerTransformer.Instance)
                 .EndCommand()
                 .Build();
 
@@ -40,7 +40,7 @@ namespace Axe.Cli.Parser.Test.End2End
 
             ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand("command", string.Empty)
-                .AddFreeValue(name, description, IntegerTransformer.Instance)
+                .AddFreeValue(name, description, false, IntegerTransformer.Instance)
                 .EndCommand()
                 .Build();
 
@@ -57,7 +57,7 @@ namespace Axe.Cli.Parser.Test.End2End
 
             ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand("command", string.Empty)
-                .AddFreeValue(name, null, IntegerTransformer.Instance)
+                .AddFreeValue(name, null, false, IntegerTransformer.Instance)
                 .EndCommand()
                 .Build();
 

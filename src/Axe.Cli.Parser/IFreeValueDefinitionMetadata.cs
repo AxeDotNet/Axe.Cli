@@ -28,6 +28,11 @@ namespace Axe.Cli.Parser
         string Description { get; }
 
         /// <summary>
+        /// Get a value indicating that if the free value is a mandatory value.
+        /// </summary>
+        bool IsRequired { get; }
+
+        /// <summary>
         /// The value transformer to translate the string argument. If not set, the
         /// <see cref="DefaultTransformer.Instance"/> will be used.
         /// </summary>

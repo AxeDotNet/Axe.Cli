@@ -12,6 +12,7 @@ namespace Axe.Cli.Parser
         public Guid Id { get; } = Guid.Empty;
         public string Name { get; } = string.Empty;
         public string Description { get; } = string.Empty;
+        public bool IsRequired { get; } = false;
         public ValueTransformer Transformer { get; } = DefaultTransformer.Instance;
         public bool IsConflict(IFreeValueDefinition freeValueDefinition)
         {
