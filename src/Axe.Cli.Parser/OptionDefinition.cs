@@ -15,7 +15,7 @@ namespace Axe.Cli.Parser
             ValueTransformer transformer = null)
         {
             Symbol = new OptionSymbol(symbol, abbreviation);
-            Description = description.MakeSingleLine();
+            Description = description ?? string.Empty;
             IsRequired = isRequired;
             Type = type;
             Transformer = transformer ?? DefaultTransformer.Instance;

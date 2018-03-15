@@ -18,7 +18,7 @@ namespace Axe.Cli.Parser
             
             Name = name;
             IsRequired = isRequired;
-            Description = description.MakeSingleLine();
+            Description = description ?? string.Empty;
             Transformer = transformer ?? DefaultTransformer.Instance;
         }
 

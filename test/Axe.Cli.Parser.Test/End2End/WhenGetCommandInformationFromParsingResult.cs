@@ -73,9 +73,9 @@ namespace Axe.Cli.Parser.Test.End2End
         }
 
         [Theory]
-        [InlineData("line1\nline2", "line1 line2")]
-        [InlineData("line1\r\nline2", "line1 line2")]
-        public void should_single_lined_the_description(string multiLined, string expected)
+        [InlineData("line1\nline2", "line1\nline2")]
+        [InlineData("line1\r\nline2", "line1\r\nline2")]
+        public void should_not_single_lined_the_description(string multiLined, string expected)
         {
             ArgsParser parser = new ArgsParserBuilder()
                 .BeginCommand("command", multiLined).EndCommand()

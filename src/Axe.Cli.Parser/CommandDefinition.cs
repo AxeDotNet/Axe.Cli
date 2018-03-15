@@ -15,7 +15,7 @@ namespace Axe.Cli.Parser
             ValidateSymbol(symbol);
 
             Symbol = symbol;
-            Description = description.MakeSingleLine();
+            Description = description ?? string.Empty;
         }
 
         public override string Symbol { get; }

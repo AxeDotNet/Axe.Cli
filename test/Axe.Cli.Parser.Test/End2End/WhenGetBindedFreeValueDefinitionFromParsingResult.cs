@@ -33,7 +33,7 @@ namespace Axe.Cli.Parser.Test.End2End
         }
 
         [Fact]
-        public void should_remove_the_line_breaks_in_description()
+        public void should_not_remove_the_line_breaks_in_description()
         {
             const string name = "free_value_name";
             const string description = "description\r\nanother line";
@@ -47,7 +47,7 @@ namespace Axe.Cli.Parser.Test.End2End
             ArgsParsingResult result = parser.Parse(new[] {"command", "123"});
 
             string actualDescription = result.Command.GetRegisteredFreeValuesMetadata().Single().Description;
-            Assert.Equal("description another line", actualDescription);
+            Assert.Equal("description\r\nanother line", actualDescription);
         }
 
         [Fact]
