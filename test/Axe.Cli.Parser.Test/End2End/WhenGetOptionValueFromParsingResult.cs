@@ -138,7 +138,7 @@ namespace Axe.Cli.Parser.Test.End2End
 
             result.AssertError(
                 ArgsParsingErrorCode.RequiredOptionNotPresent,
-                "full form: --key; abbr. form: -k");
+                "--key / -k");
         }
 
         [Fact]

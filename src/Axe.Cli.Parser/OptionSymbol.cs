@@ -53,9 +53,14 @@ namespace Axe.Cli.Parser
 
         public override string ToString()
         {
-            string symbolOutput = FullForm == null ? "(null)" : $"--{FullForm}";
-            string abbrOutput = Abbreviation == null ? "(null)" : $"-{Abbreviation}";
-            return $"full form: {symbolOutput}; abbr. form: {abbrOutput}";
+            string fullFormOutput = FullForm == null ? null : $"--{FullForm}";
+            string abbrOutput = Abbreviation == null ? null : $"-{Abbreviation}";
+            if (fullFormOutput != null && abbrOutput != null)
+            {
+                return $"{fullFormOutput} / {abbrOutput}";
+            }
+
+            return fullFormOutput ?? abbrOutput;
         }
 
         public bool IsMatch(string argument)

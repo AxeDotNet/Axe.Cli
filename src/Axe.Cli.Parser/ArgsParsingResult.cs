@@ -45,9 +45,9 @@ namespace Axe.Cli.Parser
             IList<KeyValuePair<IFreeValueDefinition, string>> freeValues)
         {
             Command = command ?? throw new ArgumentNullException(nameof(command));
-            this.optionValues = TransformService.TransformOptionValues(optionValues);
+            this.optionValues = TransformHelper.TransformOptionValues(optionValues);
             this.optionFlags = optionFlags?.ToArray() ?? Array.Empty<KeyValuePair<IOptionDefinition, bool>>();
-            this.freeValues = TransformService.TransformFreeValues(freeValues);
+            this.freeValues = TransformHelper.TransformFreeValues(freeValues);
             IsSuccess = true;
         }
 

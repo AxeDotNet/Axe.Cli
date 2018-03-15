@@ -67,7 +67,7 @@ namespace Axe.Cli.Parser
 
         public override string ToString()
         {
-            return $"{Name}";
+            return IsRequired ? $"{Name}" : $"[{Name}]";
         }
     }
 }

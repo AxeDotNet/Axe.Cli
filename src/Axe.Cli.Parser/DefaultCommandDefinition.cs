@@ -17,7 +17,7 @@
 
         public override string ToString()
         {
-            return "DEFAULT_COMMAND";
+            return "default command";
         }
     }
 }

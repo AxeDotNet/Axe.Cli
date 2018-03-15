@@ -56,8 +56,7 @@ namespace Axe.Cli.Parser
         public override string ToString()
         {
             string symbolString = Symbol.ToString();
-            string required = IsRequired ? "required" : "optional";
-            return $"{symbolString}; {required}; {Type}";
+            return IsRequired ? $"{symbolString}" : $"[{symbolString}]";
         }
 
         public bool IsMatch(string argument)

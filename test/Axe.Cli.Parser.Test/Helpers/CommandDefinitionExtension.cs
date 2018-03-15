@@ -4,7 +4,7 @@
     {
         public static bool IsDefaultCommand(this ICommandDefinitionMetadata commandDefinition)
         {
-            return commandDefinition.ToString() == "DEFAULT_COMMAND";
+            return commandDefinition.ToString() == "default command";
         }
     }
 }

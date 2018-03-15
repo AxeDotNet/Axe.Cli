@@ -39,7 +39,7 @@ namespace Axe.Cli.Parser
 
         public override string ToString()
         {
-            return $"{Symbol}: {Description}";
+            return $"command {Symbol}";
         }
 
         public override bool IsMatch(string argument)

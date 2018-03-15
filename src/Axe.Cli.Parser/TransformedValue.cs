@@ -2,7 +2,7 @@
 {
     class TransformedValue<TRaw, TTransform>
     {
-        public TransformedValue(TRaw raw, TTransform transformed)
+        protected TransformedValue(TRaw raw, TTransform transformed)
         {
             Raw = raw;
             Transformed = transformed;

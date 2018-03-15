@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Axe.Cli.Parser
 {
-    class TransformService
+    static class TransformHelper
     {
         public static IList<KeyValuePair<IFreeValueDefinition, FreeValue>> TransformFreeValues(
             IList<KeyValuePair<IFreeValueDefinition, string>> rawFreeValues)
