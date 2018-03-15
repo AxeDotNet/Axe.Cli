@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace Axe.Cli.Parser
 {
@@ -53,19 +54,31 @@ namespace Axe.Cli.Parser
             options.Add(option);
         }
 
-        public void RegisterFreeValue(IFreeValueDefinition freeValue)
+        public void RegisterFreeValue([NotNull]IFreeValueDefinition freeValue)
         {
-            Debug.Assert(freeValue != null);
+            CheckConflict(freeValue);
+            CheckRequiredCompatibility(freeValue);
+            freeValues.Add(freeValue);
+        }
 
+        void CheckRequiredCompatibility(IFreeValueDefinition freeValue)
+        {
+            if (!freeValue.IsRequired) { return; }
+            IFreeValueDefinition firstNonRequiredFreeValueDefinition =
+                freeValues.FirstOrDefault(fv => !fv.IsRequired);
+            if (firstNonRequiredFreeValueDefinition == null) { return; }
+            
+            throw new InvalidOperationException(
+                $"The definition for <{freeValue.Name}> is required nut a definition [{firstNonRequiredFreeValueDefinition.Name}] before it is not required.");
+        }
+
+        void CheckConflict(IFreeValueDefinition freeValue)
+        {
             IFreeValueDefinition conflictFreeValueDefinition =
                 freeValues.FirstOrDefault(f => f.IsConflict(freeValue));
-            if (conflictFreeValueDefinition != null)
-            {
-                throw new ArgumentException(
-                    $"The free value definition '{freeValue}' conflicts with '{conflictFreeValueDefinition}'");
-            }
-            
-            freeValues.Add(freeValue);
+            if (conflictFreeValueDefinition == null) { return; }
+            throw new ArgumentException(
+                $"The free value definition '{freeValue}' conflicts with '{conflictFreeValueDefinition}'");
         }
     }
 }

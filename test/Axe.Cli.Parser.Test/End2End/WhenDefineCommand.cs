@@ -221,5 +221,15 @@ namespace Axe.Cli.Parser.Test.End2End
 
             Assert.True(result.GetFlagValue(argument));
         }
+
+        [Fact]
+        public void should_not_mark_a_free_value_as_mandatory_if_the_previous_free_value_is_not()
+        {
+            CommandBuilder builder = new ArgsParserBuilder()
+                .BeginDefaultCommand()
+                .AddFreeValue("free_value1", string.Empty);
+
+            Assert.Throws<InvalidOperationException>(() => builder.AddFreeValue("free_value2", string.Empty, true));
+        }
     }
 }

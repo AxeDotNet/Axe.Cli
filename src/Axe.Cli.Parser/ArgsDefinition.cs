@@ -6,14 +6,14 @@ namespace Axe.Cli.Parser
 {
     class ArgsDefinition
     {
-        readonly List<CommandDefinition> commands = new List<CommandDefinition>();
+        readonly List<ICommandDefinition> commands = new List<ICommandDefinition>();
         DefaultCommandDefinition defaultCommand;
 
         public ICommandDefinition DefaultCommand => defaultCommand;
 
-        public void RegisterCommand(CommandDefinition command)
+        public void RegisterCommand(ICommandDefinition command)
         {
-            CommandDefinition conflict = commands.FirstOrDefault(c => c.IsConflict(command));
+            ICommandDefinition conflict = commands.FirstOrDefault(c => c.IsConflict(command));
             if (conflict != null)
             {
                 throw new ArgumentException(
@@ -23,9 +23,9 @@ namespace Axe.Cli.Parser
             commands.Add(command);
         }
 
-        public IReadOnlyList<CommandDefinition> GetRegisteredCommands()
+        public IEnumerable<ICommandDefinition> GetRegisteredCommands()
         {
-            return commands.AsReadOnly();
+            return commands;
         }
 
         public void SetDefaultCommand(DefaultCommandDefinition command)

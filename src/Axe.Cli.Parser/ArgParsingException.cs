@@ -17,10 +17,10 @@ namespace Axe.Cli.Parser
 
         static string CreateMessage(ArgsParsingErrorCode code)
         {
-            return messages.ContainsKey(code) ? messages[code] : "Uknown error.";
+            return Messages.ContainsKey(code) ? Messages[code] : "Uknown error.";
         }
 
-        static readonly Dictionary<ArgsParsingErrorCode, string> messages =
+        static readonly Dictionary<ArgsParsingErrorCode, string> Messages =
             new Dictionary<ArgsParsingErrorCode, string>
             {
                 { ArgsParsingErrorCode.Unknown, "Unknown error." },

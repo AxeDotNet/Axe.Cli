@@ -71,14 +71,14 @@ namespace Axe.Cli.Parser.Tokenizer
             return null;
         }
 
-        CommandDefinition ResolveCommand(string argument)
+        ICommandDefinition ResolveCommand(string argument)
         {
             if (!CommandDefinition.CanBeCommand(argument))
             {
                 return null;
             }
 
-            IReadOnlyList<CommandDefinition> commands = definition.GetRegisteredCommands();
+            IEnumerable<ICommandDefinition> commands = definition.GetRegisteredCommands();
             return commands.FirstOrDefault(c => c.IsMatch(argument));
         }
 
