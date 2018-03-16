@@ -35,7 +35,7 @@ namespace Axe.Cli.Parser.Test.Unit
             {
                 "This is a single li-",
                 "ne string. With a 20",
-                " chars length."
+                "chars length."
             }, autoWrapText);
         }
         
@@ -50,7 +50,22 @@ namespace Axe.Cli.Parser.Test.Unit
             {
                 "This is a single li-",
                 "ne string. With a 20",
-                " chars length."
+                "chars length."
+            }, autoWrapText);
+        }
+
+        [Fact]
+        public void should_avoid_leading_spaces_when_wrapping_lines()
+        {
+            const string oneLine = "This is a single line string. With a 20                chars length.";
+
+            IEnumerable<string> autoWrapText = oneLine.AutoWrapText(20);
+
+            Assert.Equal(new[]
+            {
+                "This is a single li-",
+                "ne string. With a 20",
+                "chars length."
             }, autoWrapText);
         }
     }

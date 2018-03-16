@@ -28,9 +28,10 @@ namespace Axe.Cli.Parser.Extensions
 
         string GetNextLine()
         {
-            int numberOfCharRead = reader.Read(buffer, 0, buffer.Length);
+            int numberOfCharRead = TrimStartRead(reader, buffer);
             if (numberOfCharRead == 0) return null;
-            StringBuilder builder = new StringBuilder(numberOfCharRead).Append(buffer, 0, numberOfCharRead);
+            StringBuilder builder = new StringBuilder(numberOfCharRead)
+                .Append(buffer, 0, numberOfCharRead);
             if (numberOfCharRead < buffer.Length) { return builder.ToString(); }
             int endOfLineCode = reader.Peek();
             if (endOfLineCode == -1) { return builder.ToString(); }
@@ -47,6 +48,22 @@ namespace Axe.Cli.Parser.Extensions
             reader.Read();
             builder.Append(endOfLineChar);
             return builder.ToString();
+        }
+        
+        static int TrimStartRead(TextReader reader, char[] buffer)
+        {
+            while (true)
+            {
+                int code = reader.Peek();
+                if (code == -1) { return 0; }
+                
+                char c = unchecked ((char) code);
+                if (!char.IsWhiteSpace(c)) { break; }
+
+                reader.Read();
+            }
+
+            return reader.Read(buffer, 0, buffer.Length);
         }
     }
 }
