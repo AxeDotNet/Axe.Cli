@@ -68,5 +68,41 @@ namespace Axe.Cli.Parser.Test.Unit
                 "chars length."
             }, autoWrapText);
         }
+        
+        [Fact]
+        public void should_support_multi_line_wrapping()
+        {
+            const string multiLine =
+                "This is a single line string. With a 20 chars length.\r\n" +
+                "This is a single line string. With a 20 chars length.";
+            
+            Assert.Equal(new []
+            {
+                "This is a single li-",
+                "ne string. With a 20",
+                "chars length.",
+                "This is a single li-",
+                "ne string. With a 20",
+                "chars length."
+            }, multiLine.AutoWrapText(20));
+        }
+
+        [Fact]
+        public void should_apply_trimming_logic_to_each_line()
+        {
+            const string multiLine =
+                "       This is a single line string. With a 20 chars length.                 \r\n" +
+                "    This is a single line string. With a 20 chars length.           ";
+            
+            Assert.Equal(new []
+            {
+                "This is a single li-",
+                "ne string. With a 20",
+                "chars length.",
+                "This is a single li-",
+                "ne string. With a 20",
+                "chars length."
+            }, multiLine.AutoWrapText(20));
+        }
     }
 }

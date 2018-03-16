@@ -1,33 +1,47 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace Axe.Cli.Parser.Extensions
 {
     class TextWrapper
     {
-        readonly StringReader reader;
-        readonly char[] buffer;
-
-        public TextWrapper(StringReader reader, int maxColumn)
+        public IList<string> Wrap([NotNull]string text, int maxColumn)
         {
-            this.reader = reader;
-            buffer = new char[maxColumn - 1];
+            string trimmedText = text.Trim();
+            if (string.IsNullOrEmpty(trimmedText)) { return new[] {string.Empty}; }
+            
+            var result = new List<string>();
+            using (var reader = new StringReader(trimmedText))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    result.AddRange(WrapSingleLine(line.Trim(), maxColumn));
+                }
+            }
+
+            return result;
         }
 
-        public IEnumerable<string> Wrap()
+        IEnumerable<string> WrapSingleLine(string text, int maxColumn)
         {
-            while (true)
+            using (var reader = new StringReader(text))
             {
-                string line = GetNextLine();
-                if (line == null) { yield break; }
+                while (true)
+                {
+                    string line = GetNextLine(reader, maxColumn);
+                    if (line == null) { yield break; }
 
-                yield return line;
+                    yield return line;
+                }
             }
         }
 
-        string GetNextLine()
+        static string GetNextLine(TextReader reader, int maxColumn)
         {
+            var buffer = new char[maxColumn - 1];
             int numberOfCharRead = TrimStartRead(reader, buffer);
             if (numberOfCharRead == 0) return null;
             StringBuilder builder = new StringBuilder(numberOfCharRead)
