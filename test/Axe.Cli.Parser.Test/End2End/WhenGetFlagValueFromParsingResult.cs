@@ -183,5 +183,21 @@ namespace Axe.Cli.Parser.Test.End2End
             Assert.True(result.GetFlagValue("--flag-b"));
             Assert.False(result.GetFlagValue("--flag-c"));
         }
+
+        [Fact]
+        public void should_recognize_some_odd_flag_with_number()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginCommand("command", string.Empty)
+                .AddFlagOption("1", 'o', string.Empty)
+                .EndCommand()
+                .Build();
+            
+            ArgsParsingResult result = parser.Parse(new [] {"command", "--1"});
+            
+            result.AssertSuccess();
+            Assert.True(result.GetFlagValue("--1"));
+            Assert.True(result.GetFlagValue("-o"));
+        }
     }
 }

@@ -338,5 +338,22 @@ namespace Axe.Cli.Parser.Test.End2End
             
             result.AssertError(ArgsParsingErrorCode.RequiredFreeValueNotPresent, "<name>");
         }
+
+        [Fact]
+        public void should_recognize_free_value_for_a_flag_like_number()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginCommand("command", string.Empty)
+                .AddOptionWithValue("option", 'o', string.Empty, true)
+                .AddFreeValue("number", string.Empty)
+                .EndCommand()
+                .Build();
+
+            ArgsParsingResult result = parser.Parse(new[] {"command", "--option", "option_value", "-1"});
+            
+            result.AssertSuccess();
+            Assert.Equal("option_value", result.GetFirstOptionValue<string>("-o"));
+            Assert.Equal("-1", result.GetFreeRawValue("number"));
+        }
     }
 }
