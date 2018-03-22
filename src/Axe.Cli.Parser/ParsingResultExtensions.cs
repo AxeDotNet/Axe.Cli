@@ -9,7 +9,6 @@ namespace Axe.Cli.Parser
     /// </summary>
     public static class ParsingResultExtensions
     {
-        
         /// <summary>
         /// Get translated option values and try to cast them to specified type.
         /// </summary>

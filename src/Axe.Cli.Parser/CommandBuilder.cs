@@ -98,8 +98,7 @@ namespace Axe.Cli.Parser
         /// The argument should be <c>null</c>.
         /// </param>
         /// <param name="description">
-        /// The description for this key-value option. Please note that all the line-breaks will be
-        /// removed for consisitency.
+        /// The description for this flag option.
         /// </param>
         /// <returns>The command builder instance.</returns>
         /// <exception cref="ArgumentException">
