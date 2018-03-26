@@ -71,6 +71,23 @@ namespace Axe.Cli.Parser.Test.End2End
             result.AssertError(ArgsParsingErrorCode.DuplicateFlagsInArgs, "-ff");
         }
 
+        [Fact]
+        public void should_get_dup_flags_for_duplicated_flags()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginCommand("command", string.Empty)
+                .AddFlagOption("recursive", 'r', string.Empty)
+                .AddFlagOption("force", 'f', string.Empty)
+                .EndCommand()
+                .Build();
+             
+            string[] args = { "command", "-rf", "--force" };
+            ArgsParsingResult result = parser.Parse(args);
+
+            Assert.False(result.IsSuccess);
+            result.AssertError(ArgsParsingErrorCode.DuplicateFlagsInArgs, "--force");
+        }
+
         [Theory]
         [InlineData("--flag")]
         [InlineData("-f")]
@@ -109,6 +126,38 @@ namespace Axe.Cli.Parser.Test.End2End
             result.AssertSuccess();
             Assert.True(result.GetFlagValue("--recursive"));
             Assert.True(result.GetFlagValue("--force"));
+        }
+
+        [Fact]
+        public void should_get_error_if_one_of_the_combined_flag_is_not_defined()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand()
+                .AddFlagOption("recursive", 'r', string.Empty)
+                .AddFlagOption("force", 'f', string.Empty)
+                .EndCommand()
+                .Build();
+
+            string[] args = {"-rfa"};
+            ArgsParsingResult result = parser.Parse(args);
+
+            result.AssertError(ArgsParsingErrorCode.FreeValueNotSupported, "-rfa");
+        }
+
+        [Fact]
+        public void should_get_error_if_one_of_the_combined_flag_is_not_defined_for_command()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginCommand("command", string.Empty)
+                .AddFlagOption("recursive", 'r', string.Empty)
+                .AddFlagOption("force", 'f', string.Empty)
+                .EndCommand()
+                .Build();
+
+            string[] args = {"command", "-rfa"};
+            ArgsParsingResult result = parser.Parse(args);
+
+            result.AssertError(ArgsParsingErrorCode.FreeValueNotSupported, "-rfa");
         }
         
         [Fact]

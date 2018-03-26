@@ -20,23 +20,17 @@ namespace Axe.Cli.Parser.Tokenizer
         public override IPreParsingState MoveToNext(string argument)
         {
             if (IsEndOfArguments(argument)) { return null; }
+
+            IPreParsingState handleKeyValueOptionState = HandleKeyValueOptionArgument(
+                command,
+                resultBuilder,
+                argument);
+            if (handleKeyValueOptionState != null) { return handleKeyValueOptionState; }
+
+            IPreParsingState handleFlagOptionState = HandleFlagOptionArgument(
+                command, resultBuilder, argument);
+            if (handleFlagOptionState != null) { return handleFlagOptionState; }
             
-            IOptionDefinition kvOption = ResolveKeyValueOptionLabel(command, argument);
-            if (kvOption != null)
-            {
-                return new WaitingValueState(command, kvOption, argument, resultBuilder);
-            }
-
-            IList<IOptionDefinition> flagOptions = ResolveFlagOptionLabels(command, argument);
-            if (flagOptions.Count > 0)
-            {
-                foreach (IOptionDefinition flagOption in flagOptions)
-                {
-                    resultBuilder.AppendOptionToken(new OptionToken(flagOption), argument);
-                }
-                return new ContinueState(command, resultBuilder);
-            }
-
             return HandleFreeValueArgument(command, resultBuilder, argument);
         }
     }

@@ -12,7 +12,7 @@ namespace Axe.Cli.Parser.Tokenizer
             return argument == null;
         }
 
-        protected static IOptionDefinition ResolveKeyValueOptionLabel(
+        static IOptionDefinition ResolveKeyValueOptionLabel(
             ICommandDefinition selectedCommand,
             string argument)
         {
@@ -25,7 +25,7 @@ namespace Axe.Cli.Parser.Tokenizer
                 .FirstOrDefault(o => o.Type == OptionType.KeyValue && o.IsMatch(argument));
         }
         
-        protected static IList<IOptionDefinition> ResolveFlagOptionLabels(
+        static IList<IOptionDefinition> ResolveFlagOptionLabels(
             ICommandDefinition selectedCommand, 
             string argument)
         {
@@ -44,9 +44,13 @@ namespace Axe.Cli.Parser.Tokenizer
                     throw new ArgParsingException(ArgsParsingErrorCode.DuplicateFlagsInArgs, argument);
                 }
 
-                return selectedCommand.GetRegisteredOptions()
+                IOptionDefinition[] resolvedDefinitions = selectedCommand.GetRegisteredOptions()
                     .Where(o => o.Type == OptionType.Flag && flagArguments.Any(o.IsMatch))
                     .ToArray();
+
+                return resolvedDefinitions.Length != flagArguments.Length
+                    ? Array.Empty<IOptionDefinition>()
+                    : resolvedDefinitions;
             }
 
             return Array.Empty<IOptionDefinition>();
