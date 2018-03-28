@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.1.1-alpha</Version>
+    <Version>0.8.0-beta</Version>
     <Authors>Liu Xia</Authors>
     <Company>Liu Xia</Company>
-    <Description>This is a command line parser. Unlike most other parsers, this parser uses a parse then route pattern, which is easy to work with just like the way you do in a MvC project.</Description>
+    <Description>This is a command line parser.</Description>
     <Copyright>Liu Xia 2018-2019</Copyright>
     <PackageProjectUrl>https://github.com/AxeDotNet/Axe.Cli</PackageProjectUrl>
     <RepositoryUrl>https://github.com/AxeDotNet/Axe.Cli</RepositoryUrl>
     <PackageTags>commandline cli parser</PackageTags>
-    <FileVersion>0.1.0.0</FileVersion>
+    <FileVersion>0.8.0.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard2.0\Axe.Cli.Parser.xml</DocumentationFile>
