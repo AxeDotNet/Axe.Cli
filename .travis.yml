@@ -7,7 +7,12 @@ env:
   global:
     - CONFIGURATION=Release
 
+addons:
+  sonarcloud:
+    organization: "lxconan-github"
+
 script:
+  - sonar-scanner
   - cd test/Axe.Cli.Parser.Test
   - dotnet restore
   - dotnet test
