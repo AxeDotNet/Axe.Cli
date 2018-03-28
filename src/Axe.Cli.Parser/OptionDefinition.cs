@@ -1,5 +1,4 @@
 ﻿using System;
-using Axe.Cli.Parser.Extensions;
 using Axe.Cli.Parser.Transformers;
 
 namespace Axe.Cli.Parser

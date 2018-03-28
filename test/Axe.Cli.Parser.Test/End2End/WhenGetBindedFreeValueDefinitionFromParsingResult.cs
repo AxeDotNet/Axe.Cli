@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Axe.Cli.Parser.Test.Helpers;
 using Axe.Cli.Parser.Transformers;
 using Xunit;

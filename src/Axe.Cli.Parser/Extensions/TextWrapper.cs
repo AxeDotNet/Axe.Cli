@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using JetBrains.Annotations;
 
 namespace Axe.Cli.Parser.Extensions
 {
     class TextWrapper
     {
-        public IList<string> Wrap([NotNull]string text, int maxColumn)
+        public IList<string> Wrap(string text, int maxColumn)
         {
             string trimmedText = text.Trim();
             if (string.IsNullOrEmpty(trimmedText)) { return new[] {string.Empty}; }

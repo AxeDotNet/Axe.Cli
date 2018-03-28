@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using JetBrains.Annotations;
 
 namespace Axe.Cli.Parser
 {
@@ -54,7 +53,7 @@ namespace Axe.Cli.Parser
             options.Add(option);
         }
 
-        public void RegisterFreeValue([NotNull]IFreeValueDefinition freeValue)
+        public void RegisterFreeValue(IFreeValueDefinition freeValue)
         {
             CheckConflict(freeValue);
             CheckRequiredCompatibility(freeValue);
