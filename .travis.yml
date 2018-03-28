@@ -10,6 +10,8 @@ env:
 addons:
   sonarcloud:
     organization: "lxconan-github"
+    token:
+      secure: $SONAR_TOKEN
 
 script:
   - sonar-scanner
