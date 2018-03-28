@@ -1,0 +1,18 @@
+langauge: csharp
+solution: Axe.Cli.sln
+
+env:
+  global:
+    - CONFIGURATION=Release
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty # Ubuntu 14.04
+      dotnet: 2.0.0
+      mono: none
+      sudo: required
+
+script:
+  - dotnet restore
+  - dotnet test ./test/Axe.Cli.Parser.Test/Axe.Cli.Parser.Test.csproj
