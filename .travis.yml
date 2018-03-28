@@ -9,5 +9,5 @@ env:
 
 script:
   - cd test/Axe.Cli.Parser.Test
+  - dotnet restore
   - dotnet test
-  
