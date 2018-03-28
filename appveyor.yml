@@ -5,5 +5,5 @@ before_test:
   - dotnet --info
   - dotnet restore
 
-test-script:
+test_script:
   - dotnet test test/Axe.Cli.Parser.Test/Axe.Cli.Parser.Test.csproj
