@@ -6,4 +6,4 @@ before_test:
   - dotnet restore
 
 test_script:
-  - dotnet test test/Axe.Cli.Parser.Test/Axe.Cli.Parser.Test.csproj
+  - dotnet test test/Axe.Cli.Parser.Test/Axe.Cli.Parser.Test.csproj --collect:"Code Coverage"
