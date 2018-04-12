@@ -88,6 +88,24 @@ namespace Axe.Cli.Parser.Test.Unit
         }
 
         [Fact]
+        public void should_combine_multiple_line_breaks()
+        {
+            const string multiLine =
+                "This is a single line string. With a 20 chars length.\r\n\r\n" +
+                "This is a single line string. With a 20 chars length.";
+            
+            Assert.Equal(new []
+            {
+                "This is a single li-",
+                "ne string. With a 20",
+                "chars length.",
+                "This is a single li-",
+                "ne string. With a 20",
+                "chars length."
+            }, multiLine.AutoWrapText(20));
+        }
+
+        [Fact]
         public void should_apply_trimming_logic_to_each_line()
         {
             const string multiLine =
